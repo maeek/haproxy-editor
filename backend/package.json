@@ -1,0 +1,23 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "tsc && node build/index.js",
+    "build": "tsc",
+    "dev": "nodemon -e ts --exec 'npm run start'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "typescript": "file:../node_modules/typescript"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "nodemon": "^2.0.6",
+    "tslint": "^6.1.3"
+  }
+}
