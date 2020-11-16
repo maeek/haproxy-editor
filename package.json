@@ -9,7 +9,11 @@
     "clean": "rm -rf ./build",
     "build": "npm run bundle",
     "bundle": "npm run clean; npm run compile; mkdir build; cp -r react/build ./build/public; cp -r backend/build/* ./build/",
-    "dev": "MODE=development concurrently 'cd backend; npm run dev' 'cd react; npm run start'"
+    "dev": "MODE=development concurrently 'cd backend; npm run dev' 'cd react; npm run start'",
+    "dev:server": "cd backend/; npm run dev",
+    "dev:client": "cd react/; npm run start",
+    "start:server": "cd backend/; npm run start",
+    "start:client": "npm run dev:client"
   },
   "keywords": [],
   "author": "",
