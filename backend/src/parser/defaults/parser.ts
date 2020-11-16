@@ -39,14 +39,12 @@ export class DefaultParser {
   }
 
   static selectParser(type: string) {
-    switch (type) {
-      case HaproxyCustomParsers.timeout:
-        return DefaultParser.timeoutParser;
-      case HaproxyCustomParsers.errorfile:
-        return DefaultParser.errorfileParser;
-      default:
-        return DefaultParser.basicParser;
-    }
+    const parsers = {
+      [HaproxyCustomParsers.timeout]: DefaultParser.timeoutParser,
+      [HaproxyCustomParsers.errorfile]: DefaultParser.errorfileParser
+    };
+
+    return parsers[type] || DefaultParser.basicParser;
   }
 
   static timeoutParser(arr: Array<string>): {[key: string]: StandardEntry} {

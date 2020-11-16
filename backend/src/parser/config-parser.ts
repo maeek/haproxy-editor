@@ -69,20 +69,15 @@ export default class ConfigParser {
   }
 
   _selectSectionParser(type: string) {
-    switch (type) {
-      case HaproxySections.global:
-        return;
-      case HaproxySections.defaults:
-        return DefaultsParser;
-      case HaproxySections.listen:
-        return;
-      case HaproxySections.frontend:
-        return;
-      case HaproxySections.backend:
-        return;
-      default:
-        return;
-    }
+    const parsers = {
+      [HaproxySections.global]: undefined,
+      [HaproxySections.defaults]: DefaultsParser,
+      [HaproxySections.frontends]: undefined,
+      [HaproxySections.listeners]: undefined,
+      [HaproxySections.bakcends]: undefined
+    };
+
+    return parsers[type];
   }
 
   static getSectionRows(arr: Array<string>, start: number, end: number) {
