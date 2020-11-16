@@ -1,6 +1,6 @@
 export type HaproxyKeys = 'global' | 'defaults' | 'frontend' | 'listen' | 'backend';
 
-export enum HaproxySectionsEnum {
+export enum HaproxyCustomSectionsEnum {
   global = 'global',
   defaults = 'defaults',
   frontends = 'frontends',
@@ -287,8 +287,7 @@ export type BackendFields =
   'transparent';
 
 export interface ErrorfileEntry {
-  code?: number;
-  path?: string;
+  [code: string]: string;
 }
 
 export type ErrorfileEntryList = Array<ErrorfileEntry>;
@@ -299,43 +298,32 @@ export interface ErrorfileEntryGroup {
 
 export type StandardEntry = string | Array<string | number>;
 
-export interface HaproxyGlobal {
-  [HaproxySectionsEnum.global]?: {
-    [key in GlobalFields | 'name']?: StandardEntry
-  }
+export type HaproxyGlobal = {
+  [key in GlobalFields | 'name']?: StandardEntry
 }
 
-export interface HaproxyDefaults {
-  [HaproxySectionsEnum.defaults]?: {
-    [key in DefaultsFields | 'name']?: StandardEntry;
+export type HaproxyDefaults = {
+  [key in DefaultsFields | 'name']?: StandardEntry;
   } & {
-    errorfile?: ErrorfileEntryList;
-  }
+  errorfile?: ErrorfileEntryList;
 }
 
-export interface HaproxyFrontend {
-  [HaproxySectionsEnum.frontends]?: Array<{
-    [key in FrontendFields | 'name']?: StandardEntry
-  }>
-}
+export type HaproxyFrontend = Array<{
+  [key in FrontendFields | 'name']?: StandardEntry
+}>
 
-export interface HaproxyListen {
-  [HaproxySectionsEnum.listeners]?: Array<{
-    [key in AllFields | 'name']?: StandardEntry
-  }>
-}
+export type HaproxyListen = Array<{
+  [key in AllFields | 'name']?: StandardEntry
+}>
 
-
-export interface HaproxyBackend {
-  [HaproxySectionsEnum.backends]?: Array<{
-    [key in BackendFields | 'name']?: StandardEntry
-  }>
-}
+export type HaproxyBackend = Array<{
+  [key in BackendFields | 'name']?: StandardEntry
+}>
 
 export interface HaproxyConfig {
-  global?: HaproxyGlobal;
-  defaults?: HaproxyDefaults;
-  frontends?: HaproxyFrontend;
-  listeners?: HaproxyListen;
-  backends?: HaproxyBackend;
+  [HaproxyCustomSectionsEnum.global]?: HaproxyGlobal;
+  [HaproxyCustomSectionsEnum.defaults]?: HaproxyDefaults;
+  [HaproxyCustomSectionsEnum.frontends]?: HaproxyFrontend;
+  [HaproxyCustomSectionsEnum.listeners]?: HaproxyListen;
+  [HaproxyCustomSectionsEnum.backends]?: HaproxyBackend;
 }

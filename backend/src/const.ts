@@ -1,4 +1,4 @@
-export const HaproxySections = {
+export const HaproxySections: { [key: string]: string } = {
   global: 'global',
   defaults: 'defaults',
   listen: 'listen',
@@ -6,7 +6,7 @@ export const HaproxySections = {
   backend: 'backend'
 };
 
-export const HaproxySectionsList = [
+export const HaproxySectionsList: Array<string> = [
   HaproxySections.global,
   HaproxySections.defaults,
   HaproxySections.listen,
@@ -14,7 +14,23 @@ export const HaproxySectionsList = [
   HaproxySections.backend,
 ];
 
-export const HaproxyOptions = {
+export const HaproxyCustomSections: { [key: string]: string } = {
+  global: 'global',
+  defaults: 'defaults',
+  listen: 'listeners',
+  frontend: 'frontends',
+  backend: 'backends'
+};
+
+export const HaproxyCustomSectionsList: Array<string> = [
+  HaproxyCustomSections.global,
+  HaproxyCustomSections.defaults,
+  HaproxyCustomSections.listen,
+  HaproxyCustomSections.frontend,
+  HaproxyCustomSections.backend
+];
+
+export const HaproxyOptions: { [key: string]: string } = {
   acl: 'acl',
   appsession: 'appsession',
   backlog: 'backlog',
@@ -92,7 +108,7 @@ export const HaproxyOptions = {
 };
 
 
-export const HaproxyOptionsList = [
+export const HaproxyOptionsList: Array<string> = [
   HaproxyOptions.acl,
   HaproxyOptions.appsession,
   HaproxyOptions.backlog,
@@ -169,7 +185,7 @@ export const HaproxyOptionsList = [
   HaproxyOptions.use_backend
 ];
 
-export const HaproxyCustomParsers = {
+export const HaproxyCustomParsers: { [key: string]: string } = {
   capture: 'capture',
   errorfile: 'errorfile',
   'http-check': 'http-check',
@@ -181,7 +197,7 @@ export const HaproxyCustomParsers = {
   timeout: 'timeout'
 };
 
-export const HaproxyCustomParsersList = [
+export const HaproxyCustomParsersList: Array<string> = [
   HaproxyCustomParsers.capture,
   HaproxyCustomParsers.errorfile,
   HaproxyCustomParsers['http-check'],

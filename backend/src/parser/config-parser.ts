@@ -1,5 +1,5 @@
-import { HaproxyConfig, HaproxySectionsEnum } from '../typings';
-import { HaproxySections, HaproxySectionsList } from '../const';
+import { HaproxyConfig, HaproxyCustomSectionsEnum } from '../typings';
+import { HaproxyCustomSections, HaproxySections, HaproxySectionsList } from '../const';
 import DefaultsParser from './defaults/parser';
 
 interface SectionsMap {
@@ -24,36 +24,51 @@ export default class ConfigParser {
     const cleanedConfigArray = ConfigParser.cleanInputConfig(rawConfigArray);
     const configSectionsMap = ConfigParser.findSections(cleanedConfigArray);
 
-    console.log(configSectionsMap);
-
     const sectionMapKeys = Object.keys(configSectionsMap);
     const sectionMapValues = Object.values(configSectionsMap);
 
     for (let i = 0; i < sectionMapKeys.length; i++) {
-      const sectionType = sectionMapValues[i]['type'] as HaproxySectionsEnum;
-      const sectionStart = sectionMapValues[i]['start'];
-      const sectionEnd = sectionMapValues[i]['end'];
+      const sectionType = sectionMapValues[i].type as HaproxyCustomSectionsEnum;
+      const sectionStart = sectionMapValues[i].start;
+      const sectionEnd = sectionMapValues[i].end;
       const sectionRows = ConfigParser.getSectionRows(cleanedConfigArray, sectionStart, sectionEnd);
 
-      const Parser = this._selectParser(sectionType);
+      const Parser = this._selectSectionParser(sectionType);
 
       if (Parser) {
         const parsedSection = new Parser(sectionRows).data;
-        if (!result[sectionType] && [HaproxySections.defaults, HaproxySections.global].includes(sectionType)) {
+
+        if (
+          !result[sectionType] 
+          && [HaproxySections.defaults, HaproxySections.global].includes(sectionType)
+        ) {
           result = {
             ...result,
             ...parsedSection
           };
-        } // TODO add listeners, frontends, bakcends
-
-        console.log(result);
+        }
+        
+        // TODO add listeners, frontends, bakcends
       }
     }
-
+    console.log(result);
     return result;
   }
   
-  _selectParser(type: string) {
+  static _createOrAppendToSection(sectionType: string, results: HaproxyConfig) {
+    const newResult: HaproxyConfig = {};
+    const mappedSection = HaproxyCustomSections[sectionType] as HaproxyCustomSectionsEnum;
+
+    if (!results[mappedSection]) { // TODO
+      // if ([HaproxyCustomSections.global, HaproxyCustomSections.defaults].includes(mappedSection)) {
+      //   newResult[mappedSection] = {};
+      // } else {
+      //   results[mappedSection] = {[mappedSection]: []};
+      // }
+    }
+  }
+
+  _selectSectionParser(type: string) {
     switch (type) {
       case HaproxySections.global:
         return;

@@ -2,9 +2,11 @@ import { HaproxyCustomParsers } from '../../const';
 import { ErrorfileEntry, ErrorfileEntryList, ErrorfileEntryGroup, HaproxyDefaults, StandardEntry } from '../../typings';
 
 export class DefaultParser {
-  parsedSection: HaproxyDefaults;
+  parsedSection?: HaproxyDefaults;
+  defaultsContent?: Array<string>;
 
   constructor(defaultsContent: Array<string>) {
+    this.defaultsContent = defaultsContent;
     this.parsedSection = DefaultParser.parse(defaultsContent)
   }
 
@@ -12,9 +14,12 @@ export class DefaultParser {
     return this.parsedSection;
   }
 
+  get rawData() {
+    return this.defaultsContent;
+  }
+
   static parse(defaultsContent: Array<string>): HaproxyDefaults {
-    const result: any = {
-      defaults: {}
+    let result: any = {
     };
   
     for (let i = 1; i < defaultsContent.length; i++) {
@@ -24,13 +29,12 @@ export class DefaultParser {
       const parser = DefaultParser.selectParser(arr[0]);
       const parsedRow = parser(arr, result);
 
-      
-      result.defaults = {
-        ...result.defaults,
+      result = {
+        ...result,
         ...parsedRow
       }
     }
-    
+
     return result;
   }
 
@@ -54,25 +58,22 @@ export class DefaultParser {
   }
 
   static errorfileParser(arr: Array<string>, alreadyParsed?: HaproxyDefaults): ErrorfileEntryGroup {
-    const [name, code, path] = arr;
+    const [_, code, path] = arr;
     const newErrorfile: ErrorfileEntry = {
-      [name]: {
-        code,
-        path
-      }
+      [code]: path
     };
 
     let results: ErrorfileEntryList = [];
 
-    if (alreadyParsed?.defaults?.errorfile) {
+    
+    if (alreadyParsed?.errorfile) {
       results = [
-        ...alreadyParsed.defaults.errorfile,
+        ...alreadyParsed.errorfile,
         newErrorfile
       ]
     } else {
       results = [newErrorfile];
     }
-
 
     return {
       errorfile: results
