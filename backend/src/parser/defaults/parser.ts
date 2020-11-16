@@ -61,17 +61,10 @@ export class DefaultParser {
       [code]: path
     };
 
-    let results: ErrorfileEntryList = [];
-
-    
-    if (alreadyParsed?.errorfile) {
-      results = [
-        ...alreadyParsed.errorfile,
-        newErrorfile
-      ]
-    } else {
-      results = [newErrorfile];
-    }
+    let results: ErrorfileEntryList = [
+      ...(alreadyParsed?.errorfile ? alreadyParsed.errorfile : []),
+      newErrorfile
+    ];
 
     return {
       errorfile: results
