@@ -1,6 +1,6 @@
 import { HaproxyConfig, HaproxyCustomSectionsEnum } from '../typings';
 import { HaproxyCustomSections, HaproxySections, HaproxySectionsList } from '../const';
-import DefaultsParser from './defaults/parser';
+import DefaultsParser from './sections/defaults';
 
 interface SectionsMap {
   [key: string]: {
