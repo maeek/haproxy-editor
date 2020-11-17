@@ -19,6 +19,6 @@ const file = new FileHandler(path.join(__dirname, '../../test_config'))
 file.load((content) => {
   const conf = new ConfigParser(content);
   conf.parse()
-  // conf.stringify('ASC')
+  console.log(conf.stringify())
   // conf.toString()
 });

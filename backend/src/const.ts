@@ -30,6 +30,14 @@ export const HaproxyCustomSectionsList: Array<string> = [
   HaproxyCustomSections.backend
 ];
 
+export const HaproxyMapSectionToCustom: { [key: string]: string } = {
+  [HaproxySections.global]: HaproxyCustomSections.global,
+  [HaproxySections.defaults]: HaproxyCustomSections.defaults,
+  [HaproxySections.listen]: HaproxyCustomSections.listeners,
+  [HaproxySections.frontend]: HaproxyCustomSections.frontends,
+  [HaproxySections.backend]: HaproxyCustomSections.backends
+};
+
 export const HaproxyOptions: { [key: string]: string } = {
   acl: 'acl',
   appsession: 'appsession',
