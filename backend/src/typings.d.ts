@@ -56,7 +56,6 @@ export type DefaultsFields =
   'default_backend' |
   'disabled' |
   'enabled' |
-  // 'errorfile' |
   'errorloc' |
   'errorloc302' |
   'errorloc303' |
@@ -286,39 +285,47 @@ export type BackendFields =
   'timeout' |
   'transparent';
 
-export interface ErrorfileEntry {
+export interface ErrorfileSubEntry {
   [code: string]: string;
 }
 
-export type ErrorfileEntryList = Array<ErrorfileEntry>;
+export type ErrorfileEntryList = Array<ErrorfileSubEntry>;
 
-export interface ErrorfileEntryGroup {
+export interface ErrorfileEntry {
   errorfile: ErrorfileEntryList;
 }
 
-export type StandardEntry = string | Array<string | number>;
+export type StandardEntry = string | Array<string | number> | number | boolean;
+
+export type Entry = { [key: string]: StandardEntry };
 
 export type HaproxyGlobal = {
   [key in GlobalFields | 'name']?: StandardEntry
-}
+};
 
-export type HaproxyDefaults = {
-  [key in DefaultsFields | 'name']?: StandardEntry;
-  } & {
-  errorfile?: ErrorfileEntryList;
-}
+export type HaproxyDefaults = { [key in DefaultsFields | 'name']?: StandardEntry } 
+  & { errorfile?: ErrorfileEntryList };
 
-export type HaproxyFrontend = Array<{
-  [key in FrontendFields | 'name']?: StandardEntry
-}>
+export type HaproxyFrontendEntry = { [key in FrontendFields | 'name']?: StandardEntry } 
+  & { errorfile?: ErrorfileEntryList }
+  & { name: string }
+export type HaproxyFrontend = Array<HaproxyFrontendEntry>;
 
-export type HaproxyListen = Array<{
-  [key in AllFields | 'name']?: StandardEntry
-}>
+export type HaproxyListenEntry = { [key in AllFields | 'name']?: StandardEntry} 
+  & { errorfile?: ErrorfileEntryList }
+  & { name: string }
+export type HaproxyListen = Array<HaproxyListenEntry>;
 
-export type HaproxyBackend = Array<{
-  [key in BackendFields | 'name']?: StandardEntry
-}>
+export type HaproxyBackendEntry = { [key in BackendFields | 'name']?: StandardEntry} 
+& { errorfile?: ErrorfileEntryList }
+& { name: string }
+export type HaproxyBackend = Array<HaproxyBackendEntry>;
+
+export type JointType = HaproxyDefaults 
+  | HaproxyGlobal 
+  | HaproxyBackendEntry 
+  | HaproxyFrontendEntry 
+  | HaproxyListenEntry;
 
 export interface HaproxyConfig {
   [HaproxyCustomSectionsEnum.global]?: HaproxyGlobal;
