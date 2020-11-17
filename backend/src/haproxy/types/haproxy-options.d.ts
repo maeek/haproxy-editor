@@ -40,3 +40,7 @@ export interface HaproxyOptionBalance {
     algorithm: number;
   }
 }
+
+export interface HaproxyOptionMode {
+  mode?: 'tcp' | 'http' | 'health'
+}
