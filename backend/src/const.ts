@@ -17,9 +17,9 @@ export const HaproxySectionsList: Array<string> = [
 export const HaproxyCustomSections: { [key: string]: string } = {
   global: 'global',
   defaults: 'defaults',
-  listen: 'listeners',
-  frontend: 'frontends',
-  backend: 'backends'
+  listeners: 'listeners',
+  frontends: 'frontends',
+  backends: 'backends'
 };
 
 export const HaproxyCustomSectionsList: Array<string> = [
@@ -185,8 +185,10 @@ export const HaproxyOptionsList: Array<string> = [
   HaproxyOptions.use_backend
 ];
 
-export const HaproxyCustomParsers: { [key: string]: string } = {
+export const HaproxyParsers: { [key: string]: string } = {
+  daemon: 'daemon',
   capture: 'capture',
+  description: 'description',
   errorfile: 'errorfile',
   'http-check': 'http-check',
   monitor: 'monitor',
@@ -194,17 +196,21 @@ export const HaproxyCustomParsers: { [key: string]: string } = {
   persist: 'persist',
   stats: 'stats',
   stick: 'stick',
-  timeout: 'timeout'
+  timeout: 'timeout',
+  mode: 'mode'
 };
 
-export const HaproxyCustomParsersList: Array<string> = [
-  HaproxyCustomParsers.capture,
-  HaproxyCustomParsers.errorfile,
-  HaproxyCustomParsers['http-check'],
-  HaproxyCustomParsers.monitor,
-  HaproxyCustomParsers.option,
-  HaproxyCustomParsers.persist,
-  HaproxyCustomParsers.stats,
-  HaproxyCustomParsers.stick,
-  HaproxyCustomParsers.timeout
+export const HaproxyParsersList: Array<string> = [
+  HaproxyParsers.daemon,
+  HaproxyParsers.mode,
+  HaproxyParsers.capture,
+  HaproxyParsers.errorfile,
+  HaproxyParsers['http-check'],
+  HaproxyParsers.monitor,
+  HaproxyParsers.option,
+  HaproxyParsers.persist,
+  HaproxyParsers.stats,
+  HaproxyParsers.stick,
+  HaproxyParsers.timeout,
+  HaproxyParsers.description
 ];
