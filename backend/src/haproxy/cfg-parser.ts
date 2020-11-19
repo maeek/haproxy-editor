@@ -1,6 +1,9 @@
 import {
+  HaproxyBackend,
   HaproxyConfig,
   HaproxyCustomSectionsEnum,
+  HaproxyFrontend,
+  HaproxyListen,
 } from '../typings';
 import {
   HaproxyCustomSections,
@@ -26,8 +29,13 @@ export default class ConfigParser {
   content: string;
   parsedConfig: HaproxyConfig = {};
 
-  constructor(content: string) {
-    this.content = content;
+  constructor(content: string | HaproxyConfig) {
+    if (typeof content === 'string') {
+      this.content = content;
+    } else {
+      this.parsedConfig = content;
+      this.content = this.toString();
+    }
   }
 
   parse(): HaproxyConfig {
@@ -81,7 +89,7 @@ export default class ConfigParser {
 
   stringify(): Array<string> {
     let config: Array<string> = [];
-    const content = this.parsedConfig;
+    const content: any = this.parsedConfig;
     const sections = Object.keys(content) as Array<HaproxyCustomSectionsEnum>;
 
     sections.forEach((sectionName: HaproxyCustomSectionsEnum) => {
@@ -99,13 +107,29 @@ export default class ConfigParser {
 
         if (isNameless) {
           // Add global or defaults name
-          stringifiedSectionContents = [sectionName];
+          stringifiedSectionContents = [
+            sectionName,
+            ...stringifiedSection.contents
+          ];
+        } else {
+          Object.keys((
+            content[sectionName] as HaproxyBackend | HaproxyFrontend | HaproxyListen
+          )).forEach((entry: string) => {
+            stringifiedSection = new Parser({
+              [entry]: content[sectionName][entry]
+            });
+
+            stringifiedSectionContents = [
+              ...stringifiedSectionContents,
+              ...stringifiedSection.contents,
+              ''
+            ];
+          });
         }
 
         config = [
           ...config,
           ...stringifiedSectionContents,
-          ...stringifiedSection.contents,
           ''
         ];
       }
