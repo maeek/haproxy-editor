@@ -1,9 +1,18 @@
-import { HaproxyBackendEntry, HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyFrontendEntry, HaproxyListenEntry } from '../typings';
-import { HaproxyCustomSections, HaproxyMapSectionToCustom, HaproxySections, HaproxySectionsList } from '../const';
+import {
+  HaproxyConfig,
+  HaproxyCustomSectionsEnum,
+} from '../typings';
+import {
+  HaproxyCustomSections,
+  HaproxyMapSectionToCustom,
+  HaproxySections,
+  HaproxySectionsList
+} from '../const';
 import DefaultsParser from './sections/defaults';
 import GlobalParser from './sections/global';
 import FrontendParser from './sections/frontend';
 import BackendParser from './sections/backend';
+import ListenerParser from './sections/listeners';
 
 interface SectionsMap {
   [key: string]: {
@@ -32,47 +41,36 @@ export default class ConfigParser {
 
     for (let i = 0; i < sectionMapKeys.length; i++) {
       const sectionType = sectionMapValues[i].type as HaproxyCustomSectionsEnum;
-      const sectionStart = sectionMapValues[i].start;
-      const sectionEnd = sectionMapValues[i].end;
+      const sectionStart: number = sectionMapValues[i].start;
+      const sectionEnd: number = sectionMapValues[i].end;
       const sectionRows = ConfigParser.getSectionRows(cleanedConfigArray, sectionStart, sectionEnd);
       const customSection = HaproxyMapSectionToCustom[sectionType];
 
-      const Parser = this._selectSectionParser(customSection);
+      const Parser = this.getSectionParser(customSection);
 
       if (Parser) {
         const parsedSection = new Parser(sectionRows).data;
+        const isNamelessSection = [HaproxySections.defaults, HaproxySections.global].includes(sectionType);
 
-        if ([
-          HaproxySections.defaults,
-          HaproxySections.global
-        ].includes(sectionType)) {
-          // console.log(sectionType);
+        if (isNamelessSection) {
           result = {
             ...result,
             ...parsedSection
           };
-
-        } else if ([
-          HaproxySections.frontend,
-          HaproxySections.backend,
-          HaproxySections.listen
-        ].includes(sectionType)) {
+        } else {
           if (!result[customSection]) {
             result[customSection] = [];
           }
 
-          result[customSection] = [
+          const sectionName = Object.keys(parsedSection)[0];
+          result[customSection] = {
             ...result[customSection],
-            parsedSection
-          ];
-
+            [sectionName]: parsedSection[sectionName]
+          };
         }
-        
-        // TODO add listeners, frontends, bakcends
       }
     }
 
-    console.log(JSON.stringify(result));
     this.parsedConfig = result;
     return this.parsedConfig;
   }
@@ -84,37 +82,30 @@ export default class ConfigParser {
   stringify(): Array<string> {
     let config: Array<string> = [];
     const content = this.parsedConfig;
+    const sections = Object.keys(content) as Array<HaproxyCustomSectionsEnum>;
 
-
-    (Object.keys(content) as Array<HaproxyCustomSectionsEnum>).forEach((key: HaproxyCustomSectionsEnum) => {
-      const Parser = this._selectSectionParser(key);
+    sections.forEach((sectionName: HaproxyCustomSectionsEnum) => {
+      const Parser = this.getSectionParser(sectionName);
 
       if (Parser) {
-        let stringifiedSection: any; // TODO any parser
+        let stringifiedSection: any = new Parser(content[sectionName]);
         let stringifiedSectionContents: Array<string> = [];
 
-        if (Array.isArray(content[key])) {
-          (content[key] as Array<
-            HaproxyFrontendEntry | HaproxyBackendEntry | HaproxyListenEntry
-          >).forEach((entry) => {
-            stringifiedSection = new Parser(entry);
-            stringifiedSectionContents = [
-              ...stringifiedSectionContents,
-              ...stringifiedSection.contents,
-              ''
-            ];
-          });
-        } else {
-          stringifiedSection = new Parser(content[key]);
-          stringifiedSectionContents = [
-            key,
-            ...stringifiedSection.contents
-          ];
+        const isNameless = ![
+          HaproxyCustomSections.listeners,
+          HaproxyCustomSections.frontends,
+          HaproxyCustomSections.backends
+        ].includes(sectionName);
+
+        if (isNameless) {
+          // Add global or defaults name
+          stringifiedSectionContents = [sectionName];
         }
 
         config = [
           ...config,
           ...stringifiedSectionContents,
+          ...stringifiedSection.contents,
           ''
         ];
       }
@@ -130,13 +121,13 @@ export default class ConfigParser {
     return this.content;
   }
 
-  _selectSectionParser(type: string) {
+  getSectionParser(type: string) {
     const parsers = {
       [HaproxySections.global]: GlobalParser,
       [HaproxySections.defaults]: DefaultsParser,
       
       // Custom sections
-      [HaproxyCustomSections.listeners]: undefined,
+      [HaproxyCustomSections.listeners]: ListenerParser,
       [HaproxyCustomSections.frontends]: FrontendParser,
       [HaproxyCustomSections.backends]: BackendParser
     };

@@ -309,17 +309,17 @@ export type HaproxyDefaults = { [key in DefaultsFields | 'name']?: StandardEntry
 export type HaproxyFrontendEntry = { [key in FrontendFields | 'name']?: StandardEntry } 
   & { errorfile?: ErrorfileEntryList }
   & { name: string }
-export type HaproxyFrontend = Array<HaproxyFrontendEntry>;
+export type HaproxyFrontend = { [key: string]: HaproxyFrontendEntry };
 
 export type HaproxyListenEntry = { [key in AllFields | 'name']?: StandardEntry} 
   & { errorfile?: ErrorfileEntryList }
   & { name: string }
-export type HaproxyListen = Array<HaproxyListenEntry>;
+export type HaproxyListen = { [key: string]: HaproxyListenEntry };
 
 export type HaproxyBackendEntry = { [key in BackendFields | 'name']?: StandardEntry} 
 & { errorfile?: ErrorfileEntryList }
 & { name: string }
-export type HaproxyBackend = Array<HaproxyBackendEntry>;
+export type HaproxyBackend = { [key: string]: HaproxyBackendEntry };
 
 export type JointType = HaproxyDefaults 
   | HaproxyGlobal 
