@@ -48,14 +48,17 @@ export abstract class BasicParser {
   static stringify(contents: any): Array<string> {
     const results = [];
     const keys = Object.keys(contents);
-
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const value = contents[key];
-      const Parser = mapParser(keys[i])
+
+      const Parser = mapParser(key);
       const parsedRow = Parser.stringify(key, value);
+
       if (Array.isArray(parsedRow)) {
-        parsedRow.forEach((row: string) => results.push(row));
+        parsedRow.forEach((row: string) => {
+          results.push(row)
+        });
       } else {
         results.push(parsedRow);
       }

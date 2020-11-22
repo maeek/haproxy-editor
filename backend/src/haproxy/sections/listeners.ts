@@ -26,10 +26,7 @@ export class ListenerParser extends BasicParser {
 
     const stringified: Array<string> = BasicParser.stringify(contents[key]);
 
-    return [
-      `backend ${key}`,
-      ...stringified
-    ];
+    return stringified.length > 0 ? [ `listeners ${key}`, ...stringified ] : [];
   }
 
 }

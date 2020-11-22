@@ -19,10 +19,13 @@ export class DefaultParser extends BasicParser {
     };
   }
 
-  static stringify(contents: { defaults: HaproxyDefaults }): Array<string> {
-    return BasicParser.stringify(contents);
-  }
+  static stringify(contents: any): Array<string> {
+    const key = Object.keys(contents)[0] as 'defaults';
+    const values = contents[key];
+    const parsed = BasicParser.stringify(values);
 
+    return parsed.length > 0 ? [ 'defaults', ...parsed ] : [];
+  }
 }
 
 export default DefaultParser;

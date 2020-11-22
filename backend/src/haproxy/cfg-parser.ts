@@ -93,12 +93,13 @@ export default class ConfigParser {
     let config: Array<string> = [];
     const content: any = this.parsedConfig;
     const sections = Object.keys(content) as Array<HaproxyCustomSectionsEnum>;
+    
 
     sections.forEach((sectionName: HaproxyCustomSectionsEnum) => {
       const Parser = this.getSectionParser(sectionName);
 
       if (Parser) {
-        let stringifiedSection: any = new Parser(content[sectionName]);
+        let stringifiedSection: any = new Parser({ [sectionName]: content[sectionName] });
         let stringifiedSectionContents: Array<string> = [];
 
         const isNameless = ![
@@ -108,17 +109,18 @@ export default class ConfigParser {
         ].includes(sectionName);
 
         if (isNameless) {
-          // Add global or defaults name
           stringifiedSectionContents = [
-            sectionName,
-            ...stringifiedSection.contents
+            ...stringifiedSection.contents,
+            ''
           ];
         } else {
           Object.keys((
             content[sectionName] as HaproxyBackend | HaproxyFrontend | HaproxyListen
           )).forEach((entry: string) => {
             stringifiedSection = new Parser({
-              [entry]: content[sectionName][entry]
+              [sectionName]: {
+                [entry]: content[sectionName][entry]
+              }
             });
 
             stringifiedSectionContents = [
@@ -131,8 +133,7 @@ export default class ConfigParser {
 
         config = [
           ...config,
-          ...stringifiedSectionContents,
-          ''
+          ...stringifiedSectionContents
         ];
       }
     });
@@ -153,6 +154,23 @@ export default class ConfigParser {
     return {
       [name]: this.parsedConfig[name] || {}
     };
+  }
+
+  getRawSection(name: HaproxyCustomSectionsEnum): string {
+    const section = this.getSection(name);
+    const Parser = this.getSectionParser(name);
+    const results = Parser.stringify(section).join('\n');
+
+    return results;
+  }
+
+  getRawNamedSection(sectionName: HaproxyCustomSectionsEnum, name: string): string {
+    const section = this.getNamedSection(sectionName, name);
+    console.log(section);
+    const Parser = this.getSectionParser(sectionName);
+    const results = Parser.stringify({ [name]: section }).join('\n');
+
+    return results;
   }
 
   getNamedSection(baseSection: HaproxyCustomSectionsEnum, name: string): HaproxyConfig {

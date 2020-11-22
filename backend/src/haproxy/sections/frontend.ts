@@ -23,13 +23,21 @@ export class FrontendParser extends BasicParser {
 
   static stringify(contents: HaproxyFrontendEntry): Array<string> {
     const key = Object.keys(contents)[0] as 'name';
+    const results: string[] = [];
+    const keys = Object.keys(contents[key]);
+    const values = Object.values(contents[key]);
 
-    const stringified: Array<string> = BasicParser.stringify(contents[key]);
+    for (let i = 0; i < keys.length; i++) {
+      const parsed = BasicParser.stringify(values[i]);
+      const stringified: Array<string> = [
+        `frontend ${keys[i]}`,
+        ...parsed
+      ];
+      results.push(...(parsed.length > 0 ? stringified : []));
+    }
 
-    return [
-      `frontend ${key}`,
-      ...stringified
-    ];
+
+    return results;
   }
 
 }
