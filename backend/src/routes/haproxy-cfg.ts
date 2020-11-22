@@ -50,8 +50,11 @@ HaproxyCfgRouter.get('/:config_file/raw', (req: express.Request, res: express.Re
     .then((content: string) => {
       logger.log(`GET /cfg/${fileName}/raw`);
 
+      const splittedContent = content.split('\n');
+      const cleanedContent = ConfigParser.cleanConfig(splittedContent).join('\n');
+
       res.type('text/plain');
-      res.status(200).send(content);
+      res.status(200).send(cleanedContent);
     })
     .catch((e: string) => {
       logger.error(`GET /cfg/${fileName}/raw`, new Error(e));
