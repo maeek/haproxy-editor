@@ -7,7 +7,6 @@ if (!process.env.APP_DIR) {
 
 if (process.env.MODE === 'development') {
   dotenv.config({path: path.join(__dirname, '../../.env.development') });
-  console.log(path.join(__dirname, '../../.env.development'));
   console.table({
     appDir: process.env.APP_DIR,
     configDir: process.env.CONFIG_DIR

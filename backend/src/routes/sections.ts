@@ -39,6 +39,30 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
 });
 
 /**
+ * Get raw section
+ */
+SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
+  const fileName = FileHandler.sanitize(req.params.config_file);
+  const sectionName = req.params.section as HaproxyCustomSectionsEnum;
+
+  getConfigFile(fileName)
+    .then((content: string) => {
+      logger.log(`GET /cfg/raw/${fileName}/${sectionName}`);
+      const conf = new ConfigParser(content);
+      conf.parse();
+
+      const cleanedContent = conf.getRawSection(sectionName);
+
+      res.type('text/plain');
+      res.status(200).send(cleanedContent);
+    })
+    .catch((err) => {
+      logger.error(`GET /cfg/raw/${fileName}/${sectionName}`, err);
+      res.status(400).end();
+    });
+});
+
+/**
  * Get parsed specific section from: frontends, backends, listeners
  */
 SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
@@ -62,6 +86,28 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
     })
     .catch((err) => {
       logger.error(`GET /cfg/${fileName}/${sectionName}/${uniqueSectionName}`, err);
+      res.status(400).end();
+    });
+});
+
+SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
+  const fileName = FileHandler.sanitize(req.params.config_file);
+  const sectionName = req.params.section as HaproxyCustomSectionsEnum;
+  const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
+
+  getConfigFile(fileName)
+    .then((content: string) => {
+      logger.log(`GET /cfg/raw/${fileName}/${sectionName}`);
+      const conf = new ConfigParser(content);
+      conf.parse();
+
+      const cleanedContent = conf.getRawNamedSection(sectionName, uniqueSectionName);
+
+      res.type('text/plain');
+      res.status(200).send(cleanedContent);
+    })
+    .catch((err) => {
+      logger.error(`GET /cfg/raw/${fileName}/${sectionName}/raw`, err);
       res.status(400).end();
     });
 });

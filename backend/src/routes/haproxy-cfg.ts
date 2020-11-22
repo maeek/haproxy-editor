@@ -43,21 +43,21 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
 /**
  * Get source config file
  */
-HaproxyCfgRouter.get('/:config_file/raw', (req: express.Request, res: express.Response) => {
+HaproxyCfgRouter.get('/raw/:config_file', (req: express.Request, res: express.Response) => {
   const fileName = FileHandler.sanitize(req.params.config_file);
 
   getConfigFile(fileName)
     .then((content: string) => {
-      logger.log(`GET /cfg/${fileName}/raw`);
+      logger.log(`GET /cfg/raw/${fileName}`);
 
-      const splittedContent = content.split('\n');
-      const cleanedContent = ConfigParser.cleanConfig(splittedContent).join('\n');
-
+      const conf = new ConfigParser(content);
+      conf.parse();
+      conf.stringify()
       res.type('text/plain');
-      res.status(200).send(cleanedContent);
+      res.status(200).send(conf.toString());
     })
     .catch((e: string) => {
-      logger.error(`GET /cfg/${fileName}/raw`, new Error(e));
+      logger.error(`GET /cfg/raw/${fileName}/raw`, new Error(e));
 
       res.status(400).json(prepareErrorMessageJson(e));
     });
