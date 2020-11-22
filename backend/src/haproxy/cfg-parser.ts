@@ -200,6 +200,7 @@ export default class ConfigParser {
 
     for (let line of contentArray) {
       let cleanedLine = line.trim();
+      cleanedLine = cleanedLine.replace(/\s+/g, ' ');
 
       if (cleanedLine.startsWith('#') || cleanedLine === '' ) {
         continue;
