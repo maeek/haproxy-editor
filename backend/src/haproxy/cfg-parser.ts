@@ -4,9 +4,11 @@ import {
   HaproxyCustomSectionsEnum,
   HaproxyFrontend,
   HaproxyListen,
+  HaproxyUniqueSection,
 } from '../typings';
 import {
   HaproxyCustomSections,
+  HaproxyCustomSectionsList,
   HaproxyMapSectionToCustom,
   HaproxySections,
   HaproxySectionsList
@@ -143,6 +145,30 @@ export default class ConfigParser {
 
     this.content = stringified.join('\n')
     return this.content;
+  }
+
+  getSection(name: HaproxyCustomSectionsEnum): HaproxyConfig {
+    if (!HaproxyCustomSectionsList.includes(name)) return {};
+
+    return {
+      [name]: this.parsedConfig[name] || {}
+    };
+  }
+
+  getNamedSection(baseSection: HaproxyCustomSectionsEnum, name: string): HaproxyConfig {
+    if ([HaproxyCustomSections.global, HaproxyCustomSections.defaults].includes(baseSection)) {
+      return this.getSection(baseSection);
+    } else if([
+      HaproxyCustomSections.backends, HaproxyCustomSections.frontends, HaproxyCustomSections.listeners
+    ].includes(baseSection)) {
+      const namedSection = (this.parsedConfig as HaproxyUniqueSection)[baseSection][name] || {}
+
+      return {
+        [name]: namedSection
+      };
+    }
+
+    return {};
   }
 
   getSectionParser(type: string) {

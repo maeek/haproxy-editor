@@ -17,47 +17,64 @@ export default class FileHandler {
     return path.normalize(unsafePath).replace(/(\.\.(\/)+)+/g, '');
   }
 
-  load(callback?: (content: string) => void): void {
+  load(callback?: (content: string, err?: NodeJS.ErrnoException) => void): void {
     fs.readFile(this.path, { encoding: 'utf8' }, (err, data) => {
       if (err) {
         this.error = err;
-        logger.error(`Failed to open a file, path: ${this.path}, error: ${err}`);
-        if (callback) callback.call(this, '');
-        return  
+        logger.error(`File open: ${this.path}, error: ${err}`, err);
+      } else {
+        this.contents = data;
+        logger.log(`File open: ${this.path}`);
       }
 
-      this.contents = data;
-      logger.log(`Opened file, path: ${this.path}`);
-
-      if (callback) callback.call(this, data);
+      if (callback)
+        callback.call(
+          this,
+          data,
+          err 
+            ? new Error(`Failed to open ${path.basename(this.path)}`)
+            : undefined
+        );
     });
   }
 
-  save(data: string, callback?: (success: boolean) => void): void {
+  save(data: string, callback?: (error?: NodeJS.ErrnoException) => void): void {
     fs.writeFile(this.path, data, { encoding: 'utf8' }, (err) => {
       if (err) {
         this.error = err;
-        logger.error(`Failed to write to a file, path: ${this.path}, error: ${err}`);
+        logger.error(`File write: ${this.path}, error: ${err}`, err);
+      } else {
+        this.contents = data;
+        logger.log(`File write: ${this.path}`);
       }
 
-      this.contents = data;
-      logger.log(`Written to file, path: ${this.path}`);
-
-      if (callback) callback.call(this, Boolean(!err));
+      if (callback) 
+        callback.call(
+          this,
+          err 
+            ? new Error(`Failed to save ${path.basename(this.path)}`)
+            : undefined
+        );
     });
   }
 
-  delete(callback?: (success: boolean) => void): void {
+  delete(callback?: (error?: NodeJS.ErrnoException) => void): void {
     fs.unlink(this.path, (err) => {
       if (err) {
         this.error = err;
-        logger.error(`Failed to delete a file, path: ${this.path}, error: ${err}`);
+        logger.error(`File remove: ${this.path}, error: ${err}`, err);
       }
 
       this.contents = '';
-      logger.log(`Deleted a file, path: ${this.path}`);
+      logger.log(`File remove: ${this.path}`);
 
-      if (callback) callback.call(this, Boolean(!err));
+      if (callback) 
+        callback.call(
+          this,
+          err 
+            ? new Error(`Failed to delete ${path.basename(this.path)}`)
+            : undefined
+        );
     });
   }
 

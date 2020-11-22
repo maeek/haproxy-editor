@@ -8,6 +8,12 @@ export enum HaproxyCustomSectionsEnum {
   backends = 'backends'
 }
 
+export enum HaproxyCustomNamedSectionsEnum {
+  frontends = 'frontends',
+  listeners = 'listeners',
+  backends = 'backends'
+}
+
 export type ManagementAndSecurity = 
   'chroot' |
   'daemon' |
@@ -321,11 +327,7 @@ export type HaproxyBackendEntry = { [key in BackendFields | 'name']?: StandardEn
 & { name: string }
 export type HaproxyBackend = { [key: string]: HaproxyBackendEntry };
 
-export type JointType = HaproxyDefaults 
-  | HaproxyGlobal 
-  | HaproxyBackendEntry 
-  | HaproxyFrontendEntry 
-  | HaproxyListenEntry;
+export type HaproxyUniqueSection = { [key: string]: HaproxyBackend | HaproxyFrontend | HaproxyListen };
 
 export interface HaproxyConfig {
   [HaproxyCustomSectionsEnum.global]?: HaproxyGlobal;

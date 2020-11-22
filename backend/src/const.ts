@@ -25,9 +25,9 @@ export const HaproxyCustomSections: { [key: string]: string } = {
 export const HaproxyCustomSectionsList: Array<string> = [
   HaproxyCustomSections.global,
   HaproxyCustomSections.defaults,
-  HaproxyCustomSections.listen,
-  HaproxyCustomSections.frontend,
-  HaproxyCustomSections.backend
+  HaproxyCustomSections.listeners,
+  HaproxyCustomSections.frontends,
+  HaproxyCustomSections.backends
 ];
 
 export const HaproxyMapSectionToCustom: { [key: string]: string } = {

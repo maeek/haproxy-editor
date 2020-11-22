@@ -33,9 +33,9 @@ export class Logger {
     } 
   }
 
-  error(message: string, force?: boolean) {
+  error(message: string, errorObj: NodeJS.ErrnoException, force?: boolean) {
     if (this.logLevel > 0 || force) {
-      console.log(`[${this._printDate()}]  ERROR  "${message}"`)
+      console.error(`[${this._printDate()}]  ERROR  "${message}, stack: ${errorObj.stack}"`)
     } 
   }
 
