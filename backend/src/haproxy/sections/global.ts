@@ -18,8 +18,6 @@ export class GlobalParser extends BasicParser {
       global: BasicParser.parse(contents)
     };
   }
-
-  static json() {}
 }
 
 export default GlobalParser;

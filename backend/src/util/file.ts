@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path';
 import logger from './log';
 
 export default class FileHandler {
@@ -12,8 +13,8 @@ export default class FileHandler {
     return this;
   }
 
-  static sanitize(name: string) {
-    return name.replace(/(\.\.\/)+/g, '');
+  static sanitize(unsafePath: string) {
+    return path.normalize(unsafePath).replace(/(\.\.(\/)+)+/g, '');
   }
 
   load(callback?: (content: string) => void): void {

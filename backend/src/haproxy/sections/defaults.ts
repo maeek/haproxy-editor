@@ -19,7 +19,9 @@ export class DefaultParser extends BasicParser {
     };
   }
 
-  static json() {}
+  static stringify(contents: { defaults: HaproxyDefaults }): Array<string> {
+    return BasicParser.stringify(contents);
+  }
 
 }
 

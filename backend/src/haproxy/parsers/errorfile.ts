@@ -20,7 +20,7 @@ export class Errorfile extends Base {
     };
   }
 
-  static stringify(key: string, entries: ErrorfileEntryList): Array<string> {
+  static stringify(_: string, entries: ErrorfileEntryList): Array<string> {
     let results: Array<string> = [];
 
     entries.forEach((entry: ErrorfileSubEntry) => {

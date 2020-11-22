@@ -21,8 +21,6 @@ export class BackendParser extends BasicParser {
     };
   }
 
-  static json() {}
-
   static stringify(contents: HaproxyBackendEntry): Array<string> {
     const key = Object.keys(contents)[0] as 'name';
 

@@ -1,13 +1,13 @@
 import express from 'express';
-import { getConfigFile, rmConfigFile, setConfigFile } from '../components/config';
+import { getConfigFile, rmConfigFile, setConfigFile } from '../components/cfg';
 import ConfigParser from '../haproxy/cfg-parser';
 import FileHandler from '../util/file';
 import logger from '../util/log';
 
-const ConfigRouter = express.Router();
+const CfgRouter = express.Router();
 
-ConfigRouter.get('/:file', (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitize(req.params.file);
+CfgRouter.get('/:config_file', (req: express.Request, res: express.Response) => {
+  const fileName = FileHandler.sanitize(req.params.config_file);
 
   getConfigFile(fileName)
     .then((content: string) => {
@@ -22,8 +22,8 @@ ConfigRouter.get('/:file', (req: express.Request, res: express.Response) => {
     });
 });
 
-ConfigRouter.get('/:file/raw', (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitize(req.params.file);
+CfgRouter.get('/:config_file/raw', (req: express.Request, res: express.Response) => {
+  const fileName = FileHandler.sanitize(req.params.config_file);
 
   getConfigFile(fileName)
     .then((content: string) => {
@@ -37,8 +37,8 @@ ConfigRouter.get('/:file/raw', (req: express.Request, res: express.Response) => 
     });
 });
 
-ConfigRouter.put('/:file', (req: express.Request, res: express.Response) => {
-  const fileName = req.params.file;
+CfgRouter.put('/:config_file', (req: express.Request, res: express.Response) => {
+  const fileName = req.params.config_file;
   
   const body = req.body;
   const conf = new ConfigParser(body);
@@ -54,8 +54,8 @@ ConfigRouter.put('/:file', (req: express.Request, res: express.Response) => {
     });
 });
 
-ConfigRouter.delete('/:file', (req: express.Request, res: express.Response) => {
-  const fileName = req.params.file;
+CfgRouter.delete('/:config_file', (req: express.Request, res: express.Response) => {
+  const fileName = req.params.config_file;
 
   logger.log(`DELETE Config route accessed with file: ${fileName}`);
 
@@ -70,4 +70,4 @@ ConfigRouter.delete('/:file', (req: express.Request, res: express.Response) => {
     });
 });
 
-export default ConfigRouter;
+export default CfgRouter;

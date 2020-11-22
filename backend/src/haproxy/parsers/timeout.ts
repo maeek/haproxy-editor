@@ -1,4 +1,4 @@
-import { Entry, StandardEntry } from '../../typings';
+import { Entry } from '../../typings';
 import SingleArgument from './single-arguments';
 
 export class Timeout extends SingleArgument {

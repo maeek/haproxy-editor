@@ -41,7 +41,9 @@ export abstract class BasicParser {
     return result;
   }
 
-  static json() {}
+  static json(contents: any) {
+    return JSON.stringify(contents);
+  }
 
   static stringify(contents: any): Array<string> {
     const results = [];

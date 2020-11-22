@@ -1,9 +1,9 @@
-import 'dotenv';
+import './load-vars';
 import express from 'express';
-import path from 'path';
-import FileHandler from './util/file';
+// import path from 'path';
+// import FileHandler from './util/file';
 import logger from './util/log'
-import ConfigParser from './haproxy/cfg-parser';
+// import ConfigParser from './haproxy/cfg-parser';
 import router from './routes/router';
 
 const App = express();

@@ -21,8 +21,6 @@ export class ListenerParser extends BasicParser {
     };
   }
 
-  static json() {}
-
   static stringify(contents: HaproxyListenEntry): Array<string> {
     const key = Object.keys(contents)[0] as 'name';
 

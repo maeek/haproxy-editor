@@ -1,7 +1,7 @@
 import path from 'path';
 import FileHandler from '../util/file';
 
-const CONFIG_DIR: string = process.env.CONFIG_DIR || path.join(__dirname, '../../../haproxy-configs/');
+const CONFIG_DIR: string = process.env.CONFIG_DIR ? path.join(__dirname, process.env.CONFIG_DIR) : path.join(__dirname, '../../../haproxy-configs/');
 
 export const getConfigFile = (requestedFileName: string) => new Promise<string>((resolve, reject) => {
   const fileName = FileHandler.sanitize(requestedFileName);
@@ -14,7 +14,7 @@ export const getConfigFile = (requestedFileName: string) => new Promise<string>(
       resolve(content);
     });
   } catch (e) {
-    reject();
+    reject(e);
   }
 });
 

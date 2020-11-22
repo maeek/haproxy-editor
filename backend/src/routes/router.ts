@@ -1,9 +1,9 @@
 import express from 'express';
-import ConfigRouter from './config';
+import CfgRouter from './cfg';
 
 const Router = express.Router();
 
-Router.use('/config/', ConfigRouter);
+Router.use('/cfg/', CfgRouter);
 // Router.use('/map/', );
 // Router.use('/service/', );
 
