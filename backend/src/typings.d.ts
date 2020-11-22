@@ -291,6 +291,14 @@ export type BackendFields =
   'timeout' |
   'transparent';
 
+
+export type AclSubEntry = {
+  [name: string]: string[];
+}
+
+export interface AclEntry {
+  acl: AclSubEntry;
+}
 export interface ErrorfileSubEntry {
   [code: string]: string;
 }
@@ -299,6 +307,32 @@ export type ErrorfileEntryList = Array<ErrorfileSubEntry>;
 
 export interface ErrorfileEntry {
   errorfile: ErrorfileEntryList;
+}
+
+export type HttpRequestResponseSubEntry = string[];
+
+export type HttpRequestResponseEntryList = Array<HttpRequestResponseSubEntry>;
+
+export enum HttpRequestResponseMethods {
+  'set-method' = 'set-method',
+  'add-header' = 'add-header',
+  'set-header' = 'set-header',
+  'del-header' = 'del-header',
+  'replace-header' = 'replace-header',
+  'replace-value' = 'replace-value',
+  'set-path' = 'set-path',
+  'set-query' = 'set-query',
+  'set-uri' = 'set-uri',
+  deny = 'deny',
+  redirect = 'redirect'
+}
+
+export type HttpTypes = 'http-request' | 'http-response';
+
+export type HttpMethodEntry = { [key in HttpRequestResponseMethods]?: HttpRequestResponseEntryList; };
+
+export type HttpRequestResponseEntry = {
+  [key in HttpTypes]?: HttpMethodEntry;
 }
 
 export type StandardEntry = string | Array<string | number> | number | boolean;

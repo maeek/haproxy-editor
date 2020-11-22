@@ -194,11 +194,14 @@ export const HaproxyOptionsList: Array<string> = [
 ];
 
 export const HaproxyParsers: { [key: string]: string } = {
+  acl: 'acl',
   daemon: 'daemon',
   capture: 'capture',
   description: 'description',
   errorfile: 'errorfile',
   'http-check': 'http-check',
+  'http-request': 'http-request',
+  'http-response': 'http-response',
   monitor: 'monitor',
   option: 'option',
   persist: 'persist',
@@ -209,11 +212,14 @@ export const HaproxyParsers: { [key: string]: string } = {
 };
 
 export const HaproxyParsersList: Array<string> = [
+  HaproxyParsers.acl,
   HaproxyParsers.daemon,
   HaproxyParsers.mode,
   HaproxyParsers.capture,
   HaproxyParsers.errorfile,
   HaproxyParsers['http-check'],
+  HaproxyParsers['http-request'],
+  HaproxyParsers['http-response'],
   HaproxyParsers.monitor,
   HaproxyParsers.option,
   HaproxyParsers.persist,
