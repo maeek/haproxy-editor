@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getConfigFile, rmConfigFile, setConfigFile } from '../components/haproxy-cfg';
+import { getConfigFile, rmConfigFile, setConfigFile } from '../components/file-operations';
 import ConfigParser from '../haproxy/cfg-parser';
 import { prepareErrorMessageJson } from '../util/error';
 import FileHandler from '../util/file';
@@ -12,7 +12,7 @@ const HaproxyCfgRouter = express.Router();
 /** Config endpoints structure
  * {
  *    file: string,
- *    config: HaproxyConfig
+ *    data: HaproxyConfig
  * }
  */
 
@@ -30,7 +30,7 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
 
       res.status(200).json({
         file: fileName,
-        config: conf.parsedConfig
+        data: conf.parsedConfig
       });
     })
     .catch((e: string) => {

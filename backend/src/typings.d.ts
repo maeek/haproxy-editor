@@ -335,7 +335,7 @@ export type HttpRequestResponseEntry = {
   [key in HttpTypes]?: HttpMethodEntry;
 }
 
-export type StandardEntry = string | Array<string | number> | number | boolean;
+export type StandardEntry = string | Array<string | number> | number | boolean | string[][];
 
 export type Entry = { [key: string]: StandardEntry };
 

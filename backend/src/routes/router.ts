@@ -3,11 +3,12 @@ import express from 'express';
 import { prepareErrorMessageJson } from '../util/error';
 import logger from '../util/log';
 import HaproxyCfgRouter from './haproxy-cfg';
+import HaproxyMapRouter from './haproxy-map';
 
 const Router = express.Router();
 
 Router.use('/cfg/', HaproxyCfgRouter);
-// Router.use('/map/', );
+Router.use('/map/', HaproxyMapRouter);
 // Router.use('/service/', );
 
 Router.use('*', (req: express.Request, res: express.Response) => {

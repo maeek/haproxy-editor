@@ -1,6 +1,6 @@
 import express from 'express';
 
-import { getConfigFile } from '../components/haproxy-cfg';
+import { getConfigFile } from '../components/file-operations';
 import { HaproxyCustomSectionsList } from '../const';
 import ConfigParser from '../haproxy/cfg-parser';
 import { HaproxyCustomSectionsEnum } from '../typings';
@@ -12,7 +12,7 @@ const SectionsRouter = express.Router();
 /** Config endpoints structure
  * {
  *    file: string,
- *    config: HaproxyConfig
+ *    data: HaproxyConfig
  * }
  */
 
@@ -30,7 +30,7 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
 
       res.json({
         file: fileName,
-        config: conf.getSection(sectionName)
+        data: conf.getSection(sectionName)
       });
     })
     .catch((err) => {
@@ -77,7 +77,7 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
 
       res.json({
         file: fileName,
-        config: {
+        data: {
           [sectionName]: {
             [uniqueSectionName]: conf.getNamedSection(sectionName, uniqueSectionName)[uniqueSectionName]
           }

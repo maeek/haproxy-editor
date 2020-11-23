@@ -1,6 +1,5 @@
 import path from 'path';
 
-import { prepareErrorMessageJson } from '../util/error';
 import FileHandler from '../util/file';
 
 if (!process.env.APP_DIR) {
