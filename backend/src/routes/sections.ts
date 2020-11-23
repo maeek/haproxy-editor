@@ -27,7 +27,7 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
     .then((content: string) => {
       logger.log(`GET /cfg/${fileName}/${sectionName}`);
       const conf = new ConfigParser(content);
-      conf.parse();
+
       res.json({
         file: fileName,
         config: conf.getSection(sectionName)
@@ -50,7 +50,6 @@ SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join(
     .then((content: string) => {
       logger.log(`GET /cfg/raw/${fileName}/${sectionName}`);
       const conf = new ConfigParser(content);
-      conf.parse();
 
       const cleanedContent = conf.getRawSection(sectionName);
 
@@ -75,7 +74,7 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
     .then((content: string) => {
       logger.log(`GET /cfg/${fileName}/${sectionName}/${uniqueSectionName}`);
       const conf = new ConfigParser(content);
-      conf.parse();
+
       res.json({
         file: fileName,
         config: {
@@ -100,7 +99,6 @@ SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join(
     .then((content: string) => {
       logger.log(`GET /cfg/raw/${fileName}/${sectionName}`);
       const conf = new ConfigParser(content);
-      conf.parse();
 
       const cleanedContent = conf.getRawNamedSection(sectionName, uniqueSectionName);
 

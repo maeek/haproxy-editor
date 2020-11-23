@@ -30,7 +30,6 @@ export class HttpRequest extends Base {
     }
     
     // TODO implement method based parsing
-
     return results;
   }
 

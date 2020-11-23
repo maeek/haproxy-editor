@@ -52,9 +52,9 @@ describe('Haproxy parsers - HttpRequest', () => {
   describe('multiple entries', () => {
     const parseStrings = [
       '    http-request redirect code 301 location https://example.com unless { hdr_end(host) -i example.com }',
-      '    http-request redirect scheme https if http u_login',
-      '    http-request redirect prefix https://%[req.hdr(Host)] set-cookie SEEN=1 if !cookie_set',
-      '    http-request redirect prefix https://%[req.hdr(Host)] drop-query if u_login !up_userid'
+      '    http-request redirect prefix https://%[req.hdr(Host)] drop-query if u_login !up_userid',
+      '    http-request add-header scheme https if http u_login',
+      '    http-request set-header prefix https://%[req.hdr(Host)] set-cookie SEEN=1 if !cookie_set'
     ];
 
     const parseObj = {
@@ -73,12 +73,24 @@ describe('Haproxy parsers - HttpRequest', () => {
                 '}'
             ],
             [
+              'prefix',
+              'https://%[req.hdr(Host)]',
+              'drop-query',
+              'if',
+              'u_login',
+              '!up_userid'
+            ]
+        ],
+        'add-header': [
+            [
                 'scheme',
                 'https',
                 'if',
                 'http',
                 'u_login'
-            ],
+            ]
+        ],
+        'set-header': [
             [
                 'prefix',
                 'https://%[req.hdr(Host)]',
@@ -87,16 +99,9 @@ describe('Haproxy parsers - HttpRequest', () => {
                 'if',
                 '!cookie_set'
             ],
-            [
-                'prefix',
-                'https://%[req.hdr(Host)]',
-                'drop-query',
-                'if',
-                'u_login',
-                '!up_userid'
-            ]
+            
         ]
-    }
+      }
     }
 
     it('parse', () => {

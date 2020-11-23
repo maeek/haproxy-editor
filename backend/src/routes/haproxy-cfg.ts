@@ -27,7 +27,6 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
       logger.log(`GET /cfg/${fileName}`);
 
       const conf = new ConfigParser(content);
-      conf.parse();
 
       res.status(200).json({
         file: fileName,
@@ -52,8 +51,7 @@ HaproxyCfgRouter.get('/raw/:config_file', (req: express.Request, res: express.Re
       logger.log(`GET /cfg/raw/${fileName}`);
 
       const conf = new ConfigParser(content);
-      conf.parse();
-      conf.stringify()
+
       res.type('text/plain');
       res.status(200).send(conf.toString());
     })
