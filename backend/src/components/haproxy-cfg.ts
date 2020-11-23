@@ -18,7 +18,7 @@ export const getConfigFile = (requestedFileName: string) => new Promise<string>(
 
   file.load()
     .then((content: string) => resolve(content))
-    .catch((error: string) => reject(prepareErrorMessageJson(error)));
+    .catch((error: string) => reject(error));
 });
 
 export const setConfigFile = (requestedFileName: string, data: string) => new Promise<never>((resolve, reject) => {
@@ -28,7 +28,7 @@ export const setConfigFile = (requestedFileName: string, data: string) => new Pr
 
   file.save(data)
     .then(() => resolve())
-    .catch((error: string) => reject(prepareErrorMessageJson(error)));
+    .catch((error: string) => reject(error));
 });
 
 export const rmConfigFile = (requestedFileName: string) => new Promise<never>((resolve, reject) => {
@@ -38,5 +38,5 @@ export const rmConfigFile = (requestedFileName: string) => new Promise<never>((r
 
   file.delete()
     .then(() => resolve())
-    .catch((error: string) => reject(prepareErrorMessageJson(error)));
+    .catch((error: string) => reject(error));
 });

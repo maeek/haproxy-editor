@@ -17,13 +17,13 @@ export default class FileHandler {
     return path.normalize(unsafePath).replace(/(\.\.(\/)+)+/g, '');
   }
 
-  load(path?: string): Promise<string> {
-    const pathToLoad = path || this._path;
+  load(newPath?: string): Promise<string> {
+    const pathToLoad = newPath || this._path;
     return new Promise((resolve, reject) => {
       fs.readFile(pathToLoad, { encoding: 'utf8' }, (err, data) => {
         if (err) {
           logger.error(`File open: ${pathToLoad}, error: ${err}`, err);
-          reject(err.message);
+          reject(`Failed to open file: ${path.basename(pathToLoad)}`);
         }
 
         this.contents = data;
@@ -39,7 +39,7 @@ export default class FileHandler {
       fs.writeFile(this._path, dataToSave, { encoding: 'utf8' }, (err) => {
         if (err) {
           logger.error(`File write: ${this._path}, error: ${err}`, err);
-          reject(err.message);
+          reject(`Failed to write to file: ${path.basename(this._path)}`);
         } 
 
         this.contents = dataToSave;
@@ -54,7 +54,7 @@ export default class FileHandler {
       fs.unlink(this._path, (err) => {
         if (err) {
           logger.error(`File remove: ${this._path}, error: ${err}`, err);
-          reject(err.message);
+          reject(`Failed to remove file: ${path.basename(this._path)}`);
         }
 
         this.contents = '';
