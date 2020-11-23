@@ -1,8 +1,9 @@
 import express from 'express';
-import { HaproxyCustomSectionsList } from '../const';
-import { HaproxyCustomSectionsEnum } from '../typings';
+
 import { getConfigFile } from '../components/haproxy-cfg';
+import { HaproxyCustomSectionsList } from '../const';
 import ConfigParser from '../haproxy/cfg-parser';
+import { HaproxyCustomSectionsEnum } from '../typings';
 import FileHandler from '../util/file';
 import logger from '../util/log';
 
@@ -19,7 +20,7 @@ const SectionsRouter = express.Router();
  * Get parsed section
  */
 SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitize(req.params.config_file);
+  const fileName = FileHandler.sanitizePath(req.params.config_file);
   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
 
   getConfigFile(fileName)
@@ -42,7 +43,7 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
  * Get raw section
  */
 SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitize(req.params.config_file);
+  const fileName = FileHandler.sanitizePath(req.params.config_file);
   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
 
   getConfigFile(fileName)
@@ -66,7 +67,7 @@ SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join(
  * Get parsed specific section from: frontends, backends, listeners
  */
 SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitize(req.params.config_file);
+  const fileName = FileHandler.sanitizePath(req.params.config_file);
   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
   const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
 
@@ -91,7 +92,7 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
 });
 
 SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitize(req.params.config_file);
+  const fileName = FileHandler.sanitizePath(req.params.config_file);
   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
   const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
 

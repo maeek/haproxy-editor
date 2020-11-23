@@ -1,4 +1,4 @@
-import { AclSubEntry, AclEntry } from '../../typings';
+import { AclEntry, AclSubEntry } from '../../typings';
 import Base from './base';
 
 export class Acl extends Base {

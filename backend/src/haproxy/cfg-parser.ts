@@ -1,22 +1,22 @@
 import {
-  HaproxyBackend,
-  HaproxyConfig,
-  HaproxyCustomSectionsEnum,
-  HaproxyFrontend,
-  HaproxyListen,
-  HaproxyUniqueSection,
-} from '../typings';
-import {
   HaproxyCustomSections,
   HaproxyCustomSectionsList,
   HaproxyMapSectionToCustom,
   HaproxySections,
   HaproxySectionsList
 } from '../const';
-import DefaultsParser from './sections/defaults';
-import GlobalParser from './sections/global';
-import FrontendParser from './sections/frontend';
+import {
+  HaproxyBackend,
+  HaproxyConfig,
+  HaproxyCustomSectionsEnum,
+  HaproxyFrontend,
+  HaproxyListen,
+  HaproxyUniqueSection
+} from '../typings';
 import BackendParser from './sections/backend';
+import DefaultsParser from './sections/defaults';
+import FrontendParser from './sections/frontend';
+import GlobalParser from './sections/global';
 import ListenerParser from './sections/listeners';
 
 interface SectionsMap {

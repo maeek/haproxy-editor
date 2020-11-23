@@ -6,13 +6,7 @@ export const HaproxySections: { [key: string]: string } = {
   backend: 'backend'
 };
 
-export const HaproxySectionsList: Array<string> = [
-  HaproxySections.global,
-  HaproxySections.defaults,
-  HaproxySections.listen,
-  HaproxySections.frontend,
-  HaproxySections.backend,
-];
+export const HaproxySectionsList: Array<string> = Object.values(HaproxySections);
 
 export const HaproxyCustomSections: { [key: string]: string } = {
   global: 'global',
@@ -22,13 +16,7 @@ export const HaproxyCustomSections: { [key: string]: string } = {
   backends: 'backends'
 };
 
-export const HaproxyCustomSectionsList: Array<string> = [
-  HaproxyCustomSections.global,
-  HaproxyCustomSections.defaults,
-  HaproxyCustomSections.listeners,
-  HaproxyCustomSections.frontends,
-  HaproxyCustomSections.backends
-];
+export const HaproxyCustomSectionsList: Array<string> = Object.values(HaproxyCustomSections);
 
 export const HaproxyMapSectionToCustom: { [key: string]: string } = {
   [HaproxySections.global]: HaproxyCustomSections.global,
@@ -116,82 +104,7 @@ export const HaproxyOptions: { [key: string]: string } = {
 };
 
 
-export const HaproxyOptionsList: Array<string> = [
-  HaproxyOptions.acl,
-  HaproxyOptions.appsession,
-  HaproxyOptions.backlog,
-  HaproxyOptions.balance,
-  HaproxyOptions.bind,
-  HaproxyOptions['bind-process'],
-  HaproxyOptions.block,
-  HaproxyOptions.capture,
-  HaproxyOptions.clitimeout,
-  HaproxyOptions.contimeout,
-  HaproxyOptions.cookie,
-  HaproxyOptions['default-server'],
-  HaproxyOptions.default_backend,
-  HaproxyOptions.description,
-  HaproxyOptions.disabled,
-  HaproxyOptions.dispatch,
-  HaproxyOptions.enabled,
-  HaproxyOptions.errorfile,
-  HaproxyOptions.errorloc,
-  HaproxyOptions.errorloc302,
-  HaproxyOptions.errorloc303,
-  HaproxyOptions['force-persist'],
-  HaproxyOptions.fullconn,
-  HaproxyOptions.grace,
-  HaproxyOptions['hash-type'],
-  HaproxyOptions['http-check'],
-  HaproxyOptions['http-request'],
-  HaproxyOptions.id,
-  HaproxyOptions['ignore-persist'],
-  HaproxyOptions.log,
-  HaproxyOptions.maxconn,
-  HaproxyOptions.mode,
-  HaproxyOptions.monitor,
-  HaproxyOptions['monitor-net'],
-  HaproxyOptions['monitor-uri'],
-  HaproxyOptions.option,
-  HaproxyOptions.persist,
-  HaproxyOptions['rate-limit'],
-  HaproxyOptions.redirect,
-  HaproxyOptions.redisp,
-  HaproxyOptions.redispatch,
-  HaproxyOptions.reqadd,
-  HaproxyOptions.reqallow,
-  HaproxyOptions.reqdel,
-  HaproxyOptions.reqdeny,
-  HaproxyOptions.reqiallow,
-  HaproxyOptions.reqidel,
-  HaproxyOptions.reqideny,
-  HaproxyOptions.reqipass,
-  HaproxyOptions.reqirep,
-  HaproxyOptions.reqisetbe,
-  HaproxyOptions.reqitarpit,
-  HaproxyOptions.reqpass,
-  HaproxyOptions.reqrep,
-  HaproxyOptions.reqsetbe,
-  HaproxyOptions.reqtarpit,
-  HaproxyOptions.retries,
-  HaproxyOptions.rspadd,
-  HaproxyOptions.rspdel,
-  HaproxyOptions.rspdeny,
-  HaproxyOptions.rspidel,
-  HaproxyOptions.rspideny,
-  HaproxyOptions.rspirep,
-  HaproxyOptions.rsprep,
-  HaproxyOptions.server,
-  HaproxyOptions.source,
-  HaproxyOptions.srvtimeout,
-  HaproxyOptions.stats,
-  HaproxyOptions.stick,
-  HaproxyOptions['stick-table'],
-  HaproxyOptions['tcp-request'],
-  HaproxyOptions.timeout,
-  HaproxyOptions.transparent,
-  HaproxyOptions.use_backend
-];
+export const HaproxyOptionsList: Array<string> = Object.values(HaproxyOptions);
 
 export const HaproxyParsers: { [key: string]: string } = {
   acl: 'acl',
@@ -211,20 +124,4 @@ export const HaproxyParsers: { [key: string]: string } = {
   mode: 'mode'
 };
 
-export const HaproxyParsersList: Array<string> = [
-  HaproxyParsers.acl,
-  HaproxyParsers.daemon,
-  HaproxyParsers.mode,
-  HaproxyParsers.capture,
-  HaproxyParsers.errorfile,
-  HaproxyParsers['http-check'],
-  HaproxyParsers['http-request'],
-  HaproxyParsers['http-response'],
-  HaproxyParsers.monitor,
-  HaproxyParsers.option,
-  HaproxyParsers.persist,
-  HaproxyParsers.stats,
-  HaproxyParsers.stick,
-  HaproxyParsers.timeout,
-  HaproxyParsers.description
-];
+export const HaproxyParsersList: Array<string> = Object.values(HaproxyParsers);

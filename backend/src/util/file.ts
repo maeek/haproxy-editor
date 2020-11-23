@@ -1,80 +1,66 @@
 import fs from 'fs';
 import path from 'path';
+
 import logger from './log';
 
 export default class FileHandler {
-  path: string;
-  contents: string | Array<string> = '';
-  error: NodeJS.ErrnoException | null = null;
+  _path: string;
+  contents: string = '';
 
   constructor(path: string) {
-    this.path = path;
+    this._path = path;
 
     return this;
   }
 
-  static sanitize(unsafePath: string) {
+  static sanitizePath(unsafePath: string) {
     return path.normalize(unsafePath).replace(/(\.\.(\/)+)+/g, '');
   }
 
-  load(callback?: (content: string, err?: NodeJS.ErrnoException) => void): void {
-    fs.readFile(this.path, { encoding: 'utf8' }, (err, data) => {
-      if (err) {
-        this.error = err;
-        logger.error(`File open: ${this.path}, error: ${err}`, err);
-      } else {
-        this.contents = data;
-        logger.log(`File open: ${this.path}`);
-      }
+  load(path?: string): Promise<string> {
+    const pathToLoad = path || this._path;
+    return new Promise((resolve, reject) => {
+      fs.readFile(pathToLoad, { encoding: 'utf8' }, (err, data) => {
+        if (err) {
+          logger.error(`File open: ${pathToLoad}, error: ${err}`, err);
+          reject(err.message);
+        }
 
-      if (callback)
-        callback.call(
-          this,
-          data,
-          err 
-            ? new Error(`Failed to open ${path.basename(this.path)}`)
-            : undefined
-        );
+        this.contents = data;
+        logger.log(`File open: ${pathToLoad}`);
+        resolve(data);
+      });
     });
   }
 
-  save(data: string, callback?: (error?: NodeJS.ErrnoException) => void): void {
-    fs.writeFile(this.path, data, { encoding: 'utf8' }, (err) => {
-      if (err) {
-        this.error = err;
-        logger.error(`File write: ${this.path}, error: ${err}`, err);
-      } else {
-        this.contents = data;
-        logger.log(`File write: ${this.path}`);
-      }
+  save(data?: string): Promise<string | undefined> {
+    const dataToSave = data ? data : this.contents;
+    return new Promise((resolve, reject) => {
+      fs.writeFile(this._path, dataToSave, { encoding: 'utf8' }, (err) => {
+        if (err) {
+          logger.error(`File write: ${this._path}, error: ${err}`, err);
+          reject(err.message);
+        } 
 
-      if (callback) 
-        callback.call(
-          this,
-          err 
-            ? new Error(`Failed to save ${path.basename(this.path)}`)
-            : undefined
-        );
+        this.contents = dataToSave;
+        logger.log(`File write: ${this._path}`);
+        resolve();
+      });
     });
   }
 
-  delete(callback?: (error?: NodeJS.ErrnoException) => void): void {
-    fs.unlink(this.path, (err) => {
-      if (err) {
-        this.error = err;
-        logger.error(`File remove: ${this.path}, error: ${err}`, err);
-      }
+  delete(): Promise<string | undefined> {
+    return new Promise((resolve, reject) => {
+      fs.unlink(this._path, (err) => {
+        if (err) {
+          logger.error(`File remove: ${this._path}, error: ${err}`, err);
+          reject(err.message);
+        }
 
-      this.contents = '';
-      logger.log(`File remove: ${this.path}`);
-
-      if (callback) 
-        callback.call(
-          this,
-          err 
-            ? new Error(`Failed to delete ${path.basename(this.path)}`)
-            : undefined
-        );
+        this.contents = '';
+        logger.log(`File remove: ${this._path}`);
+        resolve();
+      });
     });
   }
 

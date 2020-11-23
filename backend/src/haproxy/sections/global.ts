@@ -1,4 +1,4 @@
-import { HaproxyConfig, HaproxyGlobal } from '../../typings';
+import { HaproxyGlobal } from '../../typings';
 import BasicParser from './basic';
 
 export class GlobalParser extends BasicParser {

@@ -12,4 +12,3 @@ export class Timeout extends SingleArgument {
 };
 
 export default Timeout;
-

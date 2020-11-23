@@ -1,8 +1,8 @@
 import {
-  HttpRequestResponseSubEntry,
+  HttpMethodEntry,
   HttpRequestResponseEntry,
   HttpRequestResponseMethods,
-  HttpMethodEntry
+  HttpRequestResponseSubEntry
 } from '../../typings';
 import Base from './base';
 

@@ -1,13 +1,13 @@
-enum logLevels {
+export enum logLevels {
   'off' = 0,
   'verbose' = 1,
   'debug' = 2
 }
 
 export class Logger {
-  logLevel: number = logLevels.off;
+  logLevel: logLevels = logLevels.off;
 
-  constructor(logLevel?: number) {
+  constructor(logLevel?: logLevels) {
     if (logLevel) {
       this.logLevel = logLevel;
     } else {

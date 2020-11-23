@@ -1,4 +1,5 @@
 import path from 'path';
+
 import { prepareErrorMessageJson } from '../util/error';
 import FileHandler from '../util/file';
 
@@ -11,33 +12,31 @@ const CONFIG_DIR: string = process.env.CONFIG_DIR
   : path.join(process.env.APP_DIR, 'haproxy-configs/');
 
 export const getConfigFile = (requestedFileName: string) => new Promise<string>((resolve, reject) => {
-  const fileName = FileHandler.sanitize(requestedFileName);
+  const fileName = FileHandler.sanitizePath(requestedFileName);
 
   const file = new FileHandler(path.join(CONFIG_DIR, fileName));
-  file.load((content: string, err?: NodeJS.ErrnoException) => {
-    if (err) reject(prepareErrorMessageJson(err));
 
-    resolve(content);
-  });
+  file.load()
+    .then((content: string) => resolve(content))
+    .catch((error: string) => reject(prepareErrorMessageJson(error)));
 });
 
 export const setConfigFile = (requestedFileName: string, data: string) => new Promise<never>((resolve, reject) => {
-  const fileName = FileHandler.sanitize(requestedFileName);
+  const fileName = FileHandler.sanitizePath(requestedFileName);
 
   const file = new FileHandler(path.join(CONFIG_DIR, fileName));
-  file.save(data, (error?: NodeJS.ErrnoException) => {
-    if (error) reject(prepareErrorMessageJson(error));
-    resolve();
-  });
+
+  file.save(data)
+    .then(() => resolve())
+    .catch((error: string) => reject(prepareErrorMessageJson(error)));
 });
 
 export const rmConfigFile = (requestedFileName: string) => new Promise<never>((resolve, reject) => {
-  const fileName = FileHandler.sanitize(requestedFileName);
+  const fileName = FileHandler.sanitizePath(requestedFileName);
 
   const file = new FileHandler(path.join(CONFIG_DIR, fileName));
-  file.delete((error?: NodeJS.ErrnoException) => {
-    if (error) reject(prepareErrorMessageJson(error));
 
-    resolve();
-  });
+  file.delete()
+    .then(() => resolve())
+    .catch((error: string) => reject(prepareErrorMessageJson(error)));
 });

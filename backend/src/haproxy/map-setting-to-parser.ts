@@ -1,12 +1,12 @@
-import Errofile from './parsers/errorfile';
 import { HaproxyParsers } from '../const';
-import Timeout from './parsers/timeout';
-import MultipleArgumentsParser from './parsers/multiple-arguments';
+import Acl from './parsers/acl';
 import Daemon from './parsers/daemon';
-import SingleArgument from './parsers/single-arguments';
+import Errofile from './parsers/errorfile';
 import HttpRequest from './parsers/http-request';
 import HttpResponse from './parsers/http-response';
-import Acl from './parsers/acl';
+import MultipleArgumentsParser from './parsers/multiple-arguments';
+import SingleArgument from './parsers/single-arguments';
+import Timeout from './parsers/timeout';
 
 export const parsers = {
   [HaproxyParsers.timeout]: Timeout,
@@ -20,8 +20,7 @@ export const parsers = {
 };
 
 export const mapParser = (type: string) => {
-    return parsers[type] || MultipleArgumentsParser;
-  }
-
+  return parsers[type] || MultipleArgumentsParser;
+};
 
 export default mapParser;

@@ -1,4 +1,4 @@
-import { HaproxyListenEntry, HaproxyListen } from '../../typings';
+import { HaproxyListen, HaproxyListenEntry } from '../../typings';
 import BasicParser from './basic';
 
 export class ListenerParser extends BasicParser {

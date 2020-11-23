@@ -1,4 +1,4 @@
-import { ErrorfileSubEntry, ErrorfileEntry, ErrorfileEntryList } from '../../typings';
+import { ErrorfileEntry, ErrorfileEntryList, ErrorfileSubEntry } from '../../typings';
 import Base from './base';
 
 export class Errorfile extends Base {

@@ -1,6 +1,7 @@
 import './load-vars';
-import logger from './util/log'
+
 import App from './app';
+import logger from './util/log';
 
 const PORT = process.env.API_PORT || 8080;
 
