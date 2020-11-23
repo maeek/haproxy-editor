@@ -19,6 +19,7 @@ export default class FileHandler {
 
   load(newPath?: string): Promise<string> {
     const pathToLoad = newPath || this._path;
+
     return new Promise((resolve, reject) => {
       fs.readFile(pathToLoad, { encoding: 'utf8' }, (err, data) => {
         if (err) {
@@ -35,6 +36,7 @@ export default class FileHandler {
 
   save(data?: string): Promise<string | undefined> {
     const dataToSave = data ? data : this.contents;
+
     return new Promise((resolve, reject) => {
       fs.writeFile(this._path, dataToSave, { encoding: 'utf8' }, (err) => {
         if (err) {
