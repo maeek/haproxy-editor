@@ -1,0 +1,17 @@
+{
+  "unparsed": "domain.com                      backend_yee\na.domain.com                    backend_yee\nh.domain.another.example.com    backend_yee\nb.domain.com                    backend_yee\nc.domain.com                    backend_yee",
+  "parsedObj": {
+    "domain.com": "backend_yee",
+    "a.domain.com": "backend_yee",
+    "h.domain.another.example.com": "backend_yee",
+    "b.domain.com": "backend_yee",
+    "c.domain.com": "backend_yee"
+  },
+  "parsedArray": [
+    ["domain.com", "backend_yee"],
+    ["a.domain.com", "backend_yee"],
+    ["h.domain.another.example.com", "backend_yee"],
+    ["b.domain.com", "backend_yee"],
+    ["c.domain.com", "backend_yee"]
+  ]
+}
