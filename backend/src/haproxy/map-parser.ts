@@ -1,4 +1,4 @@
-import { Entry } from 'src/typings';
+import { Entry } from '../typings';
 
 export default class MapParser {
   content: string;
