@@ -5,7 +5,7 @@ import ConfigParser from '../haproxy/cfg-parser';
 import { prepareErrorMessageJson } from '../util/error';
 import FileHandler from '../util/file';
 import logger from '../util/log';
-import SectionRouter from './sections';
+import SectionRouter from './haproxy-cfg-sections';
 
 const HaproxyCfgRouter = express.Router();
 
