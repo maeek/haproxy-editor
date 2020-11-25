@@ -1,31 +1,32 @@
 import { Entry } from '../typings';
 
 export default class MapParser {
-  content: string;
-  parsedContentArray: Array<Array<string>>;
-  parsedContentObj: Entry;
+  content!: string;
+  parsedContentArray!: Array<Array<string>>;
+  parsedContentObj!: Entry;
 
   constructor(content: string) {
     if (typeof content === 'string') {
       this.content = content;
-      this.parsedContentArray = this.parse();
-      this.parsedContentObj = this.parseToObject();
+      this.parse();
+      this.parseToObject();
     } 
     else if (Array.isArray(content)) {
       this.parsedContentArray = content;
-      this.content = this.toString();
-      this.parsedContentObj = this.parseToObject();
+      this.toString();
+      this.parseToObject();
     } else {
       this.parsedContentObj = content;
-      this.parsedContentArray = this.parseFromObject();
-      this.content = this.toString();
+      this.parseFromObject();
+      this.toString();
     }
 
     return this;
   }
 
   toString(): string {
-    return MapParser.toString(this.parsedContentArray);
+    this.content = MapParser.toString(this.parsedContentArray);
+    return this.content;
   }
 
   static toString(parsedContentArray: string[][]): string {
@@ -39,7 +40,8 @@ export default class MapParser {
   }
 
   parse(): Array<Array<string>> {
-    return MapParser.parse(this.content);
+    this.parsedContentArray = MapParser.parse(this.content);
+    return this.parsedContentArray;
   }
 
   static parse(content: string): Array<Array<string>> {
@@ -61,7 +63,8 @@ export default class MapParser {
   }
 
   parseFromObject(): Array<Array<string>> {
-    return MapParser.parseFromObject(this.parsedContentObj);
+    this.parsedContentArray = MapParser.parseFromObject(this.parsedContentObj);
+    return this.parsedContentArray;
   }
 
   static parseFromObject(parsedContentObj: Entry): Array<Array<string>> {

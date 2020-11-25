@@ -28,21 +28,22 @@ interface SectionsMap {
 }
 
 export default class ConfigParser {
-  content: string;
+  content!: string;
   parsedConfig: HaproxyConfig = {};
 
   constructor(content: string | HaproxyConfig) {
     if (typeof content === 'string') {
       this.content = content;
-      this.parsedConfig = this.parse();
+      this.parse();
     } else {
       this.parsedConfig = content;
-      this.content = this.toString();
+      this.toString();
     }
   }
 
   parse(): HaproxyConfig {
-    return ConfigParser.parse(this.content);
+    this.parsedConfig = ConfigParser.parse(this.content);
+    return this.parsedConfig;
   }
 
   static parse(content: string): HaproxyConfig {
@@ -150,7 +151,8 @@ export default class ConfigParser {
   }
 
   toString(): string {
-    return ConfigParser.toString(this.parsedConfig);
+    this.content = ConfigParser.toString(this.parsedConfig);
+    return this.content;
   }
 
   static toString(content: HaproxyConfig): string {
