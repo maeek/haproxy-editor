@@ -10,13 +10,13 @@ const CONFIG_DIR: string = process.env.CONFIG_DIR
   ? process.env.CONFIG_DIR
   : path.join(process.env.APP_DIR, 'haproxy-configs/');
 
-export const getConfigFile = (requestedFileName: string) => new Promise<string>((resolve, reject) => {
+export const getConfigFile = (requestedFileName: string) => new Promise<FileHandler>((resolve, reject) => {
   const fileName = FileHandler.sanitizePath(requestedFileName);
 
   const file = new FileHandler(path.join(CONFIG_DIR, fileName));
 
   file.load()
-    .then((content: string) => resolve(content))
+    .then(() => resolve(file))
     .catch((error: string) => reject(error));
 });
 

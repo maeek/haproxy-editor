@@ -25,6 +25,7 @@ export default class FileHandler {
         if (err) {
           logger.error(`File open: ${pathToLoad}, error: ${err}`, err);
           reject(`Failed to open file: ${path.basename(pathToLoad)}`);
+          return;
         }
 
         this.contents = data;
@@ -42,7 +43,8 @@ export default class FileHandler {
         if (err) {
           logger.error(`File write: ${this._path}, error: ${err}`, err);
           reject(`Failed to write to file: ${path.basename(this._path)}`);
-        } 
+          return;
+        }
 
         this.contents = dataToSave;
         logger.log(`File write: ${this._path}`);
@@ -57,6 +59,7 @@ export default class FileHandler {
         if (err) {
           logger.error(`File remove: ${this._path}, error: ${err}`, err);
           reject(`Failed to remove file: ${path.basename(this._path)}`);
+          return;
         }
 
         this.contents = '';
