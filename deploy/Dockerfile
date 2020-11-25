@@ -15,7 +15,6 @@ RUN apt update \
     && apt install -y nodejs build-essential git
 
 COPY . /tmp/haproxy-editor
-COPY ./deploy/nginx.conf /etc/nginx/nginx.conf 
 
 WORKDIR /tmp/haproxy-editor
 
@@ -24,6 +23,8 @@ RUN npm run install:all \
     && cp -r build/server/* /srv/ \
     && cp -r build/client/* /usr/share/nginx/html/ \
     && rm -rf /tmp/haproxy-editor
+
+COPY ./deploy/nginx.conf /etc/nginx/nginx.conf 
 
 WORKDIR /srv
 
