@@ -11,6 +11,7 @@ RUN apt update \
     && curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh \
     && chmod +x nodesource_setup.sh \
     && ./nodesource_setup.sh \
+    && rm -rf /tmp/nodesource_setup.sh \
     && apt install -y nodejs build-essential git
 
 COPY . /tmp/haproxy-editor

@@ -1,5 +1,6 @@
-node_modules
-Dockerfile
-nginx.conf
-build
+**/node_modules
+**/build
+**/__tests__
+.git
+deploy/Dockerfile
 haproxy-configs
