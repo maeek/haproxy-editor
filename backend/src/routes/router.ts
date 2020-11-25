@@ -7,13 +7,15 @@ import HaproxyMapRouter from './haproxy-map';
 
 const Router = express.Router();
 
-Router.use('/cfg/', HaproxyCfgRouter);
-Router.use('/map/', HaproxyMapRouter);
+const absolutePath = process.env.PROXY_IP ? '' : '/';
+
+Router.use(absolutePath + 'cfg/', HaproxyCfgRouter);
+Router.use(absolutePath + 'map/', HaproxyMapRouter);
 // Router.use('/service/', );
 
 Router.use('*', (req: express.Request, res: express.Response) => {
   logger.warning(`${req.method} ${req.path} not found`);
-  res.status(404).json(prepareErrorMessageJson('Endpoint not found', 404));
+  res.status(404).json(prepareErrorMessageJson(`Endpoint not found, ${req.path}`, 404));
 });
 
 Router.use((err: express.ErrorRequestHandler, req: express.Request, res: express.Response, next: express.NextFunction) => {

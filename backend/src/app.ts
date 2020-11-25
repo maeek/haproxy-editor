@@ -4,7 +4,7 @@ import router from './routes/router';
 
 const App = express();
 
-const PROXY_IP = process.env.IS_BEHIND_PROXY;
+const PROXY_IP = process.env.PROXY_IP;
 if (PROXY_IP) {
   App.set('trust proxy', PROXY_IP);
 }
