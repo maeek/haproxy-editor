@@ -21,7 +21,8 @@ WORKDIR /tmp/haproxy-editor
 RUN npm run install:all \
     && npm run build:docker \
     && cp -r build/server/* /srv/ \
-    && cp -r build/client/* /usr/share/nginx/html/
+    && cp -r build/client/* /usr/share/nginx/html/ \
+    && rm -rf /tmp/haproxy-editor
 
 WORKDIR /srv
 
