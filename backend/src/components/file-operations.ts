@@ -20,7 +20,7 @@ export const getConfigFile = (requestedFileName: string) => new Promise<string>(
     .catch((error: string) => reject(error));
 });
 
-export const setConfigFile = (requestedFileName: string, data: string) => new Promise<never>((resolve, reject) => {
+export const setConfigFile = (requestedFileName: string, data: string) => new Promise<void>((resolve, reject) => {
   const fileName = FileHandler.sanitizePath(requestedFileName);
 
   const file = new FileHandler(path.join(CONFIG_DIR, fileName));
@@ -30,7 +30,7 @@ export const setConfigFile = (requestedFileName: string, data: string) => new Pr
     .catch((error: string) => reject(error));
 });
 
-export const rmConfigFile = (requestedFileName: string) => new Promise<never>((resolve, reject) => {
+export const rmConfigFile = (requestedFileName: string) => new Promise<void>((resolve, reject) => {
   const fileName = FileHandler.sanitizePath(requestedFileName);
 
   const file = new FileHandler(path.join(CONFIG_DIR, fileName));

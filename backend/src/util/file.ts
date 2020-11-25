@@ -34,7 +34,7 @@ export default class FileHandler {
     });
   }
 
-  save(data?: string): Promise<string | undefined> {
+  save(data?: string): Promise<void> {
     const dataToSave = data ? data : this.contents;
 
     return new Promise((resolve, reject) => {
@@ -51,7 +51,7 @@ export default class FileHandler {
     });
   }
 
-  delete(): Promise<string | undefined> {
+  delete(): Promise<void> {
     return new Promise((resolve, reject) => {
       fs.unlink(this._path, (err) => {
         if (err) {
