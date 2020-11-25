@@ -1,4 +1,5 @@
 import express from 'express';
+import path from 'path';
 
 import { prepareErrorMessageJson } from '../util/error';
 import logger from '../util/log';
@@ -7,9 +8,17 @@ import HaproxyMapRouter from './haproxy-map';
 
 const Router = express.Router();
 
-Router.use('/cfg/', HaproxyCfgRouter);
-Router.use('/map/', HaproxyMapRouter);
-// Router.use('/service/', );
+const operatingMode = process.env.MODE;
+const appendAPIforUnifiedMode = operatingMode === 'prod_standalone' ? '/api' : '';
+
+if (operatingMode === 'prod_standalone') {
+  const publicPath = path.join(process.env.APP_DIR || __dirname, '/public');
+  Router.use('/', express.static(publicPath, { immutable: true, maxAge: 30*24*60*60*1000 }));
+}
+
+Router.use(appendAPIforUnifiedMode + '/cfg/', HaproxyCfgRouter);
+Router.use(appendAPIforUnifiedMode + '/map/', HaproxyMapRouter);
+// Router.use(appendAPIforUnifiedMode + '/service/', ServiceRouter);
 
 Router.use('*', (req: express.Request, res: express.Response) => {
   logger.warning(`${req.method} ${req.path} not found`);

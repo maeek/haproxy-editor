@@ -16,4 +16,5 @@ if (process.env.MODE === 'development') {
   dotenv.config({path: path.join(__dirname, '../../.env.test') });
 } else {
   dotenv.config({path: path.join(__dirname, '../../.env') });
+  process.env.APP_DIR = __dirname;
 }
