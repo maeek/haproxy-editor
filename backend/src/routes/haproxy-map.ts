@@ -15,9 +15,10 @@ HaproxyMapRouter.get('/:map_file', (req: express.Request, res: express.Response)
   const fileName = FileHandler.sanitizePath(req.params.map_file);
 
   getConfigFile(fileName)
-    .then((content: string) => {
+    .then((file: FileHandler) => {
       logger.log(`GET /map/${fileName}`);
 
+      const content = file.contents;
       const conf = new MapParser(content);
 
       res.status(200).json({
@@ -39,9 +40,10 @@ HaproxyMapRouter.get('/raw/:map_file', (req: express.Request, res: express.Respo
   const fileName = FileHandler.sanitizePath(req.params.map_file);
 
   getConfigFile(fileName)
-    .then((content: string) => {
+    .then((file: FileHandler) => {
       logger.log(`GET /cfg/raw/${fileName}`);
 
+      const content = file.contents;
       const conf = new MapParser(content);
 
       res.type('text/plain');
@@ -56,6 +58,12 @@ HaproxyMapRouter.get('/raw/:map_file', (req: express.Request, res: express.Respo
 
 /**
  * Create new/overwrite existing map file
+ * body:
+ * {
+ *   "map": {
+ *     "key": "value"
+ *   }
+ * }
  */
 HaproxyMapRouter.post('/:map_file', (req: express.Request, res: express.Response) => {
   const fileName = req.params.map_file;
@@ -74,6 +82,97 @@ HaproxyMapRouter.post('/:map_file', (req: express.Request, res: express.Response
       res.status(400).json(prepareErrorMessageJson(e));
     });
 });
+
+/**
+ * Add new entries to existing map file
+ * body:
+ * {
+ *   "map": {
+ *     "key": "value"
+ *   }
+ * }
+ */
+HaproxyMapRouter.put('/:map_file', (req: express.Request, res: express.Response) => {
+  const fileName = req.params.map_file;
+  const body = req.body.map;
+
+  getConfigFile(fileName)
+    .then((file: FileHandler) => {
+      const content = file.contents;
+      const conf = new MapParser(content);
+      const newKeys = Object.keys(body);
+
+      newKeys.forEach((key: string) => {
+        if (!conf.parsedContentObj[key]) {
+          conf.parsedContentArray.push([key, body[key]])
+        }
+      });
+
+      conf.toString();
+
+      file.save(conf.content)
+        .then(() => {
+          logger.log(`PUT /cfg/${fileName}`);
+          res.status(200).json({ file: fileName });
+        })
+        .catch((e: string) => {
+          logger.error(`PUT /cfg/${fileName}`, new Error(e));
+          res.status(400).json(prepareErrorMessageJson(e));
+        });
+    })
+    .catch((e: string) => {
+      logger.error(`PUT /cfg/${fileName}`, new Error(e));
+      res.status(400).json(prepareErrorMessageJson(e));
+    });
+});
+
+/**
+ * Adds new, updates existing or removes entries in map file
+ * 
+ * To remove entry in the list pass empty string as a value like this:
+ * {
+ *   "map": {
+ *     "key": ""
+ *   }
+ * }
+ */
+HaproxyMapRouter.patch('/:map_file', (req: express.Request, res: express.Response) => {
+  const fileName = req.params.map_file;
+  const body = req.body.map;
+
+  getConfigFile(fileName)
+    .then((file: FileHandler) => {
+      const content = file.contents;
+      const conf = new MapParser(content);
+
+      conf.parsedContentObj = {
+        ...conf.parsedContentObj,
+        ...body
+      };
+
+      Object.keys(body).forEach((key: string) => {
+        if (!body[key]) delete conf.parsedContentObj[key];
+      });
+
+      conf.parseFromObject();
+      conf.toString();
+
+      file.save(conf.content)
+        .then(() => {
+          logger.log(`PATCH /cfg/${fileName}`);
+          res.status(200).json({ file: fileName });
+        })
+        .catch((e: string) => {
+          logger.error(`PUT /cfg/${fileName}`, new Error(e));
+          res.status(400).json(prepareErrorMessageJson(e));
+        });
+    })
+    .catch((e: string) => {
+      logger.error(`PATCH /cfg/${fileName}`, new Error(e));
+      res.status(400).json(prepareErrorMessageJson(e));
+    });
+});
+
 
 /**
  * Remove map file from filesystem

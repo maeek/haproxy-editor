@@ -23,9 +23,10 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
   const fileName = FileHandler.sanitizePath(req.params.config_file);
 
   getConfigFile(fileName)
-    .then((content: string) => {
+    .then((file: FileHandler) => {
       logger.log(`GET /cfg/${fileName}`);
 
+      const content = file.contents;
       const conf = new ConfigParser(content);
 
       res.status(200).json({
@@ -47,9 +48,10 @@ HaproxyCfgRouter.get('/raw/:config_file', (req: express.Request, res: express.Re
   const fileName = FileHandler.sanitizePath(req.params.config_file);
 
   getConfigFile(fileName)
-    .then((content: string) => {
+    .then((file: FileHandler) => {
       logger.log(`GET /cfg/raw/${fileName}`);
 
+      const content = file.contents;
       const conf = new ConfigParser(content);
 
       res.type('text/plain');
@@ -64,6 +66,12 @@ HaproxyCfgRouter.get('/raw/:config_file', (req: express.Request, res: express.Re
 
 /**
  * Create new/overwrite existing config file
+ * body:
+ * {
+ *   [section: HaproxyCustomSectionsEnum]: {
+ *     [key: string]: HaproxyBackend | HaproxyFrontend | HaproxyListen | HaproxyGlobal | HaproxyDefaults
+ *   }
+ * }
  */
 HaproxyCfgRouter.post('/:config_file', (req: express.Request, res: express.Response) => {
   const fileName = req.params.config_file;
