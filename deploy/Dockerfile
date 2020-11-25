@@ -13,14 +13,15 @@ RUN apt update \
     && ./nodesource_setup.sh \
     && apt install -y nodejs build-essential git
 
-RUN git clone https://github.com/maeek/haproxy-editor.git \
-    && cd haproxy-editor \
-    && npm run install:all \
+COPY . /tmp/haproxy-editor
+COPY ./deploy/nginx.conf /etc/nginx/nginx.conf 
+
+WORKDIR /tmp/haproxy-editor
+
+RUN npm run install:all \
     && npm run build:docker \
-    && cp -r build/server /srv \
-    && cp -r build/client /usr/share/nginx/html \
-    && cp deploy/nginx.conf /etc/nginx/nginx.conf \
-    && rm -rf /tmp/haproxy-editor
+    && cp -r build/server/* /srv/ \
+    && cp -r build/client/* /usr/share/nginx/html/
 
 WORKDIR /srv
 
