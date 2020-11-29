@@ -1,4 +1,4 @@
-import { HaproxyGlobal } from '../../typings';
+import { HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyGlobal } from '../../typings';
 import BasicParser from './basic';
 
 export class GlobalParser extends BasicParser {
@@ -13,14 +13,14 @@ export class GlobalParser extends BasicParser {
     }
   }
 
-  static parse(contents: Array<string>): { global: HaproxyGlobal } {
+  static parse(contents: Array<string>): HaproxyConfig {
     return {
       global: BasicParser.parse(contents)
     };
   }
 
-  static stringify(contents: any): Array<string> {
-    const key = Object.keys(contents)[0] as 'global';
+  static stringify(contents: HaproxyConfig): Array<string> {
+    const key = Object.keys(contents)[0] as HaproxyCustomSectionsEnum.global;
     const values = contents[key];
     const parsed = BasicParser.stringify(values);
 

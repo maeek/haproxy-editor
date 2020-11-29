@@ -1,4 +1,4 @@
-import { HaproxyFrontend, HaproxyUniqueSection  } from '../../typings';
+import { HaproxyCustomSectionsEnum, HaproxyFrontend, HaproxyUniqueSection  } from '../../typings';
 import BasicParser from './basic';
 
 export class FrontendParser extends BasicParser {
@@ -22,7 +22,7 @@ export class FrontendParser extends BasicParser {
   }
 
   static stringify(contents: HaproxyUniqueSection<HaproxyFrontend>): Array<string> {
-    const key = Object.keys(contents)[0];
+    const key = Object.keys(contents)[0] as HaproxyCustomSectionsEnum.frontends;
     const results: string[] = [];
     const keys = Object.keys(contents[key]);
     const values = Object.values(contents[key]);

@@ -1,4 +1,4 @@
-import { HaproxyDefaults } from '../../typings';
+import { HaproxyConfig, HaproxyCustomSectionsEnum } from '../../typings';
 import BasicParser from './basic';
 
 export class DefaultParser extends BasicParser {
@@ -13,14 +13,14 @@ export class DefaultParser extends BasicParser {
     }
   }
 
-  static parse(contents: Array<string>): { defaults: HaproxyDefaults } {
+  static parse(contents: Array<string>): HaproxyConfig {
     return {
       defaults: BasicParser.parse(contents)
     };
   }
 
-  static stringify(contents: any): Array<string> {
-    const key = Object.keys(contents)[0] as 'defaults';
+  static stringify(contents: HaproxyConfig): Array<string> {
+    const key = Object.keys(contents)[0] as HaproxyCustomSectionsEnum.defaults;
     const values = contents[key];
     const parsed = BasicParser.stringify(values);
 

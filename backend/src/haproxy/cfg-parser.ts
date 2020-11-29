@@ -174,7 +174,7 @@ export default class ConfigParser {
   getRawSection(name: HaproxyCustomSectionsEnum): string {
     const section = this.getSection(name);
     const Parser = ConfigParser.getSectionParser(name);
-    const results = Parser.stringify(section).join('\n');
+    const results = Parser.stringify(section as any).join('\n');
 
     return results;
   }
@@ -183,7 +183,7 @@ export default class ConfigParser {
     const section = this.getNamedSection(sectionName, name);
     console.log(section);
     const Parser = ConfigParser.getSectionParser(sectionName);
-    const results = Parser.stringify({ [name]: section }).join('\n');
+    const results = Parser.stringify({ [name]: section } as any).join('\n');
 
     return results;
   }

@@ -1,4 +1,4 @@
-import { HaproxyListen, HaproxyUniqueSection,  } from '../../typings';
+import { HaproxyCustomSectionsEnum, HaproxyListen, HaproxyUniqueSection,  } from '../../typings';
 import BasicParser from './basic';
 
 export class ListenerParser extends BasicParser {
@@ -22,7 +22,7 @@ export class ListenerParser extends BasicParser {
   }
 
   static stringify(contents: HaproxyUniqueSection<HaproxyListen>): Array<string> {
-    const key = Object.keys(contents)[0];
+    const key = Object.keys(contents)[0] as HaproxyCustomSectionsEnum.listeners;
     const results: string[] = [];
     const keys = Object.keys(contents[key]);
     const values = Object.values(contents[key]);
