@@ -1,4 +1,5 @@
 import express from 'express';
+import YAML from 'json-to-pretty-yaml';
 
 import { getConfigFile, rmConfigFile, setConfigFile } from '../components/file-operations';
 import ConfigParser from '../haproxy/cfg-parser';
@@ -21,6 +22,7 @@ const HaproxyCfgRouter = express.Router();
  */
 HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Response) => {
   const fileName = FileHandler.sanitizePath(req.params.config_file);
+  const format = req.query.format;
 
   getConfigFile(fileName)
     .then((file: FileHandler) => {
@@ -29,36 +31,21 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
       const content = file.contents;
       const conf = new ConfigParser(content);
 
-      res.status(200).json({
-        file: fileName,
-        data: conf.parsedConfig
-      });
+      if (format === 'raw') {
+        res.type('text/plain');
+        res.status(200).send(conf.toString());
+      } else if (format === 'yaml') {
+          res.type('text/yaml');
+          res.status(200).send(YAML.stringify(conf.parsedConfig));
+      } else {
+        res.status(200).json({
+          file: fileName,
+          data: conf.parsedConfig
+        });
+      }
     })
     .catch((e: string) => {
       logger.error(`GET /cfg/${fileName}`, new Error(e));
-
-      res.status(400).json(prepareErrorMessageJson(e));
-    });
-});
-
-/**
- * Get source config file
- */
-HaproxyCfgRouter.get('/raw/:config_file', (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitizePath(req.params.config_file);
-
-  getConfigFile(fileName)
-    .then((file: FileHandler) => {
-      logger.log(`GET /cfg/raw/${fileName}`);
-
-      const content = file.contents;
-      const conf = new ConfigParser(content);
-
-      res.type('text/plain');
-      res.status(200).send(conf.toString());
-    })
-    .catch((e: string) => {
-      logger.error(`GET /cfg/raw/${fileName}/raw`, new Error(e));
 
       res.status(400).json(prepareErrorMessageJson(e));
     });

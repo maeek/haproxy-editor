@@ -1,4 +1,5 @@
 import express from 'express';
+import YAML from 'json-to-pretty-yaml';
 
 import { getConfigFile } from '../components/file-operations';
 import { HaproxyCustomSectionsList } from '../const';
@@ -23,6 +24,7 @@ const SectionsRouter = express.Router();
 SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
   const fileName = FileHandler.sanitizePath(req.params.config_file);
   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
+  const format = req.query.format;
 
   getConfigFile(fileName)
     .then((file: FileHandler) => {
@@ -31,10 +33,18 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
       const content = file.contents;
       const conf = new ConfigParser(content);
 
-      res.json({
-        file: fileName,
-        data: conf.getSection(sectionName)
-      });
+      if (format === 'raw') {
+        res.type('text/plain');
+        res.status(200).send(conf.getRawSection(sectionName));
+      } else if (format === 'yaml') {
+        res.type('text/yaml');
+        res.status(200).send(YAML.stringify(conf.getSection(sectionName)));
+      } else {
+        res.json({
+          file: fileName,
+          data: conf.getSection(sectionName)
+        });
+      }
     })
     .catch((err: string) => {
       logger.error(`GET /cfg/${fileName}/${sectionName}`, new Error(err));
@@ -136,37 +146,13 @@ SectionsRouter.put(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
 });
 
 /**
- * Get raw section
- */
-SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitizePath(req.params.config_file);
-  const sectionName = req.params.section as HaproxyCustomSectionsEnum;
-
-  getConfigFile(fileName)
-    .then((file: FileHandler) => {
-      logger.log(`GET /cfg/raw/${fileName}/${sectionName}`);
-
-      const content = file.contents;
-      const conf = new ConfigParser(content);
-
-      const cleanedContent = conf.getRawSection(sectionName);
-
-      res.type('text/plain');
-      res.status(200).send(cleanedContent);
-    })
-    .catch((err: string) => {
-      logger.error(`GET /cfg/raw/${fileName}/${sectionName}`, new Error(err));
-      res.status(400).json(prepareErrorMessageJson(err));
-    });
-});
-
-/**
  * Get parsed specific section from: HaproxyCustomSectionsEnum
  */
 SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
   const fileName = FileHandler.sanitizePath(req.params.config_file);
   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
   const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
+  const format = req.query.format;
 
   getConfigFile(fileName)
     .then((file: FileHandler) => {
@@ -175,40 +161,25 @@ SectionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')
       const content = file.contents;
       const conf = new ConfigParser(content);
 
-      res.json({
-        file: fileName,
-        data: {
-          [sectionName]: {
-            [uniqueSectionName]: conf.getNamedSection(sectionName, uniqueSectionName)[uniqueSectionName]
+      if (format === 'raw') {
+        res.type('text/plain');
+        res.status(200).send(conf.getRawNamedSection(sectionName, uniqueSectionName));
+      } else if (format === 'yaml') {
+        res.type('text/yaml');
+        res.status(200).send(YAML.stringify(conf.getRawNamedSection(sectionName, uniqueSectionName)));
+      } else {
+        res.json({
+          file: fileName,
+          data: {
+            [sectionName]: {
+              [uniqueSectionName]: conf.getNamedSection(sectionName, uniqueSectionName)[uniqueSectionName]
+            }
           }
-        }
-      });
+        });
+      }
     })
     .catch((err: string) => {
       logger.error(`GET /cfg/${fileName}/${sectionName}/${uniqueSectionName}`, new Error(err));
-      res.status(400).json(prepareErrorMessageJson(err));
-    });
-});
-
-SectionsRouter.get(`/raw/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitizePath(req.params.config_file);
-  const sectionName = req.params.section as HaproxyCustomSectionsEnum;
-  const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
-
-  getConfigFile(fileName)
-    .then((file: FileHandler) => {
-      logger.log(`GET /cfg/raw/${fileName}/${sectionName}`);
-
-      const content = file.contents;
-      const conf = new ConfigParser(content);
-
-      const cleanedContent = conf.getRawNamedSection(sectionName, uniqueSectionName);
-
-      res.type('text/plain');
-      res.status(200).send(cleanedContent);
-    })
-    .catch((err: string) => {
-      logger.error(`GET /cfg/raw/${fileName}/${sectionName}/raw`, new Error(err));
       res.status(400).json(prepareErrorMessageJson(err));
     });
 });

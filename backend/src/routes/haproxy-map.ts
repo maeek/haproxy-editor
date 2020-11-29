@@ -1,4 +1,5 @@
 import express from 'express';
+import YAML from 'json-to-pretty-yaml';
 
 import { getConfigFile, rmConfigFile, setConfigFile } from '../components/file-operations';
 import MapParser from '../haproxy/map-parser';
@@ -13,6 +14,7 @@ const HaproxyMapRouter = express.Router();
  */
 HaproxyMapRouter.get('/:map_file', (req: express.Request, res: express.Response) => {
   const fileName = FileHandler.sanitizePath(req.params.map_file);
+  const format = req.query.format;
 
   getConfigFile(fileName)
     .then((file: FileHandler) => {
@@ -20,37 +22,22 @@ HaproxyMapRouter.get('/:map_file', (req: express.Request, res: express.Response)
 
       const content = file.contents;
       const conf = new MapParser(content);
-
-      res.status(200).json({
-        file: fileName,
-        data: conf.parsedContentObj
-      });
+      if (format === 'raw') {
+        res.type('text/plain');
+        res.status(200).send(conf.toString());
+      }
+      else if (format === 'yaml') {
+        res.type('text/yaml');
+        res.status(200).send(YAML.stringify(conf.parsedContentObj));
+      } else {
+        res.status(200).json({
+          file: fileName,
+          data: conf.parsedContentObj
+        });
+      }
     })
     .catch((e: string) => {
       logger.error(`GET /map/${fileName}`, new Error(e));
-
-      res.status(400).json(prepareErrorMessageJson(e));
-    });
-});
-
-/**
- * Get source map file
- */
-HaproxyMapRouter.get('/raw/:map_file', (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitizePath(req.params.map_file);
-
-  getConfigFile(fileName)
-    .then((file: FileHandler) => {
-      logger.log(`GET /cfg/raw/${fileName}`);
-
-      const content = file.contents;
-      const conf = new MapParser(content);
-
-      res.type('text/plain');
-      res.status(200).send(conf.toString());
-    })
-    .catch((e: string) => {
-      logger.error(`GET /cfg/raw/${fileName}/raw`, new Error(e));
 
       res.status(400).json(prepareErrorMessageJson(e));
     });
