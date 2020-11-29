@@ -208,7 +208,7 @@ export default class ConfigParser {
     const parsers = {
       [HaproxySections.global]: GlobalParser,
       [HaproxySections.defaults]: DefaultsParser,
-      // Custom sections
+      // Custom grouping sections
       [HaproxyCustomSections.listeners]: ListenerParser,
       [HaproxyCustomSections.frontends]: FrontendParser,
       [HaproxyCustomSections.backends]: BackendParser

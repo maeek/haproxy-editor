@@ -178,24 +178,3 @@ export const HaproxyOptions: { [key: string]: string } = {
 
 
 export const HaproxyOptionsList: Array<string> = Object.values(HaproxyOptions);
-
-// export const HaproxyParsers: { [key: string]: string } = {
-//   acl: HaproxyOptions.acl,
-//   daemon: HaproxyOptions.daemon,
-//   capture: HaproxyOptions.capture,
-//   description: HaproxyOptions.description,
-//   errorfile: HaproxyOptions.errorfile,
-//   'http-check': HaproxyOptions['http-check'],
-//   'http-request': HaproxyOptions['http-request'],
-//   'http-response': HaproxyOptions['http-response'],
-//   monitor: HaproxyOptions.monitor,
-//   option: HaproxyOptions.option,
-//   persist: HaproxyOptions.persist,
-//   stats: HaproxyOptions.stats,
-//   stick: HaproxyOptions.stick,
-//   timeout: HaproxyOptions.timeout,
-//   mode: HaproxyOptions.mode,
-//   retries: HaproxyOptions.retries
-// };
-
-// export const HaproxyParsersList: Array<string> = Object.values(HaproxyParsers);

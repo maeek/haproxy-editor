@@ -33,7 +33,7 @@ export class HttpResponse extends NonUnique {
       results['http-response'][method as HttpRequestResponseMethods]?.push(httpRequestOptions);
     }
     
-    // TODO implement method based parsing
+    // TODO implement http-request/http-response method (deny, redirect, ...) based parsing
 
     return results;
   }

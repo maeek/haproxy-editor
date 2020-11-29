@@ -73,7 +73,7 @@ const statsGroup = [
   HaproxyOptions['stats uri'],
 ];
 
-// TODO group parsers
+// TODO: group parsers better
 export const parsers = {
   [HaproxyOptions.description]: SingleArgument,
   [HaproxyOptions.retries]: SingleArgument,
@@ -109,6 +109,7 @@ export const parsers = {
   [HaproxyOptions.rspdeny]: NonUnique,
   [HaproxyOptions.rspidel]: NonUnique,
   [HaproxyOptions.rspideny]: NonUnique,
+
   // [HaproxyOptions.reqrep]: NonUnique,
   // [HaproxyOptions.reqirep]: NonUnique,
   // [HaproxyOptions.rspirep]: NonUnique,

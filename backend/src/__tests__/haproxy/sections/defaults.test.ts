@@ -38,7 +38,6 @@ describe('Haproxy - sections - Default', () => {
   });
 
   it('stringify', () => {
-    // TODO - fix stringify
     const expected = rawCleanedSection.split('\n');
 
     const defaults = new DefaultsParser(parsedSection);

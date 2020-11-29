@@ -34,10 +34,4 @@ describe('Haproxy - MapParser', () => {
       expect(MapParser.validate(testArray)).toBeFalsy();
     });
   });
-
-  // it('toString', () => {
-  //   expect(
-  //     MapParser.toString(parsed).join('\n')
-  //   ).toEqual(unparsed);
-  // });
 });

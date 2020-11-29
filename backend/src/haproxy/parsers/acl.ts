@@ -22,7 +22,7 @@ import NonUnique from './non-unique-keys';
  */
 
 export class Acl extends NonUnique {
-  static parse(arr: Array<string>, parsed?: any): AclEntry { // TODO change any
+  static parse(arr: Array<string>, parsed?: any): AclEntry { // TODO: change any
     const parsedAcls: AclSubEntry = parsed?.acl
       ? parsed.acl
       : {};

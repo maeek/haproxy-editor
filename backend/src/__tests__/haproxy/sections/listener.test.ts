@@ -20,7 +20,7 @@ const parsedSection = {
 
 // TODO
 
-describe('Haproxy - sections - Backend', () => {
+describe.skip('Haproxy - sections - Backend', () => {
   it('parse', () => {
     const lines = rawCleanedSection.split('\n');
     const global = new BackendParser(lines);
