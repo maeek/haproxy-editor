@@ -1,7 +1,20 @@
 import { Entry } from '../../typings';
 import SingleArgument from './single-arguments';
 
-export class Daemon extends SingleArgument {
+/**
+ * Input:
+ * 
+ *   daemon
+ * 
+ * Output:
+ * 
+ *   {
+ *     "daemon": true
+ *   }
+ * 
+ */
+
+export class NoArgument extends SingleArgument {
   static parse(arr: Array<string>): Entry {
     const [option] = arr;
 
@@ -11,8 +24,8 @@ export class Daemon extends SingleArgument {
   }
 
   static stringify(key: string): string {
-    return Daemon.indent() + key;
+    return NoArgument.indent() + key;
   }
 };
 
-export default Daemon;
+export default NoArgument;
