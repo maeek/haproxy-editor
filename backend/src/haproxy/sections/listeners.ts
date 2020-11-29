@@ -1,4 +1,4 @@
-import { HaproxyListen, HaproxyListenEntry } from '../../typings';
+import { HaproxyListen, HaproxyUniqueSection,  } from '../../typings';
 import BasicParser from './basic';
 
 export class ListenerParser extends BasicParser {
@@ -21,12 +21,24 @@ export class ListenerParser extends BasicParser {
     };
   }
 
-  static stringify(contents: HaproxyListenEntry): Array<string> {
-    const key = Object.keys(contents)[0] as 'name';
+  static stringify(contents: HaproxyUniqueSection<HaproxyListen>): Array<string> {
+    const key = Object.keys(contents)[0];
+    const results: string[] = [];
+    const keys = Object.keys(contents[key]);
+    const values = Object.values(contents[key]);
 
-    const stringified: Array<string> = BasicParser.stringify(contents[key]);
+    for (let i = 0; i < keys.length; i++) {
+      const parsed = BasicParser.stringify(values[i]);
+      const stringified: Array<string> = [
+        `listen ${keys[i]}`,
+        ...parsed,
+        ''
+      ];
+      results.push(...(parsed.length > 0 ? stringified : []));
+    }
 
-    return stringified.length > 0 ? [ `listeners ${key}`, ...stringified ] : [];
+
+    return results;
   }
 
 }

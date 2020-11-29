@@ -1,4 +1,4 @@
-import { HaproxyBackend, HaproxyBackendEntry } from '../../typings';
+import { HaproxyBackend, HaproxyUniqueSection } from '../../typings';
 import BasicParser from './basic';
 
 export class BackendParser extends BasicParser {
@@ -21,8 +21,8 @@ export class BackendParser extends BasicParser {
     };
   }
 
-  static stringify(contents: HaproxyBackendEntry): Array<string> {
-    const key = Object.keys(contents)[0] as 'name';
+  static stringify(contents: HaproxyUniqueSection<HaproxyBackend>): Array<string> {
+    const key = Object.keys(contents)[0];
     const results: string[] = [];
     const keys = Object.keys(contents[key]);
     const values = Object.values(contents[key]);
@@ -31,7 +31,8 @@ export class BackendParser extends BasicParser {
       const parsed = BasicParser.stringify(values[i]);
       const stringified: Array<string> = [
         `backend ${keys[i]}`,
-        ...parsed
+        ...parsed,
+        ''
       ];
       results.push(...(parsed.length > 0 ? stringified : []));
     }

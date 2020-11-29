@@ -1,4 +1,4 @@
-import { HaproxyFrontend, HaproxyFrontendEntry } from '../../typings';
+import { HaproxyFrontend, HaproxyUniqueSection  } from '../../typings';
 import BasicParser from './basic';
 
 export class FrontendParser extends BasicParser {
@@ -21,8 +21,8 @@ export class FrontendParser extends BasicParser {
     };
   }
 
-  static stringify(contents: HaproxyFrontendEntry): Array<string> {
-    const key = Object.keys(contents)[0] as 'name';
+  static stringify(contents: HaproxyUniqueSection<HaproxyFrontend>): Array<string> {
+    const key = Object.keys(contents)[0];
     const results: string[] = [];
     const keys = Object.keys(contents[key]);
     const values = Object.values(contents[key]);
@@ -31,7 +31,8 @@ export class FrontendParser extends BasicParser {
       const parsed = BasicParser.stringify(values[i]);
       const stringified: Array<string> = [
         `frontend ${keys[i]}`,
-        ...parsed
+        ...parsed,
+        ''
       ];
       results.push(...(parsed.length > 0 ? stringified : []));
     }
