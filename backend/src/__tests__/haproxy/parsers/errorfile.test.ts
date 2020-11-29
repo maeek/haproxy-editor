@@ -1,5 +1,5 @@
 import ErrorfileParser from '../../../haproxy/parsers/errorfile';
-import { ErrorfileEntry, ErrorfileEntryList } from '../../../typings';
+import { ErrorfileEntry } from '../../../typings';
 
 describe('Haproxy parsers - Errorfile', () => {
 
@@ -11,9 +11,9 @@ describe('Haproxy parsers - Errorfile', () => {
       '/etc/haproxy/errors-custom/400.http'
     ];
     const parseObj = {
-      errorfile: [
-        { 400: '/etc/haproxy/errors-custom/400.http' }
-      ]
+      errorfile: {
+        400: '/etc/haproxy/errors-custom/400.http'
+      }
     }
 
     it('parse', () => {
@@ -36,16 +36,16 @@ describe('Haproxy parsers - Errorfile', () => {
     ];
 
     const parseObj: ErrorfileEntry = {
-      errorfile: [
-        { 400: '/etc/haproxy/errors-custom/400.http' },
-        { 401: '/etc/haproxy/errors-custom/401.http' },
-        { 500: '/etc/haproxy/errors-custom/500.http' },
-        { 501: '/etc/haproxy/errors-custom/501.http' },
-      ]
+      errorfile: {
+        400: '/etc/haproxy/errors-custom/400.http',
+        401: '/etc/haproxy/errors-custom/401.http',
+        500: '/etc/haproxy/errors-custom/500.http',
+        501: '/etc/haproxy/errors-custom/501.http'
+      }
     }
 
     it('parse', () => {
-      let parsed: ErrorfileEntry = { errorfile: [] };
+      let parsed: ErrorfileEntry = { errorfile: {} };
       parseStrings.forEach((str: string) => {
         const errorfile = str.trim().split(' ');
         parsed = ErrorfileParser.parse(errorfile, parsed);

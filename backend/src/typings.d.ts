@@ -303,10 +303,8 @@ export interface ErrorfileSubEntry {
   [code: string]: string;
 }
 
-export type ErrorfileEntryList = Array<ErrorfileSubEntry>;
-
 export interface ErrorfileEntry {
-  errorfile: ErrorfileEntryList;
+  errorfile: ErrorfileSubEntry;
 }
 
 export type HttpRequestResponseSubEntry = string[];
@@ -335,33 +333,35 @@ export type HttpRequestResponseEntry = {
   [key in HttpTypes]?: HttpMethodEntry;
 }
 
-export type StandardEntry = string | Array<string | number> | number | boolean | string[][];
+export type StandardEntry = string | Array<string | number> | number | boolean | string[][] | { errorfile?: ErrorfileSubEntry };
 
 export type Entry = { [key: string]: StandardEntry };
 
-export type HaproxyGlobal = {
-  [key in GlobalFields | 'name']?: StandardEntry
-};
+export type HaproxySection<
+    F extends AllFields | GlobalFields | DefaultsFields | FrontendFields | BackendFields,
+    T
+  > = {
+  [key in F]: T
+}
 
-export type HaproxyDefaults = { [key in DefaultsFields | 'name']?: StandardEntry } 
-  & { errorfile?: ErrorfileEntryList };
+export type HaproxyGlobal = HaproxySection<GlobalFields, StandardEntry>;
+export type HaproxyDefaults = HaproxySection<DefaultsFields, StandardEntry>;
+export type HaproxyFrontend = { [key: string]: HaproxySection<FrontendFields, StandardEntry> };
+export type HaproxyListen = { [key: string]: HaproxySection<AllFields, StandardEntry> };
+export type HaproxyBackend = { [key: string]: HaproxySection<BackendFields, StandardEntry> };
 
-export type HaproxyFrontendEntry = { [key in FrontendFields | 'name']?: StandardEntry } 
-  & { errorfile?: ErrorfileEntryList }
-  & { name: string }
-export type HaproxyFrontend = { [key: string]: HaproxyFrontendEntry };
-
-export type HaproxyListenEntry = { [key in AllFields | 'name']?: StandardEntry} 
-  & { errorfile?: ErrorfileEntryList }
-  & { name: string }
-export type HaproxyListen = { [key: string]: HaproxyListenEntry };
-
-export type HaproxyBackendEntry = { [key in BackendFields | 'name']?: StandardEntry} 
-& { errorfile?: ErrorfileEntryList }
-& { name: string }
-export type HaproxyBackend = { [key: string]: HaproxyBackendEntry };
-
-export type HaproxyUniqueSection = { [key: string]: HaproxyBackend | HaproxyFrontend | HaproxyListen };
+export type HaproxyUniqueSection<T> = { [key: string]: T };
+export type HaproxyUniqueSections = HaproxyUniqueSection<
+  HaproxySection<FrontendFields, StandardEntry>
+  | HaproxySection<BackendFields, StandardEntry>
+  | HaproxySection<AllFields, StandardEntry>
+>;
+export type HaproxyAnySection = HaproxyGlobal
+& HaproxyDefaults
+& HaproxyFrontend
+& HaproxyListen
+& HaproxyBackend
+& {};
 
 export interface HaproxyConfig {
   [HaproxyCustomSectionsEnum.global]?: HaproxyGlobal;

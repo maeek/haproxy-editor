@@ -1,6 +1,6 @@
-import DaemonParser from '../../../haproxy/parsers/daemon';
+import NoArgParser from '../../../haproxy/parsers/no-argument';
 
-describe('Haproxy parsers - Daemon', () => {
+describe('Haproxy parsers - NoArgument', () => {
   const parseString = '    daemon';
   const parseArray = [
     'daemon'
@@ -10,12 +10,12 @@ describe('Haproxy parsers - Daemon', () => {
   }
 
   it('parse', () => {
-    expect(DaemonParser.parse(parseArray)).toEqual(parseObj);
+    expect(NoArgParser.parse(parseArray)).toEqual(parseObj);
   });
 
   it('stringify', () => {
     expect(
-      DaemonParser.stringify('daemon')
+      NoArgParser.stringify('daemon')
     ).toEqual(parseString);
   });
 });

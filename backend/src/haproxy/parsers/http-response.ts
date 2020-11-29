@@ -4,9 +4,13 @@ import {
   HttpRequestResponseMethods,
   HttpMethodEntry
 } from '../../typings';
-import Base from './base';
+import NonUnique from './non-unique-keys';
 
-export class HttpResponse extends Base {
+/**
+ * See http-request.ts for input and output examples
+ */
+
+export class HttpResponse extends NonUnique {
   static parse(arr: Array<string>, parsed?: any): HttpRequestResponseEntry { // TODO change any
     const parsedHttpRequests: HttpMethodEntry = parsed && parsed['http-response']
       ? parsed['http-response']

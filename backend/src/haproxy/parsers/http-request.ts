@@ -4,9 +4,55 @@ import {
   HttpRequestResponseMethods,
   HttpRequestResponseSubEntry
 } from '../../typings';
-import Base from './base';
+import NonUnique from './non-unique-keys';
 
-export class HttpRequest extends Base {
+/**
+ * Input:
+ * 
+ *  http-request deny if !{ src 10.10.0.0/16 } !{ src 10.20.0.0/16 } !{ src 172.20.0.0/16 }
+ *  http-request redirect code 301 location https://%[hdr(host)].internal.example.com%[capture.req.uri] unless { hdr_end(host) -i example.com }
+ * 
+ * Output:
+ * 
+ *   {
+ *     "http-request": {
+ *       "deny": [
+ *          [
+ *            "if",
+ *            "!{",
+ *            "src",
+ *            "10.10.0.0/16",
+ *            "}",
+ *            "!{",
+ *            "src",
+ *            "10.20.0.0/16",
+ *            "}",
+ *            "!{",
+ *            "src",
+ *            "172.20.0.0/16",
+ *            "}"
+ *          ]
+ *       ]
+ *       "redirect": [
+ *          [
+ *            "code",
+ *            "301",
+ *            "location",
+ *            "https://%[hdr(host)].internal.example.com%[capture.req.uri]",
+ *            "unless",
+ *            "{",
+ *            "hdr_end(host)",
+ *            "-i",
+ *            "example.com",
+ *            "}"
+ *          ]
+ *       ]
+ *     }
+ *   }
+ * 
+ */
+
+export class HttpRequest extends NonUnique {
   static parse(arr: Array<string>, parsed?: any): HttpRequestResponseEntry { // TODO change any
     const parsedHttpRequests: HttpMethodEntry = parsed && parsed['http-request']
       ? parsed['http-request']

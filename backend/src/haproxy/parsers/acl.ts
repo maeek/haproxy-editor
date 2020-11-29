@@ -1,7 +1,27 @@
 import { AclEntry, AclSubEntry } from '../../typings';
-import Base from './base';
+import NonUnique from './non-unique-keys';
 
-export class Acl extends Base {
+/**
+ * Input:
+ * 
+ *  acl u_login path_beg /login
+ *  acl smth ...
+ * 
+ * Output:
+ * 
+ *  {
+ *    "acl": {
+ *      "u_login": [
+ *        "path_beg",
+ *        "/login"
+ *      ],
+ *      "smth": [...]
+ *    }
+ *  }
+ * 
+ */
+
+export class Acl extends NonUnique {
   static parse(arr: Array<string>, parsed?: any): AclEntry { // TODO change any
     const parsedAcls: AclSubEntry = parsed?.acl
       ? parsed.acl

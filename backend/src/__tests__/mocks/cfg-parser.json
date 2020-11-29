@@ -1,38 +1,22 @@
 {
-    "unparsed": "defaults\n    timeout connect 10s\n    timeout client 30s\n    timeout server 30s\n    errorfile 400 /etc/haproxy/errors-custom/400.http\n    errorfile 403 /etc/haproxy/errors-custom/403.http\n    errorfile 408 /etc/haproxy/errors-custom/408.http\n    errorfile 500 /etc/haproxy/errors-custom/500.http\n    errorfile 502 /etc/haproxy/errors-custom/502.http\n    errorfile 503 /etc/haproxy/errors-custom/503.http\n    errorfile 504 /etc/haproxy/errors-custom/504.http\n\nglobal\n    maxconn 10\n    daemon\n    mode default\n    description This is a description for haproxy\n\nfrontend home_suchanecki\n    bind *:443 ssl crt /certs/pem/\n    mode http\n    redirect scheme https if !{ ssl_fc }\n    use_backend %[req.hdr(Host),lower,map_dom(/usr/local/etc/haproxy/dom2back.map,backend_default)]\n    http-request redirect code 301 location https://%[hdr(host)].internal.suchanecki.me%[capture.req.uri] unless { hdr_end(host) -i suchanecki.me }\n\nbackend backend_default\n    mode http\n    server default 172.20.0.4:80\n    http-request set-header X-Forwarded-Port %[dst_port]\n    http-request add-header X-Forwarded-Proto https if { ssl_fc }\n",
+    "unparsed": "defaults\n    timeout connect 10s\n    timeout client 30s\n    timeout server 30s\n    errorfile 400 /etc/haproxy/errors-custom/400.http\n    errorfile 403 /etc/haproxy/errors-custom/403.http\n    errorfile 408 /etc/haproxy/errors-custom/408.http\n    errorfile 500 /etc/haproxy/errors-custom/500.http\n    errorfile 502 /etc/haproxy/errors-custom/502.http\n    errorfile 503 /etc/haproxy/errors-custom/503.http\n    errorfile 504 /etc/haproxy/errors-custom/504.http\n\nglobal\n    maxconn 10\n    daemon\n    mode default\n    description This is a description for haproxy\n\nfrontend home_suchanecki\n    bind *:443 ssl crt /certs/pem/\n    mode http\n    redirect scheme https if !{ ssl_fc }\n    use_backend %[req.hdr(Host),lower,map_dom(/usr/local/etc/haproxy/dom2back.map,backend_default)]\n    http-request redirect code 301 location https://%[hdr(host)].internal.suchanecki.me%[capture.req.uri] unless { hdr_end(host) -i suchanecki.me }\n\n\nbackend backend_default\n    mode http\n    server default 172.20.0.4:80\n    http-request set-header X-Forwarded-Port %[dst_port]\n    http-request add-header X-Forwarded-Proto https if { ssl_fc }\n\n",
     "parsed": {
         "defaults": {
             "timeout connect": "10s",
             "timeout client": "30s",
             "timeout server": "30s",
-            "errorfile": [
-                {
-                    "400": "/etc/haproxy/errors-custom/400.http"
-                },
-                {
-                    "403": "/etc/haproxy/errors-custom/403.http"
-                },
-                {
-                    "408": "/etc/haproxy/errors-custom/408.http"
-                },
-                {
-                    "500": "/etc/haproxy/errors-custom/500.http"
-                },
-                {
-                    "502": "/etc/haproxy/errors-custom/502.http"
-                },
-                {
-                    "503": "/etc/haproxy/errors-custom/503.http"
-                },
-                {
-                    "504": "/etc/haproxy/errors-custom/504.http"
-                }
-            ]
+            "errorfile": {
+                "400": "/etc/haproxy/errors-custom/400.http",
+                "403": "/etc/haproxy/errors-custom/403.http",
+                "408": "/etc/haproxy/errors-custom/408.http",
+                "500": "/etc/haproxy/errors-custom/500.http",
+                "502": "/etc/haproxy/errors-custom/502.http",
+                "503": "/etc/haproxy/errors-custom/503.http",
+                "504": "/etc/haproxy/errors-custom/504.http"
+            }
         },
         "global": {
-            "maxconn": [
-                "10"
-            ],
+            "maxconn": 10,
             "daemon": true,
             "mode": "default",
             "description": "This is a description for haproxy"
@@ -78,10 +62,9 @@
         "backends": {
             "backend_default": {
                 "mode": "http",
-                "server": [
-                    "default",
-                    "172.20.0.4:80"
-                ],
+                "server": {
+                    "default": [ "172.20.0.4:80"]
+                },
                 "http-request": {
                     "set-header": [
                         [

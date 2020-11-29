@@ -7,9 +7,7 @@ mode default`;
 
 const parsedSection = {
   global: {
-    maxconn: [
-      "10"
-    ],
+    maxconn: 10,
     daemon: true,
     mode: "default"
   }

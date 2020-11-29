@@ -10,8 +10,9 @@ describe('Haproxy - ConfigParser', () => {
   });
 
   it('stringify', () => {
+    const toParse = parsed as unknown;
     expect(
-      ConfigParser.stringify(parsed).join('\n')
+      ConfigParser.stringify(toParse as HaproxyConfig).join('\n')
     ).toEqual(unparsed);
   });
 });
