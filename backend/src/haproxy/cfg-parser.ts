@@ -1,19 +1,10 @@
 import {
-  HaproxyCustomSections,
-  HaproxyCustomSectionsList,
-  HaproxyMapSectionToCustom,
-  HaproxySections,
-  HaproxySectionsList
+    HaproxyCustomSections, HaproxyCustomSectionsList, HaproxyMapSectionToCustom, HaproxySections,
+    HaproxySectionsList
 } from '../const';
 import {
-  HaproxyAnySection,
-  HaproxyBackend,
-  HaproxyConfig,
-  HaproxyCustomSectionsEnum,
-  HaproxyFrontend,
-  HaproxyListen,
-  HaproxyUniqueSection,
-  HaproxyUniqueSections
+    HaproxyAnySection, HaproxyBackend, HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyFrontend,
+    HaproxyListen, HaproxyUniqueSection, HaproxyUniqueSections
 } from '../typings';
 import BackendParser from './sections/backend';
 import DefaultsParser from './sections/defaults';

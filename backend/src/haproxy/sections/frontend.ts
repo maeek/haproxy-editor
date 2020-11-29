@@ -1,4 +1,4 @@
-import { HaproxyCustomSectionsEnum, HaproxyFrontend, HaproxyUniqueSection  } from '../../typings';
+import { HaproxyCustomSectionsEnum, HaproxyFrontend, HaproxyUniqueSection } from '../../typings';
 import BasicParser from './basic';
 
 export class FrontendParser extends BasicParser {

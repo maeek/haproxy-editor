@@ -1,4 +1,5 @@
 import { Entry } from 'src/typings';
+
 import Base from './base';
 
 /**

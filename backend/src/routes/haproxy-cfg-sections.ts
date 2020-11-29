@@ -5,9 +5,9 @@ import { getConfigFile } from '../components/file-operations';
 import { HaproxyCustomSectionsList } from '../const';
 import ConfigParser from '../haproxy/cfg-parser';
 import { HaproxyCustomSectionsEnum } from '../typings';
+import { prepareErrorMessageJson } from '../util/error';
 import FileHandler from '../util/file';
 import logger from '../util/log';
-import { prepareErrorMessageJson } from '../util/error';
 
 const SectionsRouter = express.Router();
 

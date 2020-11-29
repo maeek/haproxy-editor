@@ -1,8 +1,6 @@
 import {
-  HttpMethodEntry,
-  HttpRequestResponseEntry,
-  HttpRequestResponseMethods,
-  HttpRequestResponseSubEntry
+    HttpMethodEntry, HttpRequestResponseEntry, HttpRequestResponseMethods,
+    HttpRequestResponseSubEntry
 } from '../../typings';
 import NonUnique from './non-unique-keys';
 

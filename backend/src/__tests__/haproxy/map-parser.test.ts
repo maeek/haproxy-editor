@@ -1,6 +1,5 @@
 import MapParser from '../../haproxy/map-parser';
-
-import {unparsed, parsedObj, parsedArray} from '../mocks/map-parser.json';
+import { parsedArray, parsedObj, unparsed } from '../mocks/map-parser.json';
 
 describe('Haproxy - MapParser', () => {
 

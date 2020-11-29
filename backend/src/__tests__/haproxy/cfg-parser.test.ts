@@ -1,7 +1,6 @@
 import ConfigParser from '../../haproxy/cfg-parser';
 import { HaproxyConfig } from '../../typings';
-
-import {unparsed, parsed} from '../mocks/cfg-parser.json';
+import { parsed, unparsed } from '../mocks/cfg-parser.json';
 
 describe('Haproxy - ConfigParser', () => {
 
