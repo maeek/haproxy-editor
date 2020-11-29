@@ -26,6 +26,6 @@ export class NoArgument extends SingleArgument {
   static stringify(key: string): string {
     return NoArgument.indent() + key;
   }
-};
+}
 
 export default NoArgument;

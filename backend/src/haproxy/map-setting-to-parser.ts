@@ -6,7 +6,7 @@ import HttpResponse from './parsers/http-response';
 import MultipleArgumentsParser from './parsers/multiple-arguments';
 import NoArgument from './parsers/no-argument';
 import NonUnique from './parsers/non-unique-keys';
-import NonUniqueArray from './parsers/non-unique-keys-array';
+// import NonUniqueArray from './parsers/non-unique-keys-array';
 import Option from './parsers/option';
 import SingleArgument from './parsers/single-arguments';
 import Stats from './parsers/stats';
@@ -126,7 +126,8 @@ export const parsers = {
   [HaproxyOptions['http-response']]: HttpResponse
 };
 
-export const mapParser = (type: string) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const mapParser = (type: string): any => {
   if (optionsGroup.includes(type)) return parsers.option;
   if (statsGroup.includes(type)) return parsers.stats;
 

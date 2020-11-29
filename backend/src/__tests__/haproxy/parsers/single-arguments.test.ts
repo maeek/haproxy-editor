@@ -8,7 +8,7 @@ describe('Haproxy parsers - SingleArgument', () => {
   ];
   const parseObj = {
     mode: 'http'
-  }
+  };
 
   it('parse', () => {
     expect(SingleArgumentParser.parse(parseArray)).toEqual(parseObj);

@@ -1,19 +1,19 @@
-import { HaproxyBackend, HaproxyUniqueSection } from '../../typings';
+import { HaproxyBackend, HaproxyConfig, HaproxyUniqueSection } from '../../typings';
 import BasicParser from './basic';
 
 export class BackendParser extends BasicParser {
-  constructor(contents: Array<string> | any) {
+  constructor(contents: Array<string> | HaproxyConfig) {
     super(contents);
     if (Array.isArray(contents)) {
       this.contents = contents;
-      this.parsed = BackendParser.parse(contents)
+      this.parsed = BackendParser.parse(contents);
     } else {
-      this.parsed = contents
-      this.contents = BackendParser.stringify(contents);
+      this.parsed = contents;
+      this.contents = BackendParser.stringify(contents as HaproxyUniqueSection<HaproxyBackend>);
     }
   }
 
-  static parse(contents: Array<string>): { [name: string]: HaproxyBackend } {
+  static parse(contents: Array<string>): HaproxyUniqueSection<HaproxyBackend> {
     const backendName: string = contents[0].split(' ')[1];
 
     return {

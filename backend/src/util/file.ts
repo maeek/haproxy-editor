@@ -5,7 +5,7 @@ import logger from './log';
 
 export default class FileHandler {
   _path: string;
-  contents: string = '';
+  contents = '';
 
   constructor(path: string) {
     this._path = path;
@@ -13,7 +13,7 @@ export default class FileHandler {
     return this;
   }
 
-  static sanitizePath(unsafePath: string) {
+  static sanitizePath(unsafePath: string): string {
     return path.normalize(unsafePath).replace(/(\.\.(\/)+)+/g, '');
   }
 

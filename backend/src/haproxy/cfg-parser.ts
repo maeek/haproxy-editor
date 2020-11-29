@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
-    HaproxyCustomSections, HaproxyCustomSectionsList, HaproxyMapSectionToCustom, HaproxySections,
-    HaproxySectionsList
+  HaproxyCustomSections, HaproxyCustomSectionsList, HaproxyMapSectionToCustom, HaproxySections,
+  HaproxySectionsList
 } from '../const';
 import {
-    HaproxyAnySection, HaproxyBackend, HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyFrontend,
-    HaproxyListen, HaproxyUniqueSection, HaproxyUniqueSections
+  HaproxyAnySection, HaproxyBackend, HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyFrontend,
+  HaproxyListen, HaproxyUniqueSection, HaproxyUniqueSections
 } from '../typings';
 import BackendParser from './sections/backend';
 import DefaultsParser from './sections/defaults';
@@ -101,7 +102,7 @@ export default class ConfigParser {
       const Parser = ConfigParser.getSectionParser(sectionName);
 
       if (Parser) {
-        let stringifiedSection: any = new Parser({ [sectionName]: content[sectionName] });
+        let stringifiedSection: any = new Parser({ [sectionName]: content[sectionName] } as never);
         let stringifiedSectionContents: Array<string> = [];
 
         const isNameless = ![
@@ -121,7 +122,7 @@ export default class ConfigParser {
           )).forEach((entry: string) => {
             stringifiedSection = new Parser({
               [sectionName]: {
-                [entry]: (content[sectionName] as HaproxyUniqueSections)[entry]
+                [entry]: (content[sectionName] as HaproxyAnySection)[entry]
               }
             });
 
@@ -182,10 +183,8 @@ export default class ConfigParser {
   getNamedSection(baseSection: HaproxyCustomSectionsEnum, name: string): HaproxyConfig {
     if ([HaproxyCustomSections.global, HaproxyCustomSections.defaults].includes(baseSection)) {
       return this.getSection(baseSection);
-    } else if([
-      HaproxyCustomSections.backends, HaproxyCustomSections.frontends, HaproxyCustomSections.listeners
-    ].includes(baseSection)) {
-      const namedSection = (this.parsedConfig as HaproxyUniqueSection<HaproxyBackend | HaproxyFrontend | HaproxyListen>)[baseSection][name] || {}
+    } else if([HaproxyCustomSections.backends, HaproxyCustomSections.frontends, HaproxyCustomSections.listeners].includes(baseSection)) {
+      const namedSection = (this.parsedConfig as HaproxyUniqueSection<HaproxyBackend | HaproxyFrontend | HaproxyListen>)[baseSection][name] || {};
 
       return {
         [name]: namedSection
@@ -195,7 +194,7 @@ export default class ConfigParser {
     return {};
   }
 
-  static getSectionParser(type: string) {
+  static getSectionParser(type: string): any {
     const parsers = {
       [HaproxySections.global]: GlobalParser,
       [HaproxySections.defaults]: DefaultsParser,
@@ -208,7 +207,7 @@ export default class ConfigParser {
     return parsers[type];
   }
 
-  static getSectionRows(arr: Array<string>, start: number, end: number) {
+  static getSectionRows(arr: Array<string>, start: number, end: number): string[] {
     const result = [];
 
     for (let i = start; i < end; i++) {
@@ -218,10 +217,10 @@ export default class ConfigParser {
     return result;
   }
 
-  static cleanConfig(contentArray: Array<string>) {
+  static cleanConfig(contentArray: Array<string>): string[] {
     const cleaned = [];
 
-    for (let line of contentArray) {
+    for (const line of contentArray) {
       let cleanedLine = line.trim();
       cleanedLine = cleanedLine
         .replace(/\s+/g, ' ')
@@ -257,7 +256,7 @@ export default class ConfigParser {
             type: lastSectionName.split(' ')[0],
             start: startIndex,
             end: endIndex
-          }
+          };
         }
 
         startIndex = i;

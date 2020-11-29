@@ -9,7 +9,7 @@ describe('Haproxy parsers - Timeout', () => {
   ];
   const parseObj = {
     'timeout client': '10s'
-  }
+  };
 
   it('parse', () => {
     expect(TimeoutParser.parse(parseArray)).toEqual(parseObj);

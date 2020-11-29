@@ -25,6 +25,7 @@ Router.use('*', (req: express.Request, res: express.Response) => {
   res.status(404).json(prepareErrorMessageJson(`Endpoint not found, ${req.originalUrl}`, 404));
 });
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 Router.use((err: express.ErrorRequestHandler, req: express.Request, res: express.Response, next: express.NextFunction) => {
   logger.error(`${req.method} ${req.path} ${err}`, new Error());
   res.status(500).json(prepareErrorMessageJson('Internal server error', 500));

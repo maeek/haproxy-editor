@@ -26,6 +26,6 @@ export class Timeout extends SingleArgument {
       [`${name} ${type}`]: timeout
     };
   }
-};
+}
 
 export default Timeout;

@@ -1,19 +1,19 @@
-import { HaproxyCustomSectionsEnum, HaproxyFrontend, HaproxyUniqueSection } from '../../typings';
+import { HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyFrontend, HaproxyUniqueSection } from '../../typings';
 import BasicParser from './basic';
 
 export class FrontendParser extends BasicParser {
-  constructor(contents: Array<string> | any) {
+  constructor(contents: Array<string> | HaproxyConfig) {
     super(contents);
     if (Array.isArray(contents)) {
       this.contents = contents;
-      this.parsed = FrontendParser.parse(contents)
+      this.parsed = FrontendParser.parse(contents);
     } else {
-      this.parsed = contents
-      this.contents = FrontendParser.stringify(contents);
+      this.parsed = contents;
+      this.contents = FrontendParser.stringify(contents as HaproxyUniqueSection<HaproxyFrontend>);
     }
   }
 
-  static parse(contents: Array<string>): { [name: string]: HaproxyFrontend } {
+  static parse(contents: Array<string>): HaproxyUniqueSection<HaproxyFrontend> {
     const frontendName: string = contents[0].split(' ')[1];
 
     return {

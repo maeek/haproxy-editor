@@ -1,5 +1,5 @@
 import AclParser from '../../../haproxy/parsers/acl';
-import { AclEntry, AclSubEntry } from '../../../typings';
+import { AclEntry } from '../../../typings';
 
 describe('Haproxy parsers - HttpRequest', () => {
   const parseString = '    acl u_login path_beg /login';
@@ -14,9 +14,9 @@ describe('Haproxy parsers - HttpRequest', () => {
       'u_login': [
         'path_beg',
         '/login'
-    ],
+      ],
     }
-  }
+  };
 
   it('parse', () => {
     expect(AclParser.parse(parseArray)).toEqual(parseObj);

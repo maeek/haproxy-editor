@@ -1,4 +1,4 @@
-import { AclEntry, AclSubEntry } from '../../typings';
+import { AclEntry, AclSubEntry, HaproxyAnySection } from '../../typings';
 import NonUnique from './non-unique-keys';
 
 /**
@@ -22,12 +22,12 @@ import NonUnique from './non-unique-keys';
  */
 
 export class Acl extends NonUnique {
-  static parse(arr: Array<string>, parsed?: any): AclEntry { // TODO: change any
+  static parse(arr: Array<string>, parsed?: HaproxyAnySection): AclEntry {
     const parsedAcls: AclSubEntry = parsed?.acl
-      ? parsed.acl
+      ? parsed.acl as AclSubEntry
       : {};
 
-    const [_, name, ...options] = arr;
+    const [, name, ...options] = arr;
 
     const results: AclEntry = {
       acl: {
@@ -41,7 +41,7 @@ export class Acl extends NonUnique {
   }
 
   static stringify(_: string, entries: AclSubEntry): Array<string> {
-    let results: Array<string> = [];
+    const results: Array<string> = [];
 
     const keys = Object.keys(entries);
 
@@ -52,6 +52,6 @@ export class Acl extends NonUnique {
 
     return results;
   }
-};
+}
 
 export default Acl;

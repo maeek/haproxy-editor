@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { mapParser } from '../map-setting-to-parser';
 
 export abstract class BasicParser {
@@ -7,18 +9,18 @@ export abstract class BasicParser {
   constructor(contents: Array<string> | any) {
     if (Array.isArray(contents)) {
       this.contents = contents;
-      this.parsed = BasicParser.parse(contents)
+      this.parsed = BasicParser.parse(contents);
     } else {
-      this.parsed = contents
+      this.parsed = contents;
       this.contents = BasicParser.stringify(contents);
     }
   }
 
-  get data() {
+  get data(): any {
     return this.parsed;
   }
 
-  get rawData() {
+  get rawData(): string[] | undefined {
     return this.contents;
   }
 
@@ -35,13 +37,13 @@ export abstract class BasicParser {
       result = {
         ...result,
         ...parsedRow
-      }
+      };
     }
 
     return result;
   }
 
-  static json(contents: any) {
+  static json(contents: any): string {
     return JSON.stringify(contents);
   }
 
@@ -57,7 +59,7 @@ export abstract class BasicParser {
 
       if (Array.isArray(parsedRow)) {
         parsedRow.forEach((row: string) => {
-          results.push(row)
+          results.push(row);
         });
       } else {
         results.push(parsedRow);
@@ -71,7 +73,7 @@ export abstract class BasicParser {
     let str = '';
 
     contents.forEach((line: string) => {
-      str += `${line}\n`
+      str += `${line}\n`;
     });
 
     return str;

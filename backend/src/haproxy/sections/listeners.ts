@@ -2,13 +2,13 @@ import { HaproxyCustomSectionsEnum, HaproxyListen, HaproxyUniqueSection } from '
 import BasicParser from './basic';
 
 export class ListenerParser extends BasicParser {
-  constructor(contents: Array<string> | any) {
+  constructor(contents: Array<string> | HaproxyUniqueSection<HaproxyListen>) {
     super(contents);
     if (Array.isArray(contents)) {
       this.contents = contents;
-      this.parsed = ListenerParser.parse(contents)
+      this.parsed = ListenerParser.parse(contents);
     } else {
-      this.parsed = contents
+      this.parsed = contents;
       this.contents = ListenerParser.stringify(contents);
     }
   }

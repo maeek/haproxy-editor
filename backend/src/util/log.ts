@@ -21,21 +21,21 @@ export class Logger {
     return this;
   }
 
-  log(message: string, force?: boolean) {
+  log(message: string, force?: boolean): void {
     if (this.logLevel > 1 || force) {
-      console.log(`[${this._printDate()}]  INFO  "${message}"`)
+      console.log(`[${this._printDate()}]  INFO  "${message}"`);
     } 
   }
 
-  warning(message: string, force?: boolean) {
+  warning(message: string, force?: boolean): void {
     if (this.logLevel > 0 || force) {
-      console.log(`[${this._printDate()}]  WARNING  "${message}"`)
+      console.log(`[${this._printDate()}]  WARNING  "${message}"`);
     } 
   }
 
-  error(message: string, errorObj: NodeJS.ErrnoException, force?: boolean) {
+  error(message: string, errorObj: NodeJS.ErrnoException, force?: boolean): void {
     if (this.logLevel > 0 || force) {
-      console.error(`[${this._printDate()}]  ERROR  "${message}, stack: ${errorObj.stack?.split('\n').join(' ')}"`)
+      console.error(`[${this._printDate()}]  ERROR  "${message}, stack: ${errorObj.stack?.split('\n').join(' ')}"`);
     } 
   }
 

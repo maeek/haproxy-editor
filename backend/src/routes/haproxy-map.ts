@@ -91,7 +91,7 @@ HaproxyMapRouter.put('/:map_file', (req: express.Request, res: express.Response)
 
       newKeys.forEach((key: string) => {
         if (!conf.parsedContentObj[key]) {
-          conf.parsedContentArray.push([key, body[key]])
+          conf.parsedContentArray.push([key, body[key]]);
         }
       });
 
@@ -168,7 +168,7 @@ HaproxyMapRouter.delete('/:map_file', (req: express.Request, res: express.Respon
   const fileName = req.params.map_file;
 
   rmConfigFile(fileName)
-  .then(() => {
+    .then(() => {
       logger.log(`DELETE /map/${fileName}`);
       res.status(200).end();
     })

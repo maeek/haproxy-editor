@@ -25,22 +25,20 @@ const parsedSection = {
       'ssl_fc',
       '}'
     ],
-    use_backend: [
-      '%[req.hdr(Host),lower,map_dom(/usr/local/etc/haproxy/dom2back.map,backend_default)]'
-    ],
+    use_backend: ['%[req.hdr(Host),lower,map_dom(/usr/local/etc/haproxy/dom2back.map,backend_default)]'],
     'http-request': {
       'redirect': [
         [
-            'code',
-            '301',
-            'location',
-            'https://%[hdr(host)].example.com%[capture.req.uri]',
-            'unless',
-            '{',
-            'hdr_end(host)',
-            '-i',
-            'example.com',
-            '}'
+          'code',
+          '301',
+          'location',
+          'https://%[hdr(host)].example.com%[capture.req.uri]',
+          'unless',
+          '{',
+          'hdr_end(host)',
+          '-i',
+          'example.com',
+          '}'
         ],
       ]
     }

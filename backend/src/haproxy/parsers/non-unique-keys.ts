@@ -1,4 +1,6 @@
-import { Entry, StandardEntry } from 'src/typings';
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Entry, HaproxyAnySection, StandardEntry } from 'src/typings';
 
 import Base from './base';
 
@@ -24,10 +26,10 @@ import Base from './base';
  */
 
 export class NonUnique extends Base {
-  static parse(arr: Array<string>, parsed?: any): any { // TODO change any    
+  static parse(arr: Array<string>, parsed?: HaproxyAnySection): any { // TODO change any    
     const [key, method, ...options] = arr;
-    const parsedNonUnique: Entry = parsed && parsed[key]
-      ? parsed[key]
+    const parsedNonUnique = parsed && parsed[key]
+      ? parsed[key] as Entry
       : {};
     const nonUniqueOptions: StandardEntry = options;
 
@@ -51,7 +53,7 @@ export class NonUnique extends Base {
   }
 
   static stringify(name: string, entries: Entry): Array<string> {
-    let results: Array<string> = [];
+    const results: Array<string> = [];
 
     const keys = Object.keys(entries);
 
@@ -64,6 +66,6 @@ export class NonUnique extends Base {
 
     return results;
   }
-};
+}
 
 export default NonUnique;

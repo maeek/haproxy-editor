@@ -360,8 +360,7 @@ export type HaproxyAnySection = HaproxyGlobal
 & HaproxyDefaults
 & HaproxyFrontend
 & HaproxyListen
-& HaproxyBackend
-& {};
+& HaproxyBackend;
 
 export interface HaproxyConfig {
   [HaproxyCustomSectionsEnum.global]?: HaproxyGlobal;

@@ -1,4 +1,4 @@
-import { ErrorfileEntry, ErrorfileSubEntry } from '../../typings';
+import { ErrorfileEntry, ErrorfileSubEntry, HaproxyAnySection } from '../../typings';
 import Base from './base';
 
 /**
@@ -29,12 +29,12 @@ import Base from './base';
  */
 
 export class Errorfile extends Base {
-  static parse(arr: Array<string>, parsed?: any): ErrorfileEntry { // TODO change any
-    const parsedErrorfiles: ErrorfileSubEntry = parsed?.errorfile 
-      ? parsed.errorfile
+  static parse(arr: Array<string>, parsed?: HaproxyAnySection): ErrorfileEntry { // TODO change any
+    const parsedErrorfiles = parsed?.errorfile 
+      ? parsed.errorfile as ErrorfileSubEntry
       : {};
 
-    const [_, code, path] = arr;
+    const [, code, path] = arr;
 
     return {
       errorfile: {
@@ -45,7 +45,7 @@ export class Errorfile extends Base {
   }
 
   static stringify(_: string, entries: ErrorfileSubEntry): Array<string> {
-    let results: Array<string> = [];
+    const results: Array<string> = [];
     const keys = Object.keys(entries);
 
     keys.forEach((key: string) => {
@@ -54,6 +54,6 @@ export class Errorfile extends Base {
 
     return results;
   }
-};
+}
 
 export default Errorfile;

@@ -16,7 +16,7 @@ describe('Haproxy parsers - MultipleArgument', () => {
       'crt',
       '/certs/pem/'
     ]
-  }
+  };
 
   it('parse', () => {
     expect(MultipleArgumentParser.parse(parseArray)).toEqual(parseObj);

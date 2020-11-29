@@ -34,6 +34,6 @@ export class SingleArgument extends Base {
   static stringify(key: string, entry?: StandardEntry): string {
     return `${SingleArgument.indent()}${key} ${Array.isArray(entry) ? entry.join(' ') : entry}`;
   }
-};
+}
 
 export default SingleArgument;

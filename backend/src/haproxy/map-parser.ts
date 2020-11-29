@@ -49,7 +49,7 @@ export default class MapParser {
 
     const parsedData: Array<Array<string>> = [];
 
-    for (let line of lines) {
+    for (const line of lines) {
       const splittedLine = line.split(new RegExp('[ ]+'));
 
       if (splittedLine.length > 1) parsedData.push(splittedLine);
@@ -76,7 +76,7 @@ export default class MapParser {
       results.push([
         keys[i],
         (values[i] as string)
-      ])
+      ]);
     }
 
     return results;
@@ -102,7 +102,7 @@ export default class MapParser {
   static validate(data?: Array<Array<string>>): boolean {
     if (!data) return false;
 
-    for (let line of data) {
+    for (const line of data) {
       if (line.length !== 2) return false;
     }
 

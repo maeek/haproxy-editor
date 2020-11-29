@@ -35,8 +35,8 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
         res.type('text/plain');
         res.status(200).send(conf.toString());
       } else if (format === 'yaml') {
-          res.type('text/yaml');
-          res.status(200).send(YAML.stringify(conf.parsedConfig));
+        res.type('text/yaml');
+        res.status(200).send(YAML.stringify(conf.parsedConfig));
       } else {
         res.status(200).json({
           file: fileName,
@@ -85,7 +85,7 @@ HaproxyCfgRouter.delete('/:config_file', (req: express.Request, res: express.Res
   const fileName = req.params.config_file;
 
   rmConfigFile(fileName)
-  .then(() => {
+    .then(() => {
       logger.log(`DELETE /cfg/${fileName}`);
       res.status(200).end();
     })

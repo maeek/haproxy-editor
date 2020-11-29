@@ -1,6 +1,7 @@
 import {
-    HttpMethodEntry, HttpRequestResponseEntry, HttpRequestResponseMethods,
-    HttpRequestResponseSubEntry
+  HaproxyAnySection,
+  HttpMethodEntry, HttpRequestResponseEntry, HttpRequestResponseMethods,
+  HttpRequestResponseSubEntry
 } from '../../typings';
 import NonUnique from './non-unique-keys';
 
@@ -9,12 +10,13 @@ import NonUnique from './non-unique-keys';
  */
 
 export class HttpResponse extends NonUnique {
-  static parse(arr: Array<string>, parsed?: any): HttpRequestResponseEntry { // TODO change any
-    const parsedHttpRequests: HttpMethodEntry = parsed && parsed['http-response']
-      ? parsed['http-response']
+  static parse(arr: Array<string>, parsed?: HaproxyAnySection): HttpRequestResponseEntry { // TODO change any
+    const parsedHttpRequests = parsed && parsed['http-response']
+      ? parsed['http-response'] as HttpMethodEntry
       : {};
 
-    const [_, method, ...options] = arr;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [, method, ...options] = arr;
     const httpRequestOptions: HttpRequestResponseSubEntry = options;
 
     const results: HttpRequestResponseEntry = {
@@ -37,7 +39,7 @@ export class HttpResponse extends NonUnique {
   }
 
   static stringify(_: string, entries: HttpMethodEntry): Array<string> {
-    let results: Array<string> = [];
+    const results: Array<string> = [];
 
     const keys = Object.keys(entries);
 
@@ -50,6 +52,6 @@ export class HttpResponse extends NonUnique {
 
     return results;
   }
-};
+}
 
 export default HttpResponse;

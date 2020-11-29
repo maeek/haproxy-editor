@@ -36,7 +36,7 @@ describe('Haproxy parsers - HttpRequest', () => {
           ]
         ]
       }
-    }
+    };
 
     it('parse', () => {
       expect(HttpRequestParser.parse(parseArray)).toEqual(parseObj);
@@ -60,49 +60,49 @@ describe('Haproxy parsers - HttpRequest', () => {
     const parseObj = {
       'http-request': {
         'redirect': [
-            [
-                'code',
-                '301',
-                'location',
-                'https://example.com',
-                'unless',
-                '{',
-                'hdr_end(host)',
-                '-i',
-                'example.com',
-                '}'
-            ],
-            [
-              'prefix',
-              'https://%[req.hdr(Host)]',
-              'drop-query',
-              'if',
-              'u_login',
-              '!up_userid'
-            ]
+          [
+            'code',
+            '301',
+            'location',
+            'https://example.com',
+            'unless',
+            '{',
+            'hdr_end(host)',
+            '-i',
+            'example.com',
+            '}'
+          ],
+          [
+            'prefix',
+            'https://%[req.hdr(Host)]',
+            'drop-query',
+            'if',
+            'u_login',
+            '!up_userid'
+          ]
         ],
         'add-header': [
-            [
-                'scheme',
-                'https',
-                'if',
-                'http',
-                'u_login'
-            ]
+          [
+            'scheme',
+            'https',
+            'if',
+            'http',
+            'u_login'
+          ]
         ],
         'set-header': [
-            [
-                'prefix',
-                'https://%[req.hdr(Host)]',
-                'set-cookie',
-                'SEEN=1',
-                'if',
-                '!cookie_set'
-            ],
+          [
+            'prefix',
+            'https://%[req.hdr(Host)]',
+            'set-cookie',
+            'SEEN=1',
+            'if',
+            '!cookie_set'
+          ],
             
         ]
       }
-    }
+    };
 
     it('parse', () => {
       let parsed: HttpRequestResponseEntry = { 'http-request': {} };

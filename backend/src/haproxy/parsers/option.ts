@@ -32,6 +32,6 @@ export class Option extends NoArgument {
   static stringify(key: string): string {
     return NoArgument.indent() + key;
   }
-};
+}
 
 export default Option;

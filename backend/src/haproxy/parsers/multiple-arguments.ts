@@ -30,6 +30,6 @@ export class MultipleArguments extends Base {
   static stringify(key: string, entry?: StandardEntry): string {
     return `${MultipleArguments.indent()}${key} ${Array.isArray(entry) ? entry.join(' ') : entry}`;
   }
-};
+}
 
 export default MultipleArguments;

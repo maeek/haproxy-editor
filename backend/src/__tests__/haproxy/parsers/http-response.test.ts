@@ -15,15 +15,15 @@ describe('Haproxy parsers - HttpRequest', () => {
     const parseObj = {
       'http-response': {
         'replace-value': [
-            [
-                'Set-Cookie',
-                '(.*)',
-                '1;',
-                'Secure'
-            ]
+          [
+            'Set-Cookie',
+            '(.*)',
+            '1;',
+            'Secure'
+          ]
         ]
-    }
-    }
+      }
+    };
 
     it('parse', () => {
       expect(HttpResponseParser.parse(parseArray)).toEqual(parseObj);

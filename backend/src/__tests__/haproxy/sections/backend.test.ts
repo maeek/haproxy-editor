@@ -11,7 +11,7 @@ const parsedSection = {
   backend_default: {
     mode: 'http',
     server: {
-        'default': [ '172.20.0.4:80' ]
+      'default': ['172.20.0.4:80']
     },
     'http-request': {
       'set-header': [

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry, StandardEntry } from '../../typings';
 import SingleArgument from './single-arguments';
 
@@ -51,7 +53,7 @@ export class Stats extends SingleArgument {
     return `${SingleArgument.indent()}${key} ${value}`;
   }
 
-  static stringifyPayload(entry: any) {
+  static stringifyPayload(entry: any): string {
     if (typeof entry === 'boolean') {
       return '';
     }
@@ -60,9 +62,9 @@ export class Stats extends SingleArgument {
     }
     else if (entry?.user && entry?.passwd) {
       return `${entry.user}:${entry.passwd}`;
-    } else {
-      return entry.join(' ');
-    }
+    } 
+    return entry.join(' ');
+    
   }
 
   static getCustomPayload(type: string, payload: string[]): string[] | boolean | string {
@@ -78,6 +80,6 @@ export class Stats extends SingleArgument {
 
     return parser[type] || payload;
   }
-};
+}
 
 export default Stats;

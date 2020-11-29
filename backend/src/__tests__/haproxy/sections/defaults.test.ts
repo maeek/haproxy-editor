@@ -1,4 +1,5 @@
 import DefaultsParser from '../../../haproxy/sections/defaults';
+import { HaproxyConfig } from '../../../typings';
 
 const rawCleanedSection = `defaults
 timeout connect 10s
@@ -27,7 +28,7 @@ const parsedSection = {
       504: "/etc/haproxy/errors-custom/504.http"
     }
   }
-};
+} as unknown as HaproxyConfig;
 
 describe('Haproxy - sections - Default', () => {
   it('parse', () => {

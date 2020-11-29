@@ -14,7 +14,7 @@ describe('Haproxy parsers - Errorfile', () => {
       errorfile: {
         400: '/etc/haproxy/errors-custom/400.http'
       }
-    }
+    };
 
     it('parse', () => {
       expect(ErrorfileParser.parse(parseArray)).toEqual(parseObj);
@@ -42,7 +42,7 @@ describe('Haproxy parsers - Errorfile', () => {
         500: '/etc/haproxy/errors-custom/500.http',
         501: '/etc/haproxy/errors-custom/501.http'
       }
-    }
+    };
 
     it('parse', () => {
       let parsed: ErrorfileEntry = { errorfile: {} };

@@ -1,14 +1,14 @@
-import { HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyGlobal } from '../../typings';
+import { HaproxyConfig, HaproxyCustomSectionsEnum } from '../../typings';
 import BasicParser from './basic';
 
 export class GlobalParser extends BasicParser {
-  constructor(contents: Array<string> | any) {
+  constructor(contents: Array<string> | HaproxyConfig) {
     super(contents);
     if (Array.isArray(contents)) {
       this.contents = contents;
-      this.parsed = GlobalParser.parse(contents)
+      this.parsed = GlobalParser.parse(contents);
     } else {
-      this.parsed = contents
+      this.parsed = contents;
       this.contents = GlobalParser.stringify(contents);
     }
   }
@@ -24,7 +24,7 @@ export class GlobalParser extends BasicParser {
     const values = contents[key];
     const parsed = BasicParser.stringify(values);
 
-    return parsed.length > 0 ? [ 'global', ...parsed ] : [];
+    return parsed.length > 0 ? ['global', ...parsed] : [];
   }
 }
 

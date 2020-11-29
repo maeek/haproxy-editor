@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Entry } from 'src/typings';
 
 import Base from './base';
@@ -44,6 +46,6 @@ export class NonUniqueArray extends Base {
 
     return results;
   }
-};
+}
 
 export default NonUniqueArray;
