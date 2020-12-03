@@ -29,7 +29,7 @@ import Base from './base';
  */
 
 export class Errorfile extends Base {
-  static parse(arr: Array<string>, parsed?: HaproxyAnySection): ErrorfileEntry { // TODO change any
+  static parse(arr: Array<string>, parsed?: ErrorfileEntry): ErrorfileEntry { // TODO change any
     const parsedErrorfiles = parsed?.errorfile 
       ? parsed.errorfile as ErrorfileSubEntry
       : {};

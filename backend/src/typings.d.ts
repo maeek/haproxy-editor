@@ -296,8 +296,16 @@ export type AclSubEntry = {
   [name: string]: string[];
 }
 
+export type BindSubEntry = {
+  [name: string]: string[];
+}
+
 export interface AclEntry {
   acl: AclSubEntry;
+}
+
+export interface BindEntry {
+  bind: BindSubEntry;
 }
 export interface ErrorfileSubEntry {
   [code: string]: string;

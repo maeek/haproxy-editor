@@ -49,7 +49,6 @@ export class Stats extends SingleArgument {
 
   static stringify(key: string, entry?: StandardEntry): string {
     const value = entry ? Stats.stringifyPayload(entry) : '';
-    console.log(entry);
     return `${SingleArgument.indent()}${key} ${value}`;
   }
 
@@ -62,9 +61,9 @@ export class Stats extends SingleArgument {
     }
     else if (entry?.user && entry?.passwd) {
       return `${entry.user}:${entry.passwd}`;
-    } 
-    return entry.join(' ');
-    
+    }
+
+    return entry.join(' ');    
   }
 
   static getCustomPayload(type: string, payload: string[]): string[] | boolean | string {

@@ -1,11 +1,13 @@
 import { HaproxyOptions } from '../const';
 import Acl from './parsers/acl';
+import { Bind } from './parsers/bind';
 import Errofile from './parsers/errorfile';
 import HttpRequest from './parsers/http-request';
 import HttpResponse from './parsers/http-response';
 import MultipleArgumentsParser from './parsers/multiple-arguments';
 import NoArgument from './parsers/no-argument';
 import NonUnique from './parsers/non-unique-keys';
+import NonUniqueArray from './parsers/non-unique-keys-array';
 // import NonUniqueArray from './parsers/non-unique-keys-array';
 import Option from './parsers/option';
 import SingleArgument from './parsers/single-arguments';
@@ -109,13 +111,14 @@ export const parsers = {
   [HaproxyOptions.rspdeny]: NonUnique,
   [HaproxyOptions.rspidel]: NonUnique,
   [HaproxyOptions.rspideny]: NonUnique,
-
+  
   // [HaproxyOptions.reqrep]: NonUnique,
   // [HaproxyOptions.reqirep]: NonUnique,
   // [HaproxyOptions.rspirep]: NonUnique,
   // [HaproxyOptions.rsprep]: NonUnique,
   
   [HaproxyOptions.server]: NonUnique,
+  [HaproxyOptions.bind]: Bind,
   [HaproxyOptions.option]: Option,
   [HaproxyOptions.stats]: Stats,
   [HaproxyOptions.timeout]: Timeout,

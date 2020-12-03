@@ -3,6 +3,7 @@ import {
   HttpMethodEntry, HttpRequestResponseEntry, HttpRequestResponseMethods,
   HttpRequestResponseSubEntry
 } from '../../typings';
+import Base from './base';
 import NonUnique from './non-unique-keys';
 
 /**
@@ -51,8 +52,8 @@ import NonUnique from './non-unique-keys';
  * 
  */
 
-export class HttpRequest extends NonUnique {
-  static parse(arr: Array<string>, parsed?: HaproxyAnySection): HttpRequestResponseEntry { // TODO change any
+export class HttpRequest extends Base {
+  static parse(arr: Array<string>, parsed?: HttpRequestResponseEntry): HttpRequestResponseEntry { // TODO change any
     const parsedHttpRequests = parsed && parsed['http-request']
       ? parsed['http-request'] as HttpMethodEntry
       : {};
