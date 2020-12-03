@@ -1,31 +1,57 @@
-import BackendParser from '../../../haproxy/sections/backend';
+import ListenParser from '../../../haproxy/sections/listeners';
+import { HaproxyListen, HaproxyUniqueSection } from '../../../typings';
+
+const section = `listen stats
+    bind 0.0.0.0:8998
+    mode http
+    stats auth Admin:password
+    stats enable 
+    stats realm Haproxy Statistics
+    stats refresh 20s
+    stats uri /admin?stats
+`;
 
 const rawCleanedSection = `listen stats
-bind *:1936
+bind 0.0.0.0:8998
 mode http
-option forwardfor
-option httpclose
-stats enable
-stats uri /
-stats refresh 5s
-stats show-legends
-stats realm Haproxy\ Statistics`;
+stats auth Admin:password
+stats enable 
+stats realm Haproxy Statistics
+stats refresh 20s
+stats uri /admin?stats`;
 
 const parsedSection = {
   stats: {
-    bind: ['*:1936'],
-    mode: "http",
+    bind: {
+      '0.0.0.0:8998': []
+    },
+    mode: 'http',
+    'stats auth': {
+      'user': 'Admin',
+      'passwd': 'password'
+    },
+    'stats enable': true,
+    'stats realm': 'Haproxy Statistics',
+    'stats refresh': ['20s'],
+    'stats uri': '/admin?stats'
   }
-};
+} as unknown as HaproxyUniqueSection<HaproxyListen>;
 
-// TODO
-
-describe.skip('Haproxy - sections - Backend', () => {
+describe('Haproxy - sections - Listen', () => {
   it('parse', () => {
     const lines = rawCleanedSection.split('\n');
-    const global = new BackendParser(lines);
+    const listen = new ListenParser(lines);
 
-    // expect(global.data).toEqual(parsedSection);
-    expect(1).toBeTruthy();
+    expect(listen.data).toEqual(parsedSection);
+  });
+
+  it('stringify', () => {
+    const listen = new ListenParser({
+      listeners: {
+        stats: parsedSection.stats as any
+      }
+    });
+
+    expect(listen.contents).toEqual(section.split('\n'));
   });
 });

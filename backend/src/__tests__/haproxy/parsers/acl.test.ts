@@ -1,7 +1,7 @@
 import AclParser from '../../../haproxy/parsers/acl';
 import { AclEntry } from '../../../typings';
 
-describe('Haproxy parsers - HttpRequest', () => {
+describe('Haproxy parsers - Acl', () => {
   const parseString = '    acl u_login path_beg /login';
   const parseArray = [
     'acl',

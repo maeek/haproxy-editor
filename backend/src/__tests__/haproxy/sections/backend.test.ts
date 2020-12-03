@@ -55,8 +55,8 @@ const parsedSection = {
 describe('Haproxy - sections - Backend', () => {
   it('parse', () => {
     const lines = rawCleanedSection.split('\n');
-    const global = new BackendParser(lines);
+    const backend = new BackendParser(lines);
 
-    expect(global.data).toEqual(parsedSection);
+    expect(backend.data).toEqual(parsedSection);
   });
 });

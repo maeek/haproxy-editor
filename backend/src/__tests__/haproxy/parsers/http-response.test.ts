@@ -1,6 +1,6 @@
 import HttpResponseParser from '../../../haproxy/parsers/http-response';
 
-describe('Haproxy parsers - HttpRequest', () => {
+describe('Haproxy parsers - HttpResponse', () => {
 
   describe('single entry', () => {
     const parseString = '    http-response replace-value Set-Cookie (.*) 1; Secure';
