@@ -1,12 +1,10 @@
 module.exports = {
-  parser: "@typescript-eslint/parser",
-  plugins: [
-    "@typescript-eslint"
-  ],
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint'],
   extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended'
   ],
   parserOptions: {
     ecmaVersion: 2020
@@ -21,11 +19,12 @@ module.exports = {
   },
   rules: {
     semi: ['error', 'always'],
+    quotes: ['error', 'single'],
     indent: ['error', 2],
     'eol-last': ['error', 'always'],
     'newline-per-chained-call': ['error', { 'ignoreChainWithDepth': 2 }],
     'no-unreachable': 'error',
-    complexity: ["error", 10],
+    complexity: ['error', 10],
     'default-case': 'error',
     eqeqeq: 'error',
     'no-else-return': 'error',
