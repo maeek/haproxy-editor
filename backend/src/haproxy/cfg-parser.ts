@@ -5,8 +5,9 @@ import {
 } from '../const';
 import {
   HaproxyAnySection, HaproxyBackend, HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyFrontend,
-  HaproxyListen, HaproxyUniqueSection, HaproxyUniqueSections
+  HaproxyListen, HaproxyUniqueSection, HaproxyUniqueSections, StandardEntry
 } from '../typings';
+import mapParser from './map-setting-to-parser';
 import BackendParser from './sections/backend';
 import DefaultsParser from './sections/defaults';
 import FrontendParser from './sections/frontend';
@@ -15,9 +16,9 @@ import ListenerParser from './sections/listeners';
 
 interface SectionsMap {
   [key: string]: {
-    type: string;
-    start: number;
-    end: number;
+    parent: string;
+    line_start: number;
+    line_end: number;
   }
 }
 
@@ -50,9 +51,9 @@ export default class ConfigParser {
     const sectionMapValues = Object.values(configSectionsMap);
 
     for (let i = 0; i < sectionMapKeys.length; i++) {
-      const sectionType = sectionMapValues[i].type as HaproxyCustomSectionsEnum;
-      const sectionStart: number = sectionMapValues[i].start;
-      const sectionEnd: number = sectionMapValues[i].end;
+      const sectionType = sectionMapValues[i].parent as HaproxyCustomSectionsEnum;
+      const sectionStart: number = sectionMapValues[i].line_start;
+      const sectionEnd: number = sectionMapValues[i].line_end;
       const sectionRows = ConfigParser.getSectionRows(cleanedConfigArray, sectionStart, sectionEnd);
       const customSection = HaproxyMapSectionToCustom[sectionType] as HaproxyCustomSectionsEnum;
 
@@ -173,7 +174,6 @@ export default class ConfigParser {
 
   getRawNamedSection(sectionName: HaproxyCustomSectionsEnum, name: string): string {
     const section = this.getNamedSection(sectionName, name);
-    console.log(section);
     const Parser = ConfigParser.getSectionParser(sectionName);
     const results = Parser.stringify({ [name]: section } as any).join('\n');
 
@@ -192,6 +192,31 @@ export default class ConfigParser {
     }
 
     return {};
+  }
+
+  getOptionFromSection(sectionName: HaproxyCustomSectionsEnum, option: string, namedSection?: string): { [key: string]: string } {
+    let section: HaproxyConfig;
+    if (namedSection) {
+      section = this.getNamedSection(sectionName, namedSection);
+    } else {
+      section = this.getSection(sectionName);
+    }
+
+    return {
+      [option]: (section as any)[namedSection || sectionName][option] || {}
+    };
+  }
+
+  getRawOptionFromSection(sectionName: HaproxyCustomSectionsEnum, option: string, namedSection?: string): string {
+    let section: HaproxyConfig;
+    if (namedSection) {
+      section = this.getNamedSection(sectionName, namedSection);
+    } else {
+      section = this.getSection(sectionName);
+    }
+
+    const result = mapParser(option).stringify(option, (section as any)[namedSection || sectionName][option]);
+    return Array.isArray(result) ? result.join('\n') : result;
   }
 
   static getSectionParser(type: string): any {
@@ -236,6 +261,29 @@ export default class ConfigParser {
     return cleaned;
   }
 
+  static findOptionIndex(configLines: Array<string>, sectionName: string, key: string): SectionsMap {
+    const { line_start, line_end } = ConfigParser.findSectionIndexes(configLines)[sectionName];
+    let start_index = -1;
+    let end_index = -1;
+
+    for (let i = line_start; i < line_end; i++) {
+      if (configLines[i].trim().startsWith(key)) {
+        if (start_index === -1) {
+          start_index = i + 1;
+        }
+        end_index = i + 1;
+      }
+    }
+
+    return {
+      [key]: {
+        parent: sectionName,
+        line_start: start_index,
+        line_end: end_index
+      }
+    };
+  }
+
   static findSectionIndexes(configLines: Array<string>): SectionsMap {
     const sectionMap: SectionsMap = {};
     let startIndex = 0, endIndex, lastSectionName;
@@ -253,9 +301,9 @@ export default class ConfigParser {
         
         if (lastSectionName) {
           sectionMap[lastSectionName] = {
-            type: lastSectionName.split(' ')[0],
-            start: startIndex,
-            end: endIndex
+            parent: lastSectionName.split(' ')[0],
+            line_start: startIndex,
+            line_end: endIndex
           };
         }
 

@@ -15,8 +15,23 @@ export const HaproxyCustomSections: { [key: string]: string } = {
   frontends: 'frontends',
   backends: 'backends'
 };
-
 export const HaproxyCustomSectionsList: Array<string> = Object.values(HaproxyCustomSections);
+
+export const HaproxyCustomNonUniqueSections: { [key: string]: string } = {
+  listeners: 'listeners',
+  frontends: 'frontends',
+  backends: 'backends'
+};
+
+export const HaproxyCustomNonUniqueSectionsList: Array<string> = Object.values(HaproxyCustomNonUniqueSections);
+
+export const HaproxyCustomToSectionName: { [key: string]: string } = {
+  [HaproxyCustomSections.global]: HaproxySections.global,
+  [HaproxyCustomSections.defaults]: HaproxySections.defaults,
+  [HaproxyCustomSections.listeners]: HaproxySections.listen,
+  [HaproxyCustomSections.frontends]: HaproxySections.frontend,
+  [HaproxyCustomSections.backends]: HaproxySections.backend
+};
 
 export const HaproxyMapSectionToCustom: { [key: string]: string } = {
   [HaproxySections.global]: HaproxyCustomSections.global,

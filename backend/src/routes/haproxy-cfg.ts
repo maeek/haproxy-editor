@@ -1,10 +1,10 @@
 import express from 'express';
 import YAML from 'json-to-pretty-yaml';
 
-import { getConfigFile, rmConfigFile, setConfigFile } from '../components/file-operations';
+import { getConfig } from '../components/config-operations';
+import { rmConfigFile, setConfigFile } from '../components/file-operations';
 import ConfigParser from '../haproxy/cfg-parser';
 import { prepareErrorMessageJson } from '../util/error';
-import FileHandler from '../util/file';
 import logger from '../util/log';
 import SectionRouter from './haproxy-cfg-sections';
 
@@ -21,15 +21,12 @@ const HaproxyCfgRouter = express.Router();
  * Get parsed config
  */
 HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Response) => {
-  const fileName = FileHandler.sanitizePath(req.params.config_file);
+  const fileName = req.params.config_file;
   const format = req.query.format;
 
-  getConfigFile(fileName)
-    .then((file: FileHandler) => {
+  getConfig(fileName)
+    .then((conf: ConfigParser) => {
       logger.log(`GET /cfg/${fileName}`);
-
-      const content = file.contents;
-      const conf = new ConfigParser(content);
 
       if (format === 'raw') {
         res.type('text/plain');
@@ -47,7 +44,7 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
     .catch((e: string) => {
       logger.error(`GET /cfg/${fileName}`, new Error(e));
 
-      res.status(400).json(prepareErrorMessageJson(e));
+      res.status(500).json(prepareErrorMessageJson(e, 500));
     });
 });
 
@@ -69,12 +66,12 @@ HaproxyCfgRouter.post('/:config_file', (req: express.Request, res: express.Respo
     .then(() => {
       logger.log(`POST /cfg/${fileName}`);
 
-      res.status(200).json({ file: fileName });
+      res.status(201).json({ file: fileName });
     })
     .catch((e: string) => {
       logger.error(`POST /cfg/${fileName}`, new Error(e));
 
-      res.status(400).json(prepareErrorMessageJson(e));
+      res.status(500).json(prepareErrorMessageJson(e, 500));
     });
 });
 
@@ -87,11 +84,11 @@ HaproxyCfgRouter.delete('/:config_file', (req: express.Request, res: express.Res
   rmConfigFile(fileName)
     .then(() => {
       logger.log(`DELETE /cfg/${fileName}`);
-      res.status(200).end();
+      res.status(204).end();
     })
     .catch((e: string) => {
       logger.error(`DELETE /cfg/${fileName}`, new Error(e));
-      res.status(400).json(prepareErrorMessageJson(e));
+      res.status(500).json(prepareErrorMessageJson(e, 500));
     });
 });
 
