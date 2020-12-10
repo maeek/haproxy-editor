@@ -10,8 +10,8 @@
     "build": "npm run clean; tsc",
     "test": "MODE=test jest",
     "test:watch": "MODE=test jest --watchAll",
-    "eslint": "eslint ./",
-    "eslint:fix": "eslint --fix ./",
+    "eslint": "eslint ./src",
+    "eslint:fix": "eslint --fix ./src",
     "postinstall": "npm run build"
   },
   "keywords": [],

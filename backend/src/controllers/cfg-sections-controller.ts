@@ -22,7 +22,7 @@ export const getSection = (req: express.Request, res: express.Response): void =>
       const location = ConfigParser.findSectionIndexes(conf.content.split('\n'))[sectionName];
       const section = conf.getSection(sectionName);
 
-      if (Object.keys((section as any)[sectionName]).length === 0) {
+      if (Object.keys((section as HaproxyAnySection)[sectionName]).length === 0) {
         res.status(404).json(prepareErrorMessageJson('Section is empty', 404));
         return;
       }
@@ -137,7 +137,7 @@ export const getNonUniqueSection = (req: express.Request, res: express.Response)
       const sectionLocation = ConfigParser.findSectionIndexes(conf.content.split('\n'))[key]; // TODO: Useful but to be rafactored
       const section = conf.getNamedSection(sectionName, uniqueSectionName)[uniqueSectionName];
 
-      if (Object.keys(section as any).length === 0) {
+      if (Object.keys(section as HaproxyAnySection).length === 0) {
         res.status(404).json(prepareErrorMessageJson('Section not found', 404));
         return;
       }

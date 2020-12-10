@@ -1,4 +1,4 @@
-import { ErrorfileEntry, ErrorfileSubEntry, HaproxyAnySection } from '../../typings';
+import { ErrorfileEntry, ErrorfileSubEntry } from '../../typings';
 import Base from './base';
 
 /**

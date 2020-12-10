@@ -11,7 +11,7 @@ if (PROXY_IP) {
 
 App.use(express.json());
 
-App.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+App.use((_req: express.Request, res: express.Response, next: express.NextFunction) => {
   res.removeHeader('X-Powered-By');
   next();
 });

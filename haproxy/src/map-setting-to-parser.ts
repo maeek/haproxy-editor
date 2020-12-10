@@ -7,7 +7,6 @@ import HttpResponse from './parsers/http-response';
 import MultipleArgumentsParser from './parsers/multiple-arguments';
 import NoArgument from './parsers/no-argument';
 import NonUnique from './parsers/non-unique-keys';
-import NonUniqueArray from './parsers/non-unique-keys-array';
 // import NonUniqueArray from './parsers/non-unique-keys-array';
 import Option from './parsers/option';
 import SingleArgument from './parsers/single-arguments';

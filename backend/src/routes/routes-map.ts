@@ -1,8 +1,8 @@
 import {
-  HaproxyCustomNonUniqueSectionsList, HaproxyCustomSectionsList, HaproxyCustomToSectionName
+  HaproxyCustomNonUniqueSectionsList, HaproxyCustomSectionsList
 } from 'haproxy/build/const';
 
-export default {
+export const routes = {
   cfg: {
     base: '/cfg',
     file: '/:config_file',
@@ -11,5 +11,11 @@ export default {
     named_section: `/:section(${HaproxyCustomNonUniqueSectionsList.join('|')})/:name`,
     option: `/:section(${HaproxyCustomSectionsList.join('|')})/:option`,
     option_in_named_section: `/:section(${HaproxyCustomNonUniqueSectionsList.join('|')})/:name/:option`
+  },
+  map: {
+    base: '/map',
+    file: '/:map_file'
   }
 };
+
+export default routes;

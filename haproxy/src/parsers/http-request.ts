@@ -1,10 +1,8 @@
 import {
-  HaproxyAnySection,
   HttpMethodEntry, HttpRequestResponseEntry, HttpRequestResponseMethods,
   HttpRequestResponseSubEntry
 } from '../../typings';
 import Base from './base';
-import NonUnique from './non-unique-keys';
 
 /**
  * Input:

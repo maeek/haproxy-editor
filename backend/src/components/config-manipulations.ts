@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import ConfigParser from 'haproxy/build/cfg-parser';
 import {
   HaproxyAnySection, HaproxyConfig, HaproxyCustomSectionsEnum, HaproxyUniqueSections
