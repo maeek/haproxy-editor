@@ -2,37 +2,38 @@
   "compileOnSave": true,
   "compilerOptions": {
     "module": "commonjs",
+    "declaration": true,
     "strict": true,
     "baseUrl": "./",
+    "paths": {
+      "*": [
+        "src/",
+        "node_modules/"
+      ]
+    },
     "outDir": "build",
     "sourceMap": true,
     "removeComments": true,
     "experimentalDecorators": true,
-    "target": "es6",
+    "target": "ES6",
     "emitDecoratorMetadata": true,
-    "moduleResolution": "node",
     "resolveJsonModule": true,
-    "importHelpers": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowJs": true,
     "types": [
       "node",
-      "express",
       "jest",
-      "haproxy/typings"
-    ],
-    "typeRoots": [
-      "node_modules/@types"
+      "./typings"
     ],
     "lib": ["es2020", "dom", "esnext"]
   },
   "include": [
-    "./src/**/*.ts"
+    "./src/**/*.ts",
+    "./src/**/*.d.ts",
   ],
   "exclude": [
-    "./src/haproxy/__tests__",
-    "./src/**/*.test.ts",
-    "./src/public/"
+    "./src/__tests__",
+    "./src/setup-tests.ts",
+    "./src/load-vars.ts",
   ]
 }

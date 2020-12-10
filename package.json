@@ -5,7 +5,7 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "install:all": "npm i; concurrently 'cd react; npm i' 'cd backend; npm i'",
+    "postinstall": "cd ./haproxy; npm i; cd ..;concurrently 'cd ./react; npm i' 'cd ./backend; npm i'",
     "compile": "MODE=prod_standalone concurrently 'cd backend; npm run build' 'cd react; npm run build'",
     "compile:docker": "MODE=prod_docker concurrently 'cd backend; npm run build' 'cd react; npm run build'",
     "compile:client": "cd react; npm run build",
