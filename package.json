@@ -5,26 +5,39 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "postinstall": "cd ./haproxy; npm i; cd ..;concurrently 'cd ./react; npm i' 'cd ./backend; npm i'",
+    "install:all": "npm i; cd ./haproxy; npm i; cd ..;concurrently 'cd ./react; npm i' 'cd ./backend; npm i'",
+
     "compile": "MODE=prod_standalone concurrently 'cd backend; npm run build' 'cd react; npm run build'",
     "compile:docker": "MODE=prod_docker concurrently 'cd backend; npm run build' 'cd react; npm run build'",
     "compile:client": "cd react; npm run build",
     "compile:server": "cd backend; npm run build",
+
     "clean": "rm -rf ./build",
     "build": "npm run bundle",
-    "build:docker": "npm run bundle:docker",
     "bundle": "MODE=prod_standalone npm run clean; npm run compile; mkdir build; cp -r react/build ./build/public; cp -r backend/build/* ./build/",
-    "bundle:docker": "MODE=prod_docker npm run clean; npm run compile:docker; mkdir build; cp -r react/build ./build/client; cp -r backend/build ./build/server",
+    
+    "build:docker": "npm run bundle:docker",
+    "bundle:docker": "MODE=prod_docker npm run clean; npm run compile:docker; npm run bundle:docker:postbuild",
+    "bundle:docker:postbuild": "mkdir build; cp -r react/build ./build/client; cp -r backend/build ./build/server; npm run bundle:docker:haproxy",
+    "bundle:docker:haproxy": "rm -rf ./build/server/node_modules/haproxy; cp -r ./haproxy ./build/server/node_modules/haproxy",
+
     "dev": "MODE=development concurrently 'cd backend; npm run dev' 'cd react; npm run start'",
     "dev:server": "cd backend/; npm run dev",
     "dev:client": "cd react/; npm run start",
+
     "start:server": "cd backend/; npm run start",
     "start:client": "npm run dev:client"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "dependencies": {
+    "typescript": "^4.0.5"
+  },
   "devDependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "eslint": "^7.14.0",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2"
   }
 }
