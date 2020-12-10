@@ -1,14 +1,11 @@
 import express from 'express';
-import YAML from 'json-to-pretty-yaml';
 
-import { getConfig } from '../components/config-operations';
-import { HaproxyCustomNonUniqueSectionsList, HaproxyCustomSectionsList, HaproxyCustomToSectionName } from '../const';
-import ConfigParser from '../haproxy/cfg-parser';
-import { HaproxyCustomSectionsEnum } from '../typings';
-import { prepareErrorMessageJson } from '../util/error';
-import logger from '../util/log';
+import {
+  getOptionFromNamedSection, getOptionFromSection
+} from '../controllers/cfg-options-controller';
+import routes from './routes-map';
 
-const OptionsRouter = express.Router();
+const OptionsRouter = express.Router({mergeParams: true});
 
 /** Config endpoints structure
  * {
@@ -21,77 +18,12 @@ const OptionsRouter = express.Router();
 /**
  * Get parsed section
  */
-OptionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:option`, (req: express.Request, res: express.Response) => {
-  const fileName = req.params.config_file;
-  const sectionName = req.params.section as HaproxyCustomSectionsEnum;
-  const optionName = req.params.option;
-  const format = req.query.format;
-
-  getConfig(fileName)
-    .then((conf: ConfigParser) => {
-      logger.log(`GET /cfg/${fileName}/${sectionName}/${optionName} (Get option)`);
-
-      if (format === 'raw') {
-        res.type('text/plain');
-        res.status(200).send(conf.getRawOptionFromSection(sectionName, optionName));
-      } else if (format === 'yaml') {
-        res.type('text/yaml');
-        res.status(200).send(YAML.stringify(conf.getOptionFromSection(sectionName, optionName)));
-      } else {
-        const location = ConfigParser.findOptionIndex(conf.content.split('\n'), sectionName, optionName);
-        res.json({
-          file: fileName,
-          location,
-          data: {
-            [sectionName]: conf.getOptionFromSection(sectionName, optionName)
-          }
-        });
-      }
-    })
-    .catch((err: string) => {
-      logger.error(`GET /cfg/${fileName}/${sectionName}/${optionName} (Get option)`, new Error(err));
-      res.status(500).json(prepareErrorMessageJson(err, 500));
-    });
-});
+OptionsRouter.get(routes.cfg.option, getOptionFromSection);
 
 /**
  * Get parsed section
  */
-OptionsRouter.get(`/:config_file/:section(${HaproxyCustomNonUniqueSectionsList.join('|')})/:name/:option`, (req: express.Request, res: express.Response) => {
-  const fileName = req.params.config_file;
-  const sectionName = req.params.section as HaproxyCustomSectionsEnum;
-  const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
-  const optionName = req.params.option;
-  const format = req.query.format;
-
-  getConfig(fileName)
-    .then((conf: ConfigParser) => {
-      logger.log(`GET /cfg/${fileName}/${sectionName}/${optionName} (Get option)`);
-
-      if (format === 'raw') {
-        res.type('text/plain');
-        res.status(200).send(conf.getRawOptionFromSection(sectionName, optionName, uniqueSectionName));
-      } else if (format === 'yaml') {
-        res.type('text/yaml');
-        res.status(200).send(YAML.stringify(conf.getOptionFromSection(sectionName, optionName, uniqueSectionName)));
-      } else {
-        const location = ConfigParser.findOptionIndex(conf.content.split('\n'), `${HaproxyCustomToSectionName[sectionName]} ${uniqueSectionName}`, optionName);
-        res.json({
-          file: fileName,
-          location,
-          data: {
-            [sectionName]: {
-              [uniqueSectionName]: conf.getOptionFromSection(sectionName, optionName, uniqueSectionName)
-            }
-          }
-        });
-      }
-    })
-    .catch((err: string) => {
-      logger.error(`GET /cfg/${fileName}/${sectionName}/${optionName} (Get option)`, new Error(err));
-      res.status(500).json(prepareErrorMessageJson(err, 500));
-    });
-});
+OptionsRouter.get(routes.cfg.option_in_named_section, getOptionFromNamedSection);
 
 /**
  * Create new/overwrite existing section in config
@@ -102,7 +34,7 @@ OptionsRouter.get(`/:config_file/:section(${HaproxyCustomNonUniqueSectionsList.j
  *   }
  * }
  */
-// OptionsRouter.post(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
+// OptionsRouter.post(`/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
 //   const fileName = FileHandler.sanitizePath(req.params.config_file);
 //   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
 //   const body = req.body[sectionName] || {};
@@ -144,7 +76,7 @@ OptionsRouter.get(`/:config_file/:section(${HaproxyCustomNonUniqueSectionsList.j
 //  *   }
 //  * }
 //  */
-// OptionsRouter.put(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
+// OptionsRouter.put(`/:section(${HaproxyCustomSectionsList.join('|')})`, (req: express.Request, res: express.Response) => {
 //   const fileName = FileHandler.sanitizePath(req.params.config_file);
 //   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
 //   const body = req.body[sectionName];
@@ -189,7 +121,7 @@ OptionsRouter.get(`/:config_file/:section(${HaproxyCustomNonUniqueSectionsList.j
 // /**
 //  * Get parsed specific section from: HaproxyCustomSectionsEnum
 //  */
-// OptionsRouter.get(`/:config_file/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
+// OptionsRouter.get(`/:section(${HaproxyCustomSectionsList.join('|')})/:name`, (req: express.Request, res: express.Response) => {
 //   const fileName = FileHandler.sanitizePath(req.params.config_file);
 //   const sectionName = req.params.section as HaproxyCustomSectionsEnum;
 //   const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;

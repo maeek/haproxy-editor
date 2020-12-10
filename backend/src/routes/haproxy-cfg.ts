@@ -1,52 +1,25 @@
 import express from 'express';
-import YAML from 'json-to-pretty-yaml';
 
-import { getConfig } from '../components/config-operations';
-import { rmConfigFile, setConfigFile } from '../components/file-operations';
-import ConfigParser from '../haproxy/cfg-parser';
-import { prepareErrorMessageJson } from '../util/error';
-import logger from '../util/log';
+import {
+  createNewConfigFile, deleteConfigFile, getConfigFiles, getParsedConfig
+} from '../controllers/cfg-controller';
 import SectionRouter from './haproxy-cfg-sections';
+import routes from './routes-map';
 
 const HaproxyCfgRouter = express.Router();
+
+// Get configs file list
+HaproxyCfgRouter.get('/', getConfigFiles);
 
 /** Config endpoints structure
  * {
  *    file: string,
  *    data: HaproxyConfig
  * }
- */
-
-/**
+ *
  * Get parsed config
  */
-HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Response) => {
-  const fileName = req.params.config_file;
-  const format = req.query.format;
-
-  getConfig(fileName)
-    .then((conf: ConfigParser) => {
-      logger.log(`GET /cfg/${fileName}`);
-
-      if (format === 'raw') {
-        res.type('text/plain');
-        res.status(200).send(conf.toString());
-      } else if (format === 'yaml') {
-        res.type('text/yaml');
-        res.status(200).send(YAML.stringify(conf.parsedConfig));
-      } else {
-        res.status(200).json({
-          file: fileName,
-          data: conf.parsedConfig
-        });
-      }
-    })
-    .catch((e: string) => {
-      logger.error(`GET /cfg/${fileName}`, new Error(e));
-
-      res.status(500).json(prepareErrorMessageJson(e, 500));
-    });
-});
+HaproxyCfgRouter.get(routes.cfg.file, getParsedConfig);
 
 /**
  * Create new/overwrite existing config file
@@ -57,41 +30,13 @@ HaproxyCfgRouter.get('/:config_file', (req: express.Request, res: express.Respon
  *   }
  * }
  */
-HaproxyCfgRouter.post('/:config_file', (req: express.Request, res: express.Response) => {
-  const fileName = req.params.config_file;
-  const body = req.body;
-  const conf = new ConfigParser(body);
-
-  setConfigFile(fileName, conf.content)
-    .then(() => {
-      logger.log(`POST /cfg/${fileName}`);
-
-      res.status(201).json({ file: fileName });
-    })
-    .catch((e: string) => {
-      logger.error(`POST /cfg/${fileName}`, new Error(e));
-
-      res.status(500).json(prepareErrorMessageJson(e, 500));
-    });
-});
+HaproxyCfgRouter.post(routes.cfg.file, createNewConfigFile);
 
 /**
  * Remove config file from filesystem
  */
-HaproxyCfgRouter.delete('/:config_file', (req: express.Request, res: express.Response) => {
-  const fileName = req.params.config_file;
+HaproxyCfgRouter.delete(routes.cfg.file, deleteConfigFile);
 
-  rmConfigFile(fileName)
-    .then(() => {
-      logger.log(`DELETE /cfg/${fileName}`);
-      res.status(204).end();
-    })
-    .catch((e: string) => {
-      logger.error(`DELETE /cfg/${fileName}`, new Error(e));
-      res.status(500).json(prepareErrorMessageJson(e, 500));
-    });
-});
-
-HaproxyCfgRouter.use('/', SectionRouter);
+HaproxyCfgRouter.use(routes.cfg.file, SectionRouter);
 
 export default HaproxyCfgRouter;

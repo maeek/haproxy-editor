@@ -16,6 +16,13 @@ if (operatingMode === 'prod_standalone') {
   Router.use('/', express.static(publicPath, { immutable: true, maxAge: 30*24*60*60*1000 }));
 }
 
+if (operatingMode === 'development') {
+  Router.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+    logger.log(`${req.method} ${req.originalUrl}`);
+    next();
+  });
+}
+
 Router.use(appendAPIforUnifiedMode + '/cfg/', HaproxyCfgRouter);
 Router.use(appendAPIforUnifiedMode + '/map/', HaproxyMapRouter);
 // Router.use(appendAPIforUnifiedMode + '/service/', ServiceRouter);

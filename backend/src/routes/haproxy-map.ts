@@ -1,8 +1,8 @@
 import express from 'express';
+import MapParser from 'haproxy/build/map-parser';
 import YAML from 'json-to-pretty-yaml';
 
-import { getConfigFile, rmConfigFile, setConfigFile } from '../components/file-operations';
-import MapParser from '../haproxy/map-parser';
+import { getConfigFile, rmConfigFile, setConfigFile } from '../components/file-manipulations';
 import { prepareErrorMessageJson } from '../util/error';
 import FileHandler from '../util/file';
 import logger from '../util/log';
