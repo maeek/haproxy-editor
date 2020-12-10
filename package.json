@@ -13,13 +13,13 @@
     "compile:server": "cd backend; npm run build",
 
     "clean": "rm -rf ./build",
-    "build": "npm run bundle",
-    "bundle": "MODE=prod_standalone npm run clean; npm run compile; mkdir build; cp -r react/build ./build/public; cp -r backend/build/* ./build/",
+    "build": "npm run prepare",
+    "prepare": "MODE=prod_standalone npm run clean; npm run compile; mkdir build; cp -r react/build ./build/public; cp -r backend/build/* ./build/",
     
-    "build:docker": "npm run bundle:docker",
-    "bundle:docker": "MODE=prod_docker npm run clean; npm run compile:docker; npm run bundle:docker:postbuild",
-    "bundle:docker:postbuild": "mkdir build; cp -r react/build ./build/client; cp -r backend/build ./build/server; npm run bundle:docker:haproxy",
-    "bundle:docker:haproxy": "rm -rf ./build/server/node_modules/haproxy; cp -r ./haproxy ./build/server/node_modules/haproxy",
+    "build:docker": "npm run prepare:docker",
+    "prepare:docker": "MODE=prod_docker npm run clean; npm run compile:docker; npm run prepare:docker:postbuild",
+    "prepare:docker:postbuild": "mkdir build; cp -r react/build ./build/client; cp -r backend/build ./build/server; npm run prepare:docker:haproxy",
+    "prepare:docker:haproxy": "rm -rf ./build/server/node_modules/haproxy; cp -r ./haproxy ./build/server/node_modules/haproxy",
 
     "dev": "MODE=development concurrently 'cd backend; npm run dev' 'cd react; npm run start'",
     "dev:server": "cd backend/; npm run dev",
