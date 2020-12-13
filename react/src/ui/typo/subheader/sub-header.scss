@@ -1,0 +1,10 @@
+.subheader-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  &-heading {
+    margin: 0.6rem 0;
+  }
+}

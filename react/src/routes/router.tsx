@@ -4,6 +4,7 @@ import {
   Switch,
   Route
 } from 'react-router-dom';
+import EditView from './configs/EditView';
 import MainView from './home/MainView';
 
 const AppRouter = () => {
@@ -11,6 +12,7 @@ const AppRouter = () => {
     <main className="app-container">
       <Router>
         <Switch>
+          <Route path="/configs/edit/:file" component={EditView} />
           <Route path="/">
             <MainView />
           </Route>
