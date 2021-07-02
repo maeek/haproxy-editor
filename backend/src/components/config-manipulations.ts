@@ -25,11 +25,9 @@ export const setConfig = (fileName: string, sectionName: HaproxyCustomSectionsEn
   new Promise<HaproxyConfig>((resolve, reject) => {
     getConfig(fileName)
       .then((conf: ConfigParser) => {
+        conf.config[sectionName] = data;
 
-        conf.parsedConfig[sectionName] = data;
-        conf.toString();
-
-        FileOperations.setConfigFile(fileName, conf.content)
+        FileOperations.setConfigFile(fileName, conf.raw)
           .then(() => {
             resolve(conf.getSection(sectionName));
           })
@@ -46,15 +44,12 @@ export const updateConfig = (fileName: string, sectionName: HaproxyCustomSection
   new Promise<HaproxyConfig>((resolve, reject) => {
     getConfig(fileName)
       .then((conf: ConfigParser) => {
-
-        conf.parsedConfig[sectionName] = {
-          ...conf.parsedConfig[sectionName],
+        conf.config[sectionName] = {
+          ...conf.config[sectionName],
           ...(data as any)
         };
 
-        conf.toString();
-
-        FileOperations.setConfigFile(fileName, conf.content)
+        FileOperations.setConfigFile(fileName, conf.raw)
           .then(() => {
             resolve(conf.getSection(sectionName));
           })
@@ -71,15 +66,15 @@ export const setNonUniqueConfig = (fileName: string, sectionName: HaproxyCustomS
   new Promise<HaproxyConfig>((resolve, reject) => {
     getConfig(fileName)
       .then((conf: ConfigParser) => {
-        if (!conf.parsedConfig[sectionName]) {
-          conf.parsedConfig[sectionName] = {} as HaproxyAnySection;
+        if (!conf.config[sectionName]) {
+          conf.config[sectionName] = {} as HaproxyAnySection;
         }
 
-        (conf.parsedConfig[sectionName] as HaproxyUniqueSections)[nonUniqieName] = data as any;
+        (conf.config[sectionName] as HaproxyUniqueSections)[nonUniqieName] = data as any;
     
         conf.toString();
 
-        FileOperations.setConfigFile(fileName, conf.content)
+        FileOperations.setConfigFile(fileName, conf.raw)
           .then(() => {
             resolve(conf.getSection(sectionName));
           })
@@ -97,17 +92,15 @@ export const updateNonUniqueConfig = (fileName: string, sectionName: HaproxyCust
     getConfig(fileName)
       .then((conf: ConfigParser) => {
 
-        conf.parsedConfig[sectionName] = {
-          ...(conf.parsedConfig[sectionName] as HaproxyUniqueSections),
+        conf.config[sectionName] = {
+          ...(conf.config[sectionName] as HaproxyUniqueSections),
           [nonUniqieName]: {
-            ...(conf.parsedConfig[sectionName] as HaproxyUniqueSections)[nonUniqieName],
+            ...(conf.config[sectionName] as HaproxyUniqueSections)[nonUniqieName],
             ...(data as any)
           }
         } as HaproxyAnySection;
 
-        conf.toString();
-
-        FileOperations.setConfigFile(fileName, conf.content)
+        FileOperations.setConfigFile(fileName, conf.raw)
           .then(() => {
             resolve(conf.getSection(sectionName));
           })

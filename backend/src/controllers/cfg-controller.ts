@@ -37,11 +37,11 @@ export const getParsedConfig = (req: express.Request, res: express.Response): vo
         res.status(200).send(conf.toString());
       } else if (format === 'yaml') {
         res.type('text/yaml');
-        res.status(200).send(YAML.stringify(conf.parsedConfig));
+        res.status(200).send(YAML.stringify(conf.config));
       } else {
         res.status(200).json({
           file: fileName,
-          data: conf.parsedConfig
+          data: conf.config
         });
       }
     })
@@ -57,7 +57,7 @@ export const createNewConfigFile = (req: express.Request, res: express.Response)
   const body = req.body;
   const conf = new ConfigParser(body);
 
-  setConfigFile(fileName, conf.content)
+  setConfigFile(fileName, conf.raw)
     .then(() => {
       res.status(201).json({ file: fileName });
     })

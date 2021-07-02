@@ -1,4 +1,5 @@
 import express from 'express';
+import { findOptionIndex } from 'haproxy/build/util/sections';
 import ConfigParser from 'haproxy/build/cfg-parser';
 import { HaproxyCustomToSectionName } from 'haproxy/build/const';
 import { HaproxyCustomSectionsEnum } from 'haproxy/typings';
@@ -23,7 +24,7 @@ export const getOptionFromSection = (req: express.Request, res: express.Response
         res.type('text/yaml');
         res.status(200).send(YAML.stringify(conf.getOptionFromSection(sectionName, optionName)));
       } else {
-        const location = ConfigParser.findOptionIndex(conf.content.split('\n'), sectionName, optionName);
+        const location = findOptionIndex(conf.raw.split('\n'), sectionName, optionName);
         res.json({
           file: fileName,
           location,
@@ -55,7 +56,7 @@ export const getOptionFromNamedSection = (req: express.Request, res: express.Res
         res.type('text/yaml');
         res.status(200).send(YAML.stringify(conf.getOptionFromSection(sectionName, optionName, uniqueSectionName)));
       } else {
-        const location = ConfigParser.findOptionIndex(conf.content.split('\n'), `${HaproxyCustomToSectionName[sectionName]} ${uniqueSectionName}`, optionName);
+        const location = findOptionIndex(conf.raw.split('\n'), `${HaproxyCustomToSectionName[sectionName]} ${uniqueSectionName}`, optionName);
         res.json({
           file: fileName,
           location,

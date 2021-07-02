@@ -1,4 +1,5 @@
 import express from 'express';
+import { findSectionIndexes } from 'haproxy/build/util/sections';
 import ConfigParser from 'haproxy/build/cfg-parser';
 import { HaproxyCustomToSectionName } from 'haproxy/build/const';
 import { HaproxyAnySection, HaproxyConfig, HaproxyCustomSectionsEnum } from 'haproxy/typings';
@@ -19,7 +20,7 @@ export const getSection = (req: express.Request, res: express.Response): void =>
 
   getConfig(fileName)
     .then((conf: ConfigParser) => {
-      const location = ConfigParser.findSectionIndexes(conf.content.split('\n'))[sectionName];
+      const location = findSectionIndexes(conf.raw.split('\n'))[sectionName];
       const section = conf.getSection(sectionName);
 
       if (Object.keys((section as HaproxyAnySection)[sectionName]).length === 0) {
@@ -105,7 +106,7 @@ export const deleteSection = (req: express.Request, res: express.Response): void
 
   getConfig(fileName)
     .then((conf: ConfigParser) => {
-      delete conf.parsedConfig[sectionName];
+      delete conf.config[sectionName];
 
       setConfigFile(fileName, conf.toString())
         .then(() => {
@@ -131,16 +132,18 @@ export const getNonUniqueSection = (req: express.Request, res: express.Response)
   const uniqueSectionName = req.params.name as HaproxyCustomSectionsEnum;
   const format = req.query.format;
 
+  
   getConfig(fileName)
     .then((conf: ConfigParser) => {
       const key = `${HaproxyCustomToSectionName[sectionName]} ${uniqueSectionName}`;
-      const sectionLocation = ConfigParser.findSectionIndexes(conf.content.split('\n'))[key]; // TODO: Useful but to be rafactored
+      const sectionLocation = findSectionIndexes(conf.raw.split('\n'))[key]; // TODO: Useful but to be rafactored
       const section = conf.getNamedSection(sectionName, uniqueSectionName)[uniqueSectionName];
 
       if (Object.keys(section as HaproxyAnySection).length === 0) {
         res.status(404).json(prepareErrorMessageJson('Section not found', 404));
         return;
       }
+
 
       if (format === 'raw') {
         res.type('text/plain');
@@ -225,8 +228,8 @@ export const deleteNonUniqueSection = (req: express.Request, res: express.Respon
 
   getConfig(fileName)
     .then((conf: ConfigParser) => {
-      if (conf.parsedConfig[sectionName]) {
-        delete (conf.parsedConfig[sectionName] as HaproxyAnySection)[uniqueSectionName];
+      if (conf.config[sectionName]) {
+        delete (conf.config[sectionName] as HaproxyAnySection)[uniqueSectionName];
       }
 
       setConfigFile(fileName, conf.toString())
