@@ -1,17 +1,34 @@
-export type HaproxyKeys = 'global' | 'defaults' | 'frontend' | 'listen' | 'backend';
+export type HaproxyKeys = 
+'global' |
+'defaults' |
+'frontend' |
+'listen' |
+'backend' |
+'resolvers' |
+'mailers' |
+'peers' |
+'userlist';
 
 export enum HaproxyCustomSectionsEnum {
   global = 'global',
   defaults = 'defaults',
   frontends = 'frontends',
   listeners = 'listeners',
-  backends = 'backends'
+  backends = 'backends',
+  resolvers = 'resolvers',
+  mailers = 'mailers',
+  peers = 'peers',
+  userlist = 'userlist',
 }
 
 export enum HaproxyCustomNamedSectionsEnum {
   frontends = 'frontends',
   listeners = 'listeners',
-  backends = 'backends'
+  backends = 'backends',
+  resolvers = 'resolvers',
+  mailers = 'mailers',
+  peers = 'peers',
+  userlist = 'userlist',
 }
 
 export type ManagementAndSecurity = 
@@ -291,6 +308,26 @@ export type BackendFields =
   'timeout' |
   'transparent';
 
+export type ResolversFields = 
+'accepted_payload_size' |
+'nameserver' |
+'hold' |
+'resolution_pool_size' |
+'resolve_retries' |
+'timeout';
+
+export type MailersFields = 
+'mailer' |
+'timeout mail';
+
+export type PeersFields = 
+'disabled' |
+'peer' |
+'enable';
+
+export type UserlistFields = 
+'group' |
+'user';
 
 export type AclSubEntry = {
   [name: string]: string[];
@@ -317,7 +354,7 @@ export interface ErrorfileEntry {
 
 export type HttpRequestResponseSubEntry = string[];
 
-export type HttpRequestResponseEntryList = Array<HttpRequestResponseSubEntry>;
+export type HttpRequestResponseEntryList = HttpRequestResponseSubEntry[];
 
 export enum HttpRequestResponseMethods {
   'set-method' = 'set-method',
@@ -341,7 +378,7 @@ export type HttpRequestResponseEntry = {
   [key in HttpTypes]?: HttpMethodEntry;
 }
 
-export type StandardEntry = string | Array<string | number> | number | boolean | string[][] | { errorfile?: ErrorfileSubEntry };
+export type StandardEntry = string | string[] | number[] | number | boolean | string[][] | { errorfile?: ErrorfileSubEntry };
 
 export type Entry = { [key: string]: StandardEntry };
 
@@ -358,17 +395,30 @@ export type HaproxyFrontend = { [key: string]: HaproxySection<FrontendFields, St
 export type HaproxyListen = { [key: string]: HaproxySection<AllFields, StandardEntry> };
 export type HaproxyBackend = { [key: string]: HaproxySection<BackendFields, StandardEntry> };
 
+export type HaproxyResolvers = { [key: string]: HaproxySection<ResolversFields, StandardEntry> };
+export type HaproxyMailers = { [key: string]: HaproxySection<MailersFields, StandardEntry> };
+export type HaproxyPeers = { [key: string]: HaproxySection<PeersFields, StandardEntry> };
+export type HaproxyUserlist = { [key: string]: HaproxySection<ResolversFields, StandardEntry> };
+
 export type HaproxyUniqueSection<T> = { [key: string]: T };
 export type HaproxyUniqueSections = HaproxyUniqueSection<
   HaproxySection<FrontendFields, StandardEntry>
   | HaproxySection<BackendFields, StandardEntry>
   | HaproxySection<AllFields, StandardEntry>
+  | HaproxySection<ResolversFields, StandardEntry>
+  | HaproxySection<MailersFields, StandardEntry>
+  | HaproxySection<PeersFields, StandardEntry>
+  | HaproxySection<UserlistFields, StandardEntry>
 >;
 export type HaproxyAnySection = HaproxyGlobal
 & HaproxyDefaults
 & HaproxyFrontend
 & HaproxyListen
-& HaproxyBackend;
+& HaproxyBackend
+& HaproxyResolvers
+& HaproxyMailers
+& HaproxyPeers
+& HaproxyUserlist
 
 export interface HaproxyConfig {
   [HaproxyCustomSectionsEnum.global]?: HaproxyGlobal;
@@ -376,4 +426,8 @@ export interface HaproxyConfig {
   [HaproxyCustomSectionsEnum.frontends]?: HaproxyFrontend;
   [HaproxyCustomSectionsEnum.listeners]?: HaproxyListen;
   [HaproxyCustomSectionsEnum.backends]?: HaproxyBackend;
+  [HaproxyCustomSectionsEnum.resolvers]?: HaproxyResolvers;
+  [HaproxyCustomSectionsEnum.mailers]?: HaproxyMailers;
+  [HaproxyCustomSectionsEnum.peers]?: HaproxyPeers;
+  [HaproxyCustomSectionsEnum.userlist]?: HaproxyUserlist;
 }

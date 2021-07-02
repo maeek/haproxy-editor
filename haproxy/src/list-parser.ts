@@ -1,45 +1,55 @@
+import { cleanList } from './util/clean';
+
 export default class ListParser {
-  content: string;
-  parsedContentArray: Array<string>;
+  content!: string;
+  parsedContent!: string[];
 
   constructor(content: string) {
     if (typeof content === 'string') {
-      this.content = content;
-      this.parsedContentArray = this.parse();
+      this.raw = content;
     } 
     else {
-      this.parsedContentArray = content;
-      this.content = this.toString();
+      this.list = content;
     }
 
     return this;
   }
 
+  get raw(): string {
+    return this.content;
+  }
+
+  set raw(rawContent: string) {
+    this.content = rawContent;
+    this.parse();
+  }
+
+  get list(): string[] {
+    return this.parsedContent;
+  }
+
+  set list(parsedContent: string[]) {
+    this.parsedContent = parsedContent;
+    this.toString();
+  }
+
   toString(): string {
-    return ListParser.toString(this.parsedContentArray);
+    this.content = ListParser.toString(this.parsedContent);
+    return this.content;
   }
 
-  static toString(parsedContentArray: string[]): string {
-    return parsedContentArray.join('\n');
+  static toString(parsedContent: string[]): string {
+    return parsedContent.join('\n');
   }
 
-  parse(): Array<string> {
-    return ListParser.parse(this.content);
+  parse(): string[] {
+    this.parsedContent = ListParser.parse(this.content);
+    return this.parsedContent;
   }
 
-  static parse(content: string): Array<string> {
+  static parse(content: string): string[] {
     const lines = content.split('\n');
 
-    return ListParser.clean(lines);
-  }
-
-  static clean(content: string[]): string[] {
-    return content
-      .map((str: string) => str.trim())
-      .filter((str: string) => {
-        if (str.startsWith('#') || str === '') return false;
-
-        return str;
-      });
+    return cleanList(lines);
   }
 }

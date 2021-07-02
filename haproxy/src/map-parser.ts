@@ -2,26 +2,51 @@ import { Entry } from '../typings';
 
 export default class MapParser {
   content!: string;
-  parsedContentArray!: Array<Array<string>>;
+  parsedContentArray!: string[][];
   parsedContentObj!: Entry;
 
   constructor(content: string) {
     if (typeof content === 'string') {
-      this.content = content;
-      this.parse();
-      this.parseToObject();
+      this.raw = content;
     } 
     else if (Array.isArray(content)) {
-      this.parsedContentArray = content;
-      this.toString();
-      this.parseToObject();
-    } else {
-      this.parsedContentObj = content;
-      this.parseFromObject();
-      this.toString();
+      this.mapArray = content;
+    } 
+    else {
+      this.map = content;
     }
 
     return this;
+  }
+
+  get raw(): string {
+    return this.content;
+  }
+
+  set raw(rawContent: string) {
+    this.content = rawContent;
+    this.parse();
+    this.parseToObject();
+  }
+
+  get map(): Entry {
+    return this.parsedContentObj;
+  }
+
+  set map(mapObj: Entry) {
+    this.parsedContentObj = mapObj;
+    this.parseFromObject();
+    this.toString();
+  }
+
+  get mapArray(): string[][] {
+    return this.parsedContentArray;
+  }
+
+  set mapArray(mapArray: string[][]) {
+    this.parsedContentArray = mapArray;
+    this.toString();
+    this.parseToObject();
   }
 
   toString(): string {
@@ -39,15 +64,15 @@ export default class MapParser {
     }).join('\n');
   }
 
-  parse(): Array<Array<string>> {
+  parse(): string[][] {
     this.parsedContentArray = MapParser.parse(this.content);
     return this.parsedContentArray;
   }
 
-  static parse(content: string): Array<Array<string>> {
+  static parse(content: string): string[][] {
     const lines = content.split('\n');
 
-    const parsedData: Array<Array<string>> = [];
+    const parsedData: string[][] = [];
 
     for (const line of lines) {
       const splittedLine = line.split(new RegExp('[ ]+'));
@@ -62,13 +87,13 @@ export default class MapParser {
     return [];
   }
 
-  parseFromObject(): Array<Array<string>> {
+  parseFromObject(): string[][] {
     this.parsedContentArray = MapParser.parseFromObject(this.parsedContentObj);
     return this.parsedContentArray;
   }
 
-  static parseFromObject(parsedContentObj: Entry): Array<Array<string>> {
-    const results: Array<Array<string>> = [];
+  static parseFromObject(parsedContentObj: Entry): string[][] {
+    const results: string[][] = [];
     const keys = Object.keys(parsedContentObj);
     const values = Object.values(parsedContentObj);
 
@@ -87,7 +112,7 @@ export default class MapParser {
     return this.parsedContentObj;
   }
 
-  static parseToObject(parsedContentArray: Array<Array<string>>): Entry {
+  static parseToObject(parsedContentArray: string[][]): Entry {
     const obj: Entry = {};
 
     if (parsedContentArray) {
@@ -99,7 +124,7 @@ export default class MapParser {
     return obj;
   }
 
-  static validate(data?: Array<Array<string>>): boolean {
+  static validate(data?: string[][]): boolean {
     if (!data) return false;
 
     for (const line of data) {

@@ -3,34 +3,51 @@ export const HaproxySections: { [key: string]: string } = {
   defaults: 'defaults',
   listen: 'listen',
   frontend: 'frontend',
-  backend: 'backend'
+  backend: 'backend',
+  resolvers: 'resolvers',
+  mailers: 'mailers',
+  peers: 'peers',
+  userlist: 'userlist'
 };
 
-export const HaproxySectionsList: Array<string> = Object.values(HaproxySections);
+export const HaproxySectionsList: string[] = Object.values(HaproxySections);
 
 export const HaproxyCustomSections: { [key: string]: string } = {
   global: 'global',
   defaults: 'defaults',
   listeners: 'listeners',
   frontends: 'frontends',
-  backends: 'backends'
+  backends: 'backends',
+  
+  resolvers: 'resolvers',
+  mailers: 'mailers',
+  peers: 'peers',
+  userlist: 'userlist',
 };
-export const HaproxyCustomSectionsList: Array<string> = Object.values(HaproxyCustomSections);
+export const HaproxyCustomSectionsList: string[] = Object.values(HaproxyCustomSections);
 
 export const HaproxyCustomNonUniqueSections: { [key: string]: string } = {
   listeners: 'listeners',
   frontends: 'frontends',
-  backends: 'backends'
+  backends: 'backends',
+  resolvers: 'resolvers',
+  mailers: 'mailers',
+  peers: 'peers',
+  userlist: 'userlist',
 };
 
-export const HaproxyCustomNonUniqueSectionsList: Array<string> = Object.values(HaproxyCustomNonUniqueSections);
+export const HaproxyCustomNonUniqueSectionsList: string[] = Object.values(HaproxyCustomNonUniqueSections);
 
 export const HaproxyCustomToSectionName: { [key: string]: string } = {
   [HaproxyCustomSections.global]: HaproxySections.global,
   [HaproxyCustomSections.defaults]: HaproxySections.defaults,
   [HaproxyCustomSections.listeners]: HaproxySections.listen,
   [HaproxyCustomSections.frontends]: HaproxySections.frontend,
-  [HaproxyCustomSections.backends]: HaproxySections.backend
+  [HaproxyCustomSections.backends]: HaproxySections.backend,
+  [HaproxyCustomSections.resolvers]: HaproxySections.resolvers,
+  [HaproxyCustomSections.mailers]: HaproxySections.mailers,
+  [HaproxyCustomSections.peers]: HaproxySections.peers,
+  [HaproxyCustomSections.userlist]: HaproxySections.userlist,
 };
 
 export const HaproxyMapSectionToCustom: { [key: string]: string } = {
@@ -38,7 +55,11 @@ export const HaproxyMapSectionToCustom: { [key: string]: string } = {
   [HaproxySections.defaults]: HaproxyCustomSections.defaults,
   [HaproxySections.listen]: HaproxyCustomSections.listeners,
   [HaproxySections.frontend]: HaproxyCustomSections.frontends,
-  [HaproxySections.backend]: HaproxyCustomSections.backends
+  [HaproxySections.backend]: HaproxyCustomSections.backends,
+  [HaproxySections.resolvers]: HaproxyCustomSections.resolvers,
+  [HaproxySections.mailers]: HaproxyCustomSections.mailers,
+  [HaproxySections.peers]: HaproxyCustomSections.peers,
+  [HaproxySections.userlist]: HaproxyCustomSections.userlist,
 };
 
 export const HaproxyOptions: { [key: string]: string } = {
@@ -188,8 +209,9 @@ export const HaproxyOptions: { [key: string]: string } = {
   group: 'group',
   pidfile: 'pidfile',
   uid: 'uid',
-  gid: 'gid'
+  gid: 'gid',
+  user: 'user'
 };
 
 
-export const HaproxyOptionsList: Array<string> = Object.values(HaproxyOptions);
+export const HaproxyOptionsList: string[] = Object.values(HaproxyOptions);
