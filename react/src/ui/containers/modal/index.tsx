@@ -6,6 +6,7 @@ interface ModalProps {
   children: React.ReactNode | React.ReactNode[];
   bodyScroll?: boolean;
   rootElement?: HTMLElement;
+  onClick?: Function;
 }
 
 export const Modal: React.FC<ModalProps> = ({

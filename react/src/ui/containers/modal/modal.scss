@@ -1,0 +1,35 @@
+#modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-container {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: relative;
+  padding-top: 6rem;
+
+  &-box {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 16px;
+    background-color: #1B1B1B;
+    padding: 1.8rem 1.4rem;
+    min-height: 120px;
+
+    .header-main {
+      &-heading {
+        margin-top: 0;
+      }
+    }
+  }
+}

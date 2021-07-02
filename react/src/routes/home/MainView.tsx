@@ -8,7 +8,9 @@ import AppContainer from '../../ui/containers/app';
 import ContentContainer from '../../ui/containers/content';
 import HeaderContainer from '../../ui/containers/header';
 import Input from '../../ui/inputs/input';
-import Modal from '../../ui/modal';
+import Modal from '../../ui/containers/modal';
+import ModalContainer from '../../ui/containers/modal/box';
+import Label from '../../ui/typo/label';
 
 const MainView: FC = () => {
   const [modal, showModal] = useState(false);
@@ -23,22 +25,25 @@ const MainView: FC = () => {
           <Paragraph>This is a paragraph</Paragraph>
         </HeaderContainer>
         
-        <Input
+        {/* <Input
           prefix={(<div>Mode:</div>)}
           suffix={(<u>Submit</u>)}
-        />
+        /> */}
 
-        <button onClick={() => showModal(!modal)}>Show modal</button>
+        {/* <button onClick={() => showModal(!modal)}>Show modal</button> */}
 
         {
           modal && (
             <Modal>
-              <HeaderContainer>
+              <ModalContainer onMaskClick={() => showModal(false)}>
                 <Header>Haproxy</Header>
-                <SubHeader>Sub header haproxy</SubHeader>
-                <Standard>This is a standard text</Standard>
-                <Paragraph>This is a paragraph</Paragraph>
-              </HeaderContainer>
+                <Paragraph>
+                  This is a paragraph. In this secion we specify details we want to display. They may contain important information related to using this app.
+                </Paragraph>
+                <Label text="Some value">
+                  <Input placeholder="Aa" />
+                </Label>
+              </ModalContainer>
             </Modal>
           )
         }
