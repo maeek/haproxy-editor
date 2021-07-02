@@ -1,5 +1,5 @@
 import { Entry, StandardEntry } from '../../typings';
-import Base from './base';
+import Generic from './generic';
 
 /**
  * Input:
@@ -18,8 +18,8 @@ import Base from './base';
  *
  */
 
-export class MultipleArguments extends Base {
-  static parse(arr: Array<string>): Entry {
+export class MultipleArguments extends Generic {
+  static parse(arr: string[]): Entry {
     const [option, ...values] = arr;
 
     return {

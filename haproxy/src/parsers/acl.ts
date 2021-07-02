@@ -22,7 +22,7 @@ import NonUnique from './non-unique-keys';
  */
 
 export class Acl extends NonUnique {
-  static parse(arr: Array<string>, parsed?: HaproxyAnySection): AclEntry {
+  static parse(arr: string[], parsed?: HaproxyAnySection): AclEntry {
     const parsedAcls: AclSubEntry = parsed?.acl
       ? parsed.acl as AclSubEntry
       : {};
@@ -40,8 +40,8 @@ export class Acl extends NonUnique {
     return results;
   }
 
-  static stringify(_: string, entries: AclSubEntry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(_: string, entries: AclSubEntry): string[] {
+    const results: string[] = [];
 
     const keys = Object.keys(entries);
 

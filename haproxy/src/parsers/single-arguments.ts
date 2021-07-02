@@ -1,5 +1,5 @@
 import { Entry, StandardEntry } from '../../typings';
-import Base from './base';
+import Generic from './generic';
 
 /**
  * Input:
@@ -14,8 +14,15 @@ import Base from './base';
  * 
  */
 
-export class SingleArgument extends Base {
-  static parse(arr: Array<string>): Entry {
+export class SingleArgument extends Generic {
+  private str?: string;
+  private entry?: Entry;
+
+  constructor() {
+    super();
+  }
+
+  static parse(arr: string[]): Entry {
     const [option, ...value] = arr;
 
     let val: string | number = value.join(' ');

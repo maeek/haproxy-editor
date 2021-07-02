@@ -23,7 +23,7 @@ import NonUnique from './non-unique-keys';
  */
 
 export class Bind extends NonUnique {
-  static parse(arr: Array<string>, parsed?: HaproxyAnySection): BindEntry {
+  static parse(arr: string[], parsed?: HaproxyAnySection): BindEntry {
     const parsedBinds: BindSubEntry = parsed?.bind
       ? parsed.bind as BindSubEntry
       : {};
@@ -41,8 +41,8 @@ export class Bind extends NonUnique {
     return results;
   }
 
-  static stringify(_: string, entries: BindSubEntry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(_: string, entries: BindSubEntry): string[] {
+    const results: string[] = [];
 
     const keys = Object.keys(entries);
 

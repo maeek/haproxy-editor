@@ -21,7 +21,7 @@ import NoArgument from './no-argument';
  */
 
 export class Option extends NoArgument {
-  static parse(arr: Array<string>): Entry {
+  static parse(arr: string[]): Entry {
     const [name, type] = arr;
 
     return {

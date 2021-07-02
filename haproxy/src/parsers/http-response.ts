@@ -10,7 +10,7 @@ import NonUnique from './non-unique-keys';
  */
 
 export class HttpResponse extends NonUnique {
-  static parse(arr: Array<string>, parsed?: HaproxyAnySection): HttpRequestResponseEntry { // TODO change any
+  static parse(arr: string[], parsed?: HaproxyAnySection): HttpRequestResponseEntry { // TODO change any
     const parsedHttpRequests = parsed && parsed['http-response']
       ? parsed['http-response'] as HttpMethodEntry
       : {};
@@ -38,8 +38,8 @@ export class HttpResponse extends NonUnique {
     return results;
   }
 
-  static stringify(_: string, entries: HttpMethodEntry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(_: string, entries: HttpMethodEntry): string[] {
+    const results: string[] = [];
 
     const keys = Object.keys(entries);
 

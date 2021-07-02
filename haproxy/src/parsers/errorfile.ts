@@ -1,5 +1,5 @@
 import { ErrorfileEntry, ErrorfileSubEntry } from '../../typings';
-import Base from './base';
+import Generic from './generic';
 
 /**
  * Input:
@@ -28,8 +28,8 @@ import Base from './base';
  *  
  */
 
-export class Errorfile extends Base {
-  static parse(arr: Array<string>, parsed?: ErrorfileEntry): ErrorfileEntry { // TODO change any
+export class Errorfile extends Generic {
+  static parse(arr: string[], parsed?: ErrorfileEntry): ErrorfileEntry { // TODO change any
     const parsedErrorfiles = parsed?.errorfile 
       ? parsed.errorfile as ErrorfileSubEntry
       : {};
@@ -44,8 +44,8 @@ export class Errorfile extends Base {
     };
   }
 
-  static stringify(_: string, entries: ErrorfileSubEntry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(_: string, entries: ErrorfileSubEntry): string[] {
+    const results: string[] = [];
     const keys = Object.keys(entries);
 
     keys.forEach((key: string) => {

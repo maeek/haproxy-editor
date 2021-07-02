@@ -1,8 +1,8 @@
 import { HaproxyConfig, HaproxyCustomSectionsEnum } from '../../typings';
-import BasicParser from './basic';
+import BasicParser from './generic';
 
 export class DefaultParser extends BasicParser {
-  constructor(contents: Array<string> | HaproxyConfig) {
+  constructor(contents: string[] | HaproxyConfig) {
     super(contents);
     if (Array.isArray(contents)) {
       this.contents = contents;
@@ -13,13 +13,13 @@ export class DefaultParser extends BasicParser {
     }
   }
 
-  static parse(contents: Array<string>): HaproxyConfig {
+  static parse(contents: string[]): HaproxyConfig {
     return {
       defaults: BasicParser.parse(contents)
     };
   }
 
-  static stringify(contents: HaproxyConfig): Array<string> {
+  static stringify(contents: HaproxyConfig): string[] {
     const key = Object.keys(contents)[0] as HaproxyCustomSectionsEnum.defaults;
     const values = contents[key];
     const parsed = BasicParser.stringify(values);

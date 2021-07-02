@@ -2,7 +2,7 @@ import {
   HttpMethodEntry, HttpRequestResponseEntry, HttpRequestResponseMethods,
   HttpRequestResponseSubEntry
 } from '../../typings';
-import Base from './base';
+import Generic from './generic';
 
 /**
  * Input:
@@ -50,8 +50,8 @@ import Base from './base';
  * 
  */
 
-export class HttpRequest extends Base {
-  static parse(arr: Array<string>, parsed?: HttpRequestResponseEntry): HttpRequestResponseEntry { // TODO change any
+export class HttpRequest extends Generic {
+  static parse(arr: string[], parsed?: HttpRequestResponseEntry): HttpRequestResponseEntry { // TODO change any
     const parsedHttpRequests = parsed && parsed['http-request']
       ? parsed['http-request'] as HttpMethodEntry
       : {};
@@ -77,8 +77,8 @@ export class HttpRequest extends Base {
     return results;
   }
 
-  static stringify(_: string, entries: HttpMethodEntry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(_: string, entries: HttpMethodEntry): string[] {
+    const results: string[] = [];
 
     const keys = Object.keys(entries);
 

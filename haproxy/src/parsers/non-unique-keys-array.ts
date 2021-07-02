@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { Entry } from '../../typings';
 
-import Base from './base';
+import Generic from './generic';
 
 /**
  * Input:
@@ -21,8 +21,8 @@ import Base from './base';
  * 
  */
 
-export class NonUniqueArray extends Base {
-  static parse(arr: Array<string>, parsed?: any): Entry {
+export class NonUniqueArray extends Generic {
+  static parse(arr: string[], parsed?: any): Entry {
     const [name, ...rest] = arr;
     const results: string[] = [];
 
@@ -36,8 +36,8 @@ export class NonUniqueArray extends Base {
     };
   }
 
-  static stringify(name: string, entries: Entry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(name: string, entries: Entry): string[] {
+    const results: string[] = [];
     const keys = Object.keys(entries);
 
     keys.forEach((key: string) => {

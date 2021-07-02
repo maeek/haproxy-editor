@@ -15,7 +15,7 @@ import SingleArgument from './single-arguments';
  */
 
 export class NoArgument extends SingleArgument {
-  static parse(arr: Array<string>): Entry {
+  static parse(arr: string[]): Entry {
     const [option] = arr;
 
     return {

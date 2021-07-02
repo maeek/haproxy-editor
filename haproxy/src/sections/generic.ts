@@ -1,12 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mapParser } from '../map-setting-to-parser';
+// import { mapParser } from '../map-setting-to-parser';
+
+import ParsersFactory from '../ParsersFactory';
 
 export abstract class BasicParser {
-  parsed?: any;
-  contents?: Array<string>;
+  protected parsed?: any;
+  protected contents?: string[];
 
-  constructor(contents: Array<string> | any) {
+  constructor(contents: string[] | any) {
     if (Array.isArray(contents)) {
       this.contents = contents;
       this.parsed = BasicParser.parse(contents);
@@ -16,22 +18,22 @@ export abstract class BasicParser {
     }
   }
 
-  get data(): any {
+  get config(): any {
     return this.parsed;
   }
 
-  get rawData(): string[] | undefined {
+  get rawConfig(): string[] | undefined {
     return this.contents;
   }
 
-  static parse(contents: Array<string>): any {
+  static parse(contents: string[]): any {
     let result: any = {};
   
     for (let i = 1; i < contents.length; i++) {
       const line = contents[i];
       const arr = line.split(' ');
 
-      const Parser = mapParser(arr[0]);
+      const Parser = ParsersFactory.getParser(arr[0]);
       const parsedRow: any = Parser.parse(arr, result);
 
       result = {
@@ -47,14 +49,14 @@ export abstract class BasicParser {
     return JSON.stringify(contents);
   }
 
-  static stringify(contents: any): Array<string> {
+  static stringify(contents: any): string[] {
     const results = [];
     const keys = Object.keys(contents);
     for (let i = 0; i < keys.length; i++) {
       const key = keys[i];
       const value = contents[key];
 
-      const Parser = mapParser(key);
+      const Parser = ParsersFactory.getParser(key);
       const parsedRow = Parser.stringify(key, value);
 
       if (Array.isArray(parsedRow)) {
@@ -69,7 +71,7 @@ export abstract class BasicParser {
     return results;
   }
 
-  static toString(contents: Array<string>): string {
+  static toString(contents: string[]): string {
     let str = '';
 
     contents.forEach((line: string) => {

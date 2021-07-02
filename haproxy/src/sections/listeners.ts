@@ -1,8 +1,8 @@
 import { HaproxyCustomSectionsEnum, HaproxyListen, HaproxyUniqueSection } from '../../typings';
-import BasicParser from './basic';
+import BasicParser from './generic';
 
 export class ListenerParser extends BasicParser {
-  constructor(contents: Array<string> | HaproxyUniqueSection<HaproxyListen>) {
+  constructor(contents: string[] | HaproxyUniqueSection<HaproxyListen>) {
     super(contents);
     if (Array.isArray(contents)) {
       this.contents = contents;
@@ -13,7 +13,7 @@ export class ListenerParser extends BasicParser {
     }
   }
 
-  static parse(contents: Array<string>): { [name: string]: HaproxyListen } {
+  static parse(contents: string[]): { [name: string]: HaproxyListen } {
     const listenerName: string = contents[0].split(' ')[1];
 
     return {
@@ -21,7 +21,7 @@ export class ListenerParser extends BasicParser {
     };
   }
 
-  static stringify(contents: HaproxyUniqueSection<HaproxyListen>): Array<string> {
+  static stringify(contents: HaproxyUniqueSection<HaproxyListen>): string[] {
     const key = Object.keys(contents)[0] as HaproxyCustomSectionsEnum.listeners;
     const results: string[] = [];
     const keys = Object.keys(contents[key]);
@@ -29,7 +29,7 @@ export class ListenerParser extends BasicParser {
 
     for (let i = 0; i < keys.length; i++) {
       const parsed = BasicParser.stringify(values[i]);
-      const stringified: Array<string> = [
+      const stringified: string[] = [
         `listen ${keys[i]}`,
         ...parsed,
         ''

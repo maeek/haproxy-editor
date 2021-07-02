@@ -37,7 +37,7 @@ export class Stats extends SingleArgument {
     'uri'
   ];
 
-  static parse(arr: Array<string>): Entry {
+  static parse(arr: string[]): Entry {
     const [name, type, ...rest] = arr;
 
     const payload = Stats.customPayload.includes(type) ? Stats.getCustomPayload(type, rest) : rest;

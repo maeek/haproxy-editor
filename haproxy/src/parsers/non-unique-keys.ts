@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Entry, HaproxyAnySection, StandardEntry } from '../../typings';
 
-import Base from './base';
+import Generic from './generic';
 
 /**
  * Input:
@@ -25,8 +25,8 @@ import Base from './base';
  * 
  */
 
-export class NonUnique extends Base {
-  static parse(arr: Array<string>, parsed?: HaproxyAnySection): any { // TODO change any    
+export class NonUnique extends Generic {
+  static parse(arr: string[], parsed?: HaproxyAnySection): any { // TODO change any    
     const [key, method, ...options] = arr;
     const parsedNonUnique = parsed && parsed[key]
       ? parsed[key] as Entry
@@ -52,8 +52,8 @@ export class NonUnique extends Base {
     return results;
   }
 
-  static stringify(name: string, entries: Entry): Array<string> {
-    const results: Array<string> = [];
+  static stringify(name: string, entries: Entry): string[] {
+    const results: string[] = [];
 
     const keys = Object.keys(entries);
 
