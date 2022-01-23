@@ -16,7 +16,7 @@ export const getConfigFiles = (): Promise<string[]> =>
     fs.readdir(CONFIG_DIR, (err: NodeJS.ErrnoException | null, files: string[]) => {
       if (err) reject('Failed to list files in a folder');
 
-      const results = files.filter((file: string) => {
+      const results = (files || []).filter((file: string) => {
         return file.endsWith('.cfg') 
           || (!file.endsWith('.map') && !file.endsWith('.lst') && !file.endsWith('.acl'));
       });
